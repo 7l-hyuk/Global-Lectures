@@ -1,16 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { fetchMe, logout as logoutAPI } from "../api/auth";
+import { AuthContextType, User } from "./types";
 
-interface User {
-  username: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  setUser: (user: User | null) => void;
-  fetchCurrentUser: () => Promise<void>;
-  logout: () => Promise<void>;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
