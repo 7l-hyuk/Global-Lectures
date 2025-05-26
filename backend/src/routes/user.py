@@ -3,15 +3,14 @@ from sqlalchemy.orm import Session
 import bcrypt
 
 from src.db.database import get_db
-from src.schema.users import User, UserCreate, UserLogin
+from src.schema.user import User, UserCreate, UserLogin
 from src.auth.jwt_handler import create_access_token
-from src.services.users import get_current_user
+from src.services.user import get_current_user
+
+user_router = APIRouter(prefix="/api/users", tags=["Users"])
 
 
-users_router = APIRouter(prefix="/api/users", tags=["users"])
-
-
-@users_router.post("/signup")
+@user_router.post("/signup")
 async def signup(user: UserCreate, db: Session = Depends(get_db)):
     hashed_pw = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
     db_user = User(username=user.username, hashed_password=hashed_pw.decode(), email=user.email)
@@ -25,7 +24,7 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
     return {"msg": "회원가입 완료!", "username": user.username}
 
 
-@users_router.post("/login")
+@user_router.post("/login")
 async def user_login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
 
@@ -51,7 +50,7 @@ async def user_login(user: UserLogin, response: Response, db: Session = Depends(
     return {"msg": "login success"}
 
 
-@users_router.get("/me")
+@user_router.get("/me")
 async def read_users_me(request: Request):
     token = request.cookies.get("access_token")
 
@@ -62,7 +61,7 @@ async def read_users_me(request: Request):
     return {"username": current_user}
 
 
-@users_router.post("/logout")
+@user_router.post("/logout")
 def user_logout(response: Response):
     response.delete_cookie("access_token", path="/")
     return {"msg": "logout success"}
