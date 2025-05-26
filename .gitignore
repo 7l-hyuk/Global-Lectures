@@ -1,0 +1,46 @@
+######### FRONTEND #########
+
+# dependencies
+frontend/node_modules
+frontend/.pnp
+.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+######### BACKEND #########
+db/init.sql
+
+
+######### BACKEND #########
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.wav
+*.mp4
+
+# Virtual environments
+.venv
+
+# Secret
+.env

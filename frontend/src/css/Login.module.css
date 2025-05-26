@@ -1,0 +1,76 @@
+.LoginFormContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 0, 0, .06);
+    color: #5a5a5a;
+    line-height: 1.45;
+    background-color: #fff;
+    margin: 1rem;
+}
+
+.row {
+    margin-bottom: 1.5rem;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.Label {
+    margin-bottom: 0;
+    padding-bottom: calc(.55rem + 1px);
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    width: 100%;
+    color: #474747;
+
+}
+
+.InputContainer {
+    display: block;
+    flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    width: 100%;
+}
+
+
+.Input {
+    border: 1px solid #dadada;
+    color: #606060;
+    transition: none;
+    height: calc(1.45em + 1.1rem + 2px);
+    line-height: 1.45;
+    padding: .55rem .9rem;
+    width: 100%;
+    border-radius: .25rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.LoginButtonContainer {
+    display: block;
+    text-align: right;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 20px;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.LoginButton {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    background-color: #b53836;
+    border-color: #b53836;
+    color: white;
+}

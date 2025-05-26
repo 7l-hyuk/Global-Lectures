@@ -1,0 +1,18 @@
+# GIT
+.git
+.gitignore
+
+# DOCKER
+.dockerignore
+Dockerfile
+
+# PYTHON
+*.md
+__pycache__/
+**/__pycache__/
+
+# VENV
+.venv/
+
+# UV
+uv.lock

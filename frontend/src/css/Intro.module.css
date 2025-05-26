@@ -1,0 +1,79 @@
+.introContainer {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(45deg, #1d1d1d, #2b2b2b);
+    width: 100%;
+    height: 400px; 
+    color: white;
+}
+
+.introContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    line-height: 1.45;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 4rem 1.8rem;
+    max-width: 1140px;
+}
+
+.contentWrapper {
+    display: block;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    color: #202020;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    text-align: left;
+}
+
+.FileuploadButtonContainer {
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    margin-bottom: 1.5rem;
+}
+
+.BaseButton {
+    cursor: pointer;
+    border-radius: .27rem;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    padding: 1rem 1.25rem;
+    background-color: #b53836;
+    border-color: #b53836;
+    color: white;
+    border: 1px solid;
+}
+
+.BaseButton:disabled {
+    background-color: #b53836;
+    border-color: #b53836;
+    color: #fff;
+    opacity: .65;
+}
+
+.BaseButton:hover {
+    background-color: #982f2d;
+    border-color: #8e2c2a;
+    color: #fff;
+}
+
+.card {
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    margin-bottom: 1rem !important;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
