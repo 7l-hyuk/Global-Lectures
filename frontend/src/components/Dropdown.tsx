@@ -24,15 +24,22 @@ function Dropdown() {
       {isOpen && (
         <div className={DropdownStyles.dropdwonContainer}>
           <div className={DropdownStyles.dropdownItem}>
-            <span className={DropdownStyles.item}>mypage</span>
+            <span 
+              className={DropdownStyles.item}
+            >
+              mypage
+            </span>
           </div>
           <div className={DropdownStyles.dropdownItem}>
-            <span onClick={(e) => {
+            <span 
+              className={DropdownStyles.item}
+              onClick={(e) => {
                 e.preventDefault();
                 logout();
-            }}
-                className={DropdownStyles.item}
-            >logout</span>
+              }}
+            >
+              logout
+            </span>
           </div>
         </div>
       )}

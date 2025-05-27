@@ -14,7 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({isOpen, user, toggleSidebar}) => {
                         <li><a href="http://localhost:3000">Home</a></li>
                         <li><a href="http://localhost:3000">About</a></li>
                         <li><a href="http://localhost:3000">Contact</a></li>
-                        <li><a href="http://localhost:3000">Mypage</a></li>
+                        <li><a href="http://localhost:3000/mypage">Mypage</a></li>
                     </>
                 ) : (
                     <>

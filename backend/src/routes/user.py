@@ -13,13 +13,14 @@ user_router = APIRouter(prefix="/api/users", tags=["Users"])
 @user_router.post("/signup")
 async def signup(user: UserCreate, db: Session = Depends(get_db)):
     hashed_pw = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
-    db_user = User(username=user.username, hashed_password=hashed_pw.decode(), email=user.email)
+    db_user = User(username=user.username, password=hashed_pw.decode(), email=user.email)
     db.add(db_user)
     try:
         db.commit()
         db.refresh(db_user)
-    except Exception:
+    except Exception as e:
         db.rollback()
+        print(e)
         raise HTTPException(status_code=400, detail="이미 존재하는 사용자입니다.")
     return {"msg": "회원가입 완료!", "username": user.username}
 
@@ -32,7 +33,7 @@ async def user_login(user: UserLogin, response: Response, db: Session = Depends(
         not db_user 
         or not bcrypt.checkpw(
             user.password.encode("utf-8"),
-            db_user.hashed_password.encode()
+            db_user.password.encode()
         )
     ):
         raise HTTPException(status_code=401, detail="잘못된 로그인 정보입니다.")

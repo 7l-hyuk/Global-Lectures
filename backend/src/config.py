@@ -1,24 +1,34 @@
+from dataclasses import dataclass
+
 from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 
-model_config = ConfigDict(
-    env_file=".env", 
-    extra="ignore"
-)
 
-class DatabaseSettings(BaseSettings):
+@dataclass
+class BaseModelConfig:
+    model_config = model_config = ConfigDict(
+        env_file=".env", 
+        extra="ignore"
+    )
+
+
+class DatabaseSettings(BaseSettings, BaseModelConfig):
     DATABASE_URL: str | None = None
 
-    model_config = model_config
 
-
-class JwtSettings(BaseSettings):
+class JwtSettings(BaseSettings, BaseModelConfig):
     SECRET_KEY: str | None = None
     ALGORITHM: str | None = None
     ACCESS_TOKEN_EXPIRE_MINUTES: int | None = None
 
-    model_config = model_config
+
+class AwsSettings(BaseSettings, BaseModelConfig):
+    AWS_ACCESS_KEY_ID: str | None = None
+    AWS_SECRET_ACCESS_KEY: str | None = None
+    BUCKET_NAME: str | None = None
+    REGION: str | None = None
 
 
 database_settings = DatabaseSettings()
 jwt_settings = JwtSettings()
+aws_settings = AwsSettings()

@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 
 const Layout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -16,7 +16,7 @@ const Layout: React.FC = () => {
   return (
     <div style={{ minWidth: '768px', maxWidth: '1280px', margin: '0 auto' }}>
       <Navbar toggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={isSidebarOpen} user={user} toggleSidebar={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} user={{username: "7lhyuk"}} toggleSidebar={toggleSidebar} />
       <main>
         <Outlet />
       </main>
