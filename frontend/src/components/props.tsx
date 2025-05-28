@@ -1,8 +1,10 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { User } from "../context/types";
 
 
 export interface SidebarProps {
     isOpen: boolean;
+    user: User | null;
     toggleSidebar: () => void;
 }
 

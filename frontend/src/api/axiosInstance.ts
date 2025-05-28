@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const USER_API_URL = "http://localhost:8000/api/users";
-const SERVICE_API_URL = "http://localhost:8000/v1/dub"
+const SERVICE_API_URL = "http://localhost:8000/v1/dub";
+const VIDEO_API_URL = "http://localhost:8000/api/videos";
+
 
 const axiosUserInstance = axios.create({
   baseURL: USER_API_URL,
@@ -13,4 +15,9 @@ const axiosServiceInstance = axios.create({
   withCredentials: true, // 쿠키 자동 포함
 });
 
-export {axiosUserInstance, axiosServiceInstance};
+const axiosVideoInstance = axios.create({
+  baseURL: VIDEO_API_URL,
+  withCredentials: true
+});
+
+export {axiosUserInstance, axiosServiceInstance, axiosVideoInstance};

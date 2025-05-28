@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import ProtectedPage from "./pages/ProtectedPage";
+import Userpage from "./pages/Userpage";
 import Layout from "./components/Layout";
+import VideoDetailPage from "./pages/VideoDetailPage";
 import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 function App() {
@@ -16,7 +18,15 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/protected" element={<ProtectedPage />} />
+            <Route path="/videos/:id" element={<VideoDetailPage />} />
+            <Route 
+              path="/mypage"
+              element={
+                <PrivateRoute>
+                <Userpage />
+                </PrivateRoute>
+              } 
+            />
           </Route>
         </Routes>
       </Router>

@@ -1,13 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.routes.users import users_router
-from src.routes.dub import dubbing_router
+from src.routes.user import user_router
+from src.routes.dub import dub_router
+from src.routes.video import video_router
 
 app = FastAPI()
 
 origins = [
     "http://localhost:3000",  # React 개발 서버 주소
 ]
+routers = [
+    user_router,
+    dub_router,
+    video_router
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -16,5 +23,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users_router)
-app.include_router(dubbing_router)
+for router in routers:
+    app.include_router(router)
