@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getSubtitle } from '../api/video';
 import styles from "../css/Video.module.css"
 
+
 interface VideoPlayerProps {
   src: string;
   videoId: string;
@@ -27,6 +28,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
     getSubtitle(videoId)
       .then(res => {
         setSubtitles(res.data);
+
       })
       .catch(console.error);
   }, [videoId]);

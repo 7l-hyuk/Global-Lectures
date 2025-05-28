@@ -9,6 +9,7 @@ class UserPath:
 
         self.original_video = self.user / "original_video.mp4"
         self.video = self.user / "video.mp4"
+
         self.reference_speaker = self.user / "reference_speaker.wav"
         self.dub_audio = self.user / "dub.wav"
         self.dub_video = self.user / "dub.mp4"
@@ -16,6 +17,7 @@ class UserPath:
         self.tts_audio_sync = self.user / "tts_audio_sync"
         self.src_subtitle = self.user / "src_subtitle.json"
         self.tar_subtitle = self.user / "tar_subtitle.json"
+
 
         for dir in [self.user, self.tts_audio, self.tts_audio_sync]:
             os.makedirs(dir, exist_ok=True)

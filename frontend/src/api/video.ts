@@ -13,3 +13,4 @@ export const getVideo = async (id: string) => {
 export const getSubtitle = async (id: string) => {
     return await axiosVideoInstance.get(`/subtitle/${id}`);
 };
+

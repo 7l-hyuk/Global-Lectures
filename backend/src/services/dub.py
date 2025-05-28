@@ -25,6 +25,7 @@ def make_subtitle_json(segments: dict, path: Path) -> None:
         json.dump(subtitle, f, ensure_ascii=False, indent=2)
 
 
+
 def dub(
     userpath: UserPath,
     src_lang: str,
@@ -44,7 +45,6 @@ def dub(
     )
     segments = stt.run()
     make_subtitle_json(segments=segments, path=userpath.src_subtitle)
-
 
     translator = create_service(
         name="translator",
