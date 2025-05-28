@@ -1,21 +1,23 @@
 import uuid
 import shutil
-from fastapi import APIRouter, UploadFile, Form
+from fastapi import APIRouter, UploadFile, Form, Depends
 from fastapi.responses import FileResponse
 
 
 from src.utils.path import UserPath
 import src.services.dub as service
 from src.models.language import SupportedLanguages
+from src.auth.authenticate import authenticate
 
-dubbing_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
+dub_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
 
 
-@dubbing_router.post("/")
+@dub_router.post("/")
 async def get_dub_video(
     video: UploadFile,
     source_lang: str = Form(..., alias="sourceLang"),
-    target_lang: str = Form(..., alias="targetLang")
+    target_lang: str = Form(..., alias="targetLang"),
+    user: dict = Depends(authenticate)
 ):
     source_lang = SupportedLanguages.CODE[source_lang]
     target_lang = SupportedLanguages.CODE[target_lang]

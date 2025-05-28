@@ -1,21 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { fetchMe, logout as logoutAPI } from "../api/auth";
+import { AuthContextType, User } from "./types";
 
-interface User {
-  username: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  setUser: (user: User | null) => void;
-  fetchCurrentUser: () => Promise<void>;
-  logout: () => Promise<void>;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCurrentUser = async () => {
     try {
@@ -23,6 +15,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser({ username: res.data.username });
     } catch {
       setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, fetchCurrentUser, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, setUser, fetchCurrentUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
