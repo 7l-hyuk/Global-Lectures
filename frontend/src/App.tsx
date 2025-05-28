@@ -23,7 +23,7 @@ function App() {
               path="/mypage"
               element={
                 <PrivateRoute>
-                <Userpage />
+                  <Userpage />
                 </PrivateRoute>
               } 
             />

@@ -15,6 +15,7 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
     hashed_pw = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
     db_user = User(username=user.username, password=hashed_pw.decode(), email=user.email)
     db.add(db_user)
+
     try:
         db.commit()
         db.refresh(db_user)
@@ -38,7 +39,7 @@ async def user_login(user: UserLogin, response: Response, db: Session = Depends(
     ):
         raise HTTPException(status_code=401, detail="잘못된 로그인 정보입니다.")
 
-    access_token = create_access_token(data={"sub": user.username})
+    access_token = create_access_token(data={"user": db_user.username, "id": db_user.id})
     response.set_cookie(
         key="access_token",
         value=access_token,
@@ -47,7 +48,6 @@ async def user_login(user: UserLogin, response: Response, db: Session = Depends(
         samesite="lax",        # CSRF 방어용
         path="/"
     )
-
     return {"msg": "login success"}
 
 
@@ -57,7 +57,7 @@ async def read_users_me(request: Request):
 
     if not token:
         raise HTTPException(status_code=401, detail="토큰이 없습니다.")
-    
+
     current_user = get_current_user(token)
     return {"username": current_user}
 

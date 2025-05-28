@@ -11,7 +11,8 @@ def get_current_user(token):
             key=jwt_settings.SECRET_KEY,
             algorithms=jwt_settings.ALGORITHM
         )
-        username: str = payload.get("sub")
+        username: str = payload.get("user")
+
         if username is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -19,6 +20,7 @@ def get_current_user(token):
                 headers={"WWW-Authenticate": "Bearer"},
             )
         return username
+
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.responses import FileResponse
 from src.db.aws_handler import s3
+from src.auth.authenticate import authenticate
 
 video_router = APIRouter(prefix="/api/videos", tags=["Videos"])
 videos = [
@@ -17,7 +18,6 @@ videos = [
         "url": "data/ssss.mp4"
     }
 ]
-
 subtitles = [
     {
         "video_id": 1,
@@ -29,20 +29,22 @@ subtitles = [
     {
         "video_id": 2,
         "subtitle": [
-            [0, "Thdhiwquhdqwd"],
-            [15, "Tdhqwiudhwq"]
+            [0, "Thdhiwquddddddddddhdqwd"],
+            [15, "Tdhqwiudhwwwwwwwwwwwwwq"]
         ]
     },
 ]
 
 
 @video_router.get("/")
-async def get_videos():
+async def get_videos(user: dict = Depends(authenticate)):
+    print(user["user"], user["id"])
     return videos
 
 
 @video_router.get("/{id}")
-async def get_video(id: int):
+async def get_video(id: int, user: dict = Depends(authenticate)):
+    print(user["user"], user["id"])
     for video in videos:
         if video["id"] == id:
             return FileResponse(
@@ -58,7 +60,8 @@ async def get_video(id: int):
 
 
 @video_router.get("/subtitle/{id}")
-async def get_subtitle(id: int):
+async def get_subtitle(id: int, user: dict = Depends(authenticate)):
+    print(user["user"], user["id"])
     for subtitle in subtitles:
         if subtitle["video_id"] == id:
             return subtitle["subtitle"]
@@ -70,5 +73,6 @@ async def get_subtitle(id: int):
 
 @video_router.get("/test/test")
 async def test():
-    s3.upload_file("data/But what is a neural network_ _ Deep learning chapter 1_Full-HD_1.mp4", "test.mp4")
-    return {"msg", "ddddddd"}
+    # s3.upload_file("data/But what is a neural network_ _ Deep learning chapter 1_Full-HD_1.mp4", "test.mp4")
+    res = s3.create_presigned_url("test.mp4")
+    return res
