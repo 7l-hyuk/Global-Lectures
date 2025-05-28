@@ -9,7 +9,6 @@ import src.services.dub as service
 from src.models.language import SupportedLanguages
 from src.auth.authenticate import authenticate
 
-
 dub_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
 
 
