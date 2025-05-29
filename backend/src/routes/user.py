@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from sqlalchemy.orm import Session
 import bcrypt
 
-from src.db.database import get_db
-from src.schema.user import User, UserCreate, UserLogin
+from src.db.postgres import get_db
+from src.db.user import User
+from src.schema.user import UserCreate, UserLogin
 from src.auth.jwt_handler import create_access_token
 from src.services.user import get_current_user
 

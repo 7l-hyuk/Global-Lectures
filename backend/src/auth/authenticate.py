@@ -1,7 +1,7 @@
 from fastapi import Request, HTTPException, status, Depends
 from sqlalchemy.orm import Session
 
-from src.db.database import get_db
+from src.db.postgres import get_db
 from src.auth.jwt_handler import verify_access_token
 
 

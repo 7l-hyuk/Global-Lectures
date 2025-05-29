@@ -14,6 +14,17 @@ def extract_audio(mp4_path: Path, wav_path: Path):
     ]
 
 
+def remove_audio_from_video(mp4_path: Path):
+    return [
+        "ffmpeg",
+        "-i", mp4_path,
+        "-c:v", "copy",
+        "-an",
+        "-y",
+        mp4_path
+    ]
+
+
 def make_dub(userpath: UserPath) -> list[str]:
     return [
         "ffmpeg",

@@ -1,10 +1,12 @@
 from pathlib import Path
+
 import subprocess
+from sqlalchemy.orm import Session
 
 import src.utils.audio.cmd.ffmpeg as ffmpeg
 from src.utils.logger import logger
 from src.utils.path import UserPath
-from src.utils.audio.audio import extract_audio, merge_audio
+from src.utils.audio.audio import seperate_audio, merge_audio
 from src.models.language import SupportedLanguages
 from src.models.registry import create_service
 
@@ -12,10 +14,13 @@ from src.models.registry import create_service
 def dub(
     userpath: UserPath,
     src_lang: str,
-    tar_lang: str
+    tar_lang: str,
+    db: Session
 ) -> Path:
     user = userpath.user
-    extract_audio(userpath)
+    seperate_audio(userpath)
+    # TODO: 추출된 원본 audio, video -> s3
+
 
     logger.info(f"STT: {user}")
     stt = create_service(
@@ -25,6 +30,8 @@ def dub(
     )
     segments = stt.run()
 
+    # TODO: 원본 언어 대본 -> csv -> s3 upload (make_csv)
+
     translator = create_service(
         name="translator",
         userpath=None,
@@ -33,6 +40,8 @@ def dub(
     
     logger.info(f"TRANSLATION: {user}")
     translator.run(segments)
+
+    # TODO: 번역 대본 -> csv -> s3 upload (make_csv)
 
     tts = create_service(
         name="tts",
@@ -44,6 +53,10 @@ def dub(
 
     merge_audio(segments, userpath.dub_audio)
 
+    # TODO: 번역된 audio -> s3 upload
+
     logger.info(f"MAKE DUB: {user}")
+
+    # TODO: 합치는 과정 필요 없음.
     command = ffmpeg.make_dub(userpath)
     subprocess.run(command, check=True)

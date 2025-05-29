@@ -8,28 +8,38 @@ import src.utils.audio.cmd.sox as sox
 from src.utils.logger import logger
 
 
-def extract_audio(userpath: UserPath):
+# TODO: 오디오와 비디오를 분리하는 로직 -> seperate_audio
+def seperate_audio(userpath: UserPath):
     original_video = userpath.original_video
     reference_speaker = userpath.reference_speaker
 
     if not os.path.exists(original_video):
         raise FileNotFoundError(f"File not found: {original_video}")
 
-    command = ffmpeg.extract_audio(
+    extract_audio_command = ffmpeg.extract_audio(
         mp4_path=original_video,
         wav_path=reference_speaker
     )
 
+    remove_audio_command = ffmpeg.remove_audio_from_video(original_video)
+
     try:
         subprocess.run(
-            command,
+            extract_audio_command,
             check=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
+        
         logger.info(f"Audio extracted successfully: {reference_speaker}")
+
+        subprocess.run(
+            remove_audio_command,
+            check=True,
+        )
+        logger.info(f"Audio removed successfully: {original_video}")
     except subprocess.CalledProcessError as e:
-        logger.error("AUDIO EXTRACTED FAILED!!!", e)
+        logger.error("AUDIO processing FAILED!!!", e)
 
 
 def audio_sync(

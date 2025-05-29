@@ -2,12 +2,13 @@ import uuid
 import shutil
 from fastapi import APIRouter, UploadFile, Form, Depends
 from fastapi.responses import FileResponse
-
+from sqlalchemy.orm import Session
 
 from src.utils.path import UserPath
 import src.services.dub as service
 from src.models.language import SupportedLanguages
 from src.auth.authenticate import authenticate
+from src.db.postgres import get_db
 
 dub_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
 
@@ -17,6 +18,7 @@ async def get_dub_video(
     video: UploadFile,
     source_lang: str = Form(..., alias="sourceLang"),
     target_lang: str = Form(..., alias="targetLang"),
+    db: Session = Depends(get_db),
     user: dict = Depends(authenticate)
 ):
     source_lang = SupportedLanguages.CODE[source_lang]
@@ -26,10 +28,11 @@ async def get_dub_video(
     with open(userpath.original_video, "wb") as f:
         shutil.copyfileobj(video.file, f)
 
-    service.dub(
+    service.dub( 
         userpath=userpath,
         src_lang=source_lang,
-        tar_lang=target_lang
+        tar_lang=target_lang,
+        db=db
     )
 
     output = userpath.dub_video
