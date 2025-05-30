@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import { getSubtitle } from '../api/video';
+import styles from "../css/Video.module.css"
+
 
 interface VideoPlayerProps {
   src: string;
@@ -20,13 +22,13 @@ const formatTime = (seconds: number): string => {
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [subtitles, setSubtitles] = useState<SubtitleEntry[]>([]);
-  const [currentSubtitle, setCurrentSubtitle] = useState<string>("");
+  const [currentTimeIndex, setCurrentTimeIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    axios.get<[number, string][]>(`http://localhost:8000/api/videos/subtitle/${videoId}`)
+    getSubtitle(videoId)
       .then(res => {
-        const parsed = res.data.map(([time, text]) => ({ time, text }));
-        setSubtitles(parsed);
+        setSubtitles(res.data);
+
       })
       .catch(console.error);
   }, [videoId]);
@@ -35,10 +37,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
     const interval = setInterval(() => {
       if (videoRef.current) {
         const currentTime = videoRef.current.currentTime;
-        const current = subtitles.reduce((acc, sub) => {
-          return currentTime >= sub.time ? sub.text : acc;
-        }, "");
-        setCurrentSubtitle(current);
+        let latestIndex: number | null = null;
+
+        for (let i = 0; i < subtitles.length; i++) {
+          if (currentTime >= subtitles[i].time) {
+            latestIndex = i;
+          } else {
+            break;
+          }
+        }
+
+        setCurrentTimeIndex(latestIndex);
       }
     }, 500);
     return () => clearInterval(interval);
@@ -54,22 +63,39 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
   return (
     <div style={{ display: 'flex', gap: '20px', marginTop: '20px', alignItems: 'flex-start' }}>
       <video ref={videoRef} src={src} controls style={{ width: '50%' }} />
-      <div style={{ width: '50%', height: '100%', maxHeight: videoRef.current?.clientHeight ?? 'auto', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', background: '#f9f9f9', display: 'flex', flexDirection: 'column' }}>
+      <div
+        style={{
+          width: '50%',
+          maxHeight: videoRef.current?.clientHeight ?? 'auto',
+          border: '1px solid #ccc',
+          padding: '10px',
+          borderRadius: '5px',
+          background: '#f9f9f9',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <strong>자막</strong>
         <div style={{ marginTop: '10px', overflowY: 'auto', flexGrow: 1 }}>
           {subtitles.map((sub, index) => (
             <div
               key={index}
+              className={styles.subtitle}
               onClick={() => handleSubtitleClick(sub.time)}
               style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                cursor: 'pointer',
-                padding: '5px 10px',
-                backgroundColor: currentSubtitle === sub.text ? '#f2f2fa' : 'transparent'
+                backgroundColor: currentTimeIndex === index ? '#e2e2e2' : 'transparent'
               }}
             >
-              <span style={{ fontSize: '12px', color: '#888', marginRight: '8px', minWidth: '40px' }}>{formatTime(sub.time)}</span>
+              <span
+                style={{
+                  fontSize: '12px',
+                  color: '#888',
+                  marginRight: '8px',
+                  minWidth: '40px'
+                }}
+              >
+                {formatTime(sub.time)}
+              </span>
               <span style={{ wordBreak: 'break-word' }}>{sub.text}</span>
             </div>
           ))}
