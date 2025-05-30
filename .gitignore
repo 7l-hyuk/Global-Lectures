@@ -38,6 +38,7 @@ wheels/
 *.egg-info
 *.wav
 *.mp4
+*.json
 
 # Virtual environments
 .venv

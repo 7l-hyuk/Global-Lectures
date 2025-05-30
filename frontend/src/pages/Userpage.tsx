@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Navigate } from "react-router-dom";
 
-import { useAuth } from "../context/AuthContext";
 import IntroStyles from "../css/Intro.module.css";
 import VideoStack, {VideoItem} from "../components/VideoStack";
 import { getVideos } from "../api/video";

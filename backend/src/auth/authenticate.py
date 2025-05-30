@@ -5,7 +5,7 @@ from src.db.postgres import get_db
 from src.auth.jwt_handler import verify_access_token
 
 
-async def authenticate(request: Request, db: Session = Depends(get_db)) -> dict:
+async def authenticate(request: Request, db: Session = Depends(get_db)) -> dict[str, str | int]:
     token = request.cookies.get("access_token")
     if token is None:
         raise HTTPException(
