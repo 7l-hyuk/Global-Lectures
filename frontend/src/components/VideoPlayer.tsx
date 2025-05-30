@@ -4,7 +4,7 @@ import styles from "../css/Video.module.css"
 
 
 interface VideoPlayerProps {
-  src: string;
+  presignedUrl: string;
   videoId: string;
 }
 
@@ -19,11 +19,10 @@ const formatTime = (seconds: number): string => {
   return `${m}:${s.toString().padStart(2, '0')}`;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [subtitles, setSubtitles] = useState<SubtitleEntry[]>([]);
   const [currentTimeIndex, setCurrentTimeIndex] = useState<number | null>(null);
-
   useEffect(() => {
     getSubtitle(videoId)
       .then(res => {
@@ -62,7 +61,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, videoId }) => {
 
   return (
     <div style={{ display: 'flex', gap: '20px', marginTop: '20px', alignItems: 'flex-start' }}>
-      <video ref={videoRef} src={src} controls style={{ width: '50%' }} />
+      <video ref={videoRef} src={presignedUrl} controls style={{ width: '50%' }} />
       <div
         style={{
           width: '50%',

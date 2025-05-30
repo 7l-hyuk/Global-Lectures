@@ -46,7 +46,6 @@ class S3ObjectKey:
             self.s3_client.upload_file(**key)
 
 
-
 def add_video_to_postgres(
     db: Session,
     user_id: int,
@@ -59,7 +58,7 @@ def add_video_to_postgres(
         video_length = length(userpath.video)
         video = Video(
             title=title,
-            length=timedelta(seconds=video_length),
+            length=(lambda s: f"{s // 3600:02}:{(s % 3600) // 60:02}:{s % 60:02}")(video_length),
             key=None,
             creator_id=user_id
         )

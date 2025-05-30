@@ -6,7 +6,7 @@ export const getVideos = async () => {
 };
 
 
-export const getVideo = async (id: string) => {
+export const getVideoPresignedUrl = async (id: string) => {
     return await axiosVideoInstance.get(`/${id}`);
 };
 

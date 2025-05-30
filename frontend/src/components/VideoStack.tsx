@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from '../css/VideoStack.module.css';
 
 export interface VideoItem {
-  id: string;
+  id: number;
   title: string;
   length: string;
-  path: string;
 }
 
 interface VideoStackProps {
