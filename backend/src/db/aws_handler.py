@@ -46,6 +46,14 @@ class S3:
             logger.error(e)
             return None
         return response
+    
+    def get_object(self, object_name: str):
+        try:
+            s3_object = self.client.get_object(Bucket=self.BUCKET_NAME, Key=object_name)
+        except ClientError as e:
+            logger.error(e)
+            return None
+        return s3_object["Body"].read()
 
 
 s3 = S3(aws_settings)
