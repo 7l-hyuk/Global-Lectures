@@ -1,0 +1,10 @@
+.subtitle {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.subtitle:hover {
+    color: #9a9a9a;
+}

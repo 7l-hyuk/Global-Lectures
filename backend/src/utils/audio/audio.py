@@ -21,7 +21,7 @@ def seperate_audio(userpath: UserPath):
         wav_path=reference_speaker
     )
 
-    remove_audio_command = ffmpeg.remove_audio_from_video(original_video)
+    remove_audio_command = ffmpeg.remove_audio_from_video(original_video, userpath.video)
 
     try:
         subprocess.run(
@@ -58,3 +58,14 @@ def merge_audio(segments: list[dict], output_path: Path):
     command = sox.merge_audio(segments, output_path)
     subprocess.run(command, shell=True)
     logger.info("Merge audio")
+
+
+def length(mp4_path: Path) -> int:
+    command = ffmpeg.extract_video_length(mp4_path)
+    length = subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+    return int(float(length.stdout.strip()))

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import uuid
 import shutil
 from fastapi import APIRouter, UploadFile, Form, Depends
@@ -32,6 +34,8 @@ async def get_dub_video(
         userpath=userpath,
         src_lang=source_lang,
         tar_lang=target_lang,
+        user_id=user["id"],
+        video_title=Path(video.filename).stem,
         db=db
     )
 
