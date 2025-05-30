@@ -7,6 +7,7 @@ from src.db.postgres import get_db
 from src.db.user import User
 from src.db.video import Video
 from src.auth.authenticate import authenticate
+from src.schema.video import VideoResponse
 
 video_router = APIRouter(prefix="/api/videos", tags=["Videos"])
 videos = [
