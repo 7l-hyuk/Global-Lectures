@@ -49,6 +49,7 @@ async def get_video(
         )
 
 
+# TODO: service layer 분리
 @video_router.get("/bundle/{video_id}/{lang_code}")
 async def get_subtitle(
     video_id: int,

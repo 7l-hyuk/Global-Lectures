@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import timedelta
 
 
 class VideoResponse(BaseModel):

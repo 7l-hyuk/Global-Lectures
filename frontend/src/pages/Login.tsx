@@ -25,26 +25,28 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={styles.LoginFormContainer}>
-      <h1>LOGIN</h1>
-      <LoginInput
-        label="E-Mail Address or Username"
-        value={username}
-        type="text"
-        onChange={setUsername}
-        styles={styles}
-        icon={faUser}
-      />
-      <LoginInput
-        label="Password"
-        value={password}
-        type="password"
-        onChange={setPassword}
-        styles={styles}
-        icon={faLock}
-      />
-      <div className={styles.LoginButtonContainer}>
-          <BaseButton label="Login" icon={faSignIn} buttonStyle={styles.LoginButton} onClick={handleLogin} disabled={false} />
+    <div style={{display: "flex", justifyContent: "center"}}>
+      <div className={styles.LoginFormContainer}>
+          <h1>LOGIN</h1>
+          <LoginInput
+            label="E-Mail Address or Username"
+            value={username}
+            type="text"
+            onChange={setUsername}
+            styles={styles}
+            icon={faUser}
+          />
+          <LoginInput
+            label="Password"
+            value={password}
+            type="password"
+            onChange={setPassword}
+            styles={styles}
+            icon={faLock}
+          />
+          <div className={styles.LoginButtonContainer}>
+              <BaseButton label="Login" icon={faSignIn} buttonStyle={styles.LoginButton} onClick={handleLogin} disabled={false} />
+          </div>
       </div>
     </div>
   );

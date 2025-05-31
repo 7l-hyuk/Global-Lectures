@@ -1,10 +1,8 @@
 from pathlib import Path
 import json
 
-import subprocess
 from sqlalchemy.orm import Session
 
-import src.utils.audio.cmd.ffmpeg as ffmpeg
 from src.utils.logger import logger
 from src.utils.path import UserPath
 from src.utils.audio.audio import seperate_audio, merge_audio
@@ -76,7 +74,3 @@ def dub(
         src_lang=src_lang,
         tar_lang=tar_lang
     )
-
-    # TODO: 합치는 과정 필요 없나?
-    command = ffmpeg.make_dub(userpath)
-    subprocess.run(command, check=True)

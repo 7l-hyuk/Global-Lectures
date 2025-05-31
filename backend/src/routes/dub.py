@@ -45,3 +45,16 @@ async def get_dub_video(
         media_type="video/mp4",
         filename=output.name
     )
+
+
+@dub_router.post("/audio")
+async def get_dub_video(
+    presigned_url: str,
+    source_lang: str = Form(..., alias="sourceLang"),
+    target_lang: str = Form(..., alias="targetLang"),
+    db: Session = Depends(get_db),
+    user: dict = Depends(authenticate)
+):
+    # presigned_url로 audio 리소스 접근
+    # target_lang에 해당하는 언어로 더빙
+    return 

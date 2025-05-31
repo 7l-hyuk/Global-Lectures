@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div style={{ minWidth: '768px', maxWidth: '1280px', margin: '0 auto' }}>
+    <div style={{ minWidth: '768px', margin: '0 auto' }}>
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} user={{username: "7lhyuk"}} toggleSidebar={toggleSidebar} />
       <main>

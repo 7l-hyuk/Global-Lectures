@@ -5,6 +5,10 @@
     width: 100%;
     height: 400px; 
     color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .introContent {
@@ -16,6 +20,7 @@
     flex-wrap: wrap;
     box-sizing: border-box;
     padding: 4rem 1.8rem;
+    min-width: 800px;
     max-width: 1140px;
 }
 

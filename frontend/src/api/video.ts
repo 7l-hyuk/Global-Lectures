@@ -1,4 +1,17 @@
 import {axiosVideoInstance} from "./axiosInstance";
+import { AxiosResponse } from "axios";
+
+
+interface SubtitleEntry {
+  time: number;
+  text: string;
+}
+
+
+interface MediaBundle {
+  audio: string;
+  subtitle: SubtitleEntry[];
+}
 
 
 export const getVideos = async () => {
@@ -10,7 +23,10 @@ export const getVideoPresignedUrl = async (id: string) => {
     return await axiosVideoInstance.get(`/${id}`);
 };
 
-export const getSubtitle = async (id: string) => {
-    return await axiosVideoInstance.get(`/subtitle/${id}`);
+export const getMediaBundle = async (
+  id: string,
+  lang_code: string
+): Promise<AxiosResponse<MediaBundle>> => {
+  return await axiosVideoInstance.get<MediaBundle>(`/bundle/${id}/${lang_code}`);
 };
 
