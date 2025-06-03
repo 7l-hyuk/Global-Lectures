@@ -29,6 +29,12 @@ class AwsSettings(BaseSettings, BaseModelConfig):
     REGION: str | None = None
 
 
+class ServiceSettings(BaseSettings, BaseModelConfig):
+    GPT_API_KEY: str | None = None
+    XI_API_KEY: str | None = None
+
+
 database_settings = DatabaseSettings()
 jwt_settings = JwtSettings()
 aws_settings = AwsSettings()
+service_settings = ServiceSettings()

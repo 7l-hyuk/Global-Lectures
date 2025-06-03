@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getMediaBundle } from '../api/video';
 import styles from "../css/Video.module.css";
+import { BaseButton } from './Form';
+import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { dubByAudio } from '../api/service';
+import { SubtitleEntry } from '../api/video';
 
-interface SubtitleEntry {
-  time: number;
-  text: string;
-}
 
 interface VideoPlayerProps {
   presignedUrl: string;
@@ -16,6 +16,8 @@ interface VideoPlayerProps {
 const langLabels: Record<string, string> = {
   ko: "Korean",
   en: "English",
+  ja: "Japanese",
+  zh: "Chinese"
 };
 
 const formatTime = (seconds: number): string => {
@@ -32,6 +34,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
   const [currentTimeIndex, setCurrentTimeIndex] = useState<number | null>(null);
   const [selectedLang, setSelectedLang] = useState<string>(supportedLang[0]);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [showConvertForm, setShowConvertForm] = useState(false);
+  const [targetLang, setTargetLang] = useState('');
 
   useEffect(() => {
     const loadMedia = async () => {
@@ -188,8 +192,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
           </div>
         </div>
       </div>
+
       <div className={styles.ButtonContainer} style={{flexDirection: "row", justifyContent: "space-between"}}>
-        <div  style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
           {supportedLang.map((lang) => (
             <button
               className={styles.Button}
@@ -204,16 +209,61 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
             </button>
           ))}
         </div>
+
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            className={styles.Button}
-            style={{backgroundColor: "#28a745", borderColor: "#28a745"}}
-            onClick={() => {}}
-          >
-            Convert
-          </button>
+          <BaseButton label="Convert" icon={faSyncAlt} buttonStyle={styles.ConvertButton} onClick={() => setShowConvertForm(true)} disabled={false}/>
         </div>
       </div>
+
+      {showConvertForm && (
+        <div style={{ marginTop: '16px', padding: '16px', border: '1px solid #ccc', borderRadius: '8px' }}>
+          <h4>Convert Audio</h4>
+          <div style={{ marginBottom: '8px' }}>
+            <strong>Source:</strong> {langLabels[selectedLang]}
+          </div>
+          <div style={{ marginBottom: '8px' }}>
+            <strong>Target:</strong>
+            <select
+              value={targetLang}
+              onChange={(e) => setTargetLang(e.target.value)}
+              style={{ marginLeft: '8px' }}
+            >
+              <option value="">Select language</option>
+              {Object.entries(langLabels)
+                .filter(([code]) => !supportedLang.includes(code))
+                .map(([code, label]) => (
+                  <option key={code} value={code}>
+                    {label}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <BaseButton
+            label="Submit"
+            icon={faSyncAlt}
+            buttonStyle={styles.ConvertButton}
+            onClick={async () => {
+              if (!targetLang || !audioUrl) return;
+              const payload = {
+                videoId: Number(videoId),
+                subtitle: subtitles,
+                audioPresignedUrl: audioUrl,
+                sourceLang: langLabels[selectedLang],
+                targetLang: langLabels[targetLang]
+              };
+              try {
+                await dubByAudio(payload);
+                alert("Dubbing request sent!");
+                setShowConvertForm(false);
+              } catch (error) {
+                console.error("Dub request failed:", error);
+                alert("Failed to request dubbing.");
+              }
+            }}
+            disabled={!targetLang}
+          />
+        </div>
+      )}
     </div>
   );
 };

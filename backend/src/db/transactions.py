@@ -8,15 +8,33 @@ from src.utils.audio.audio import length
 from src.db.aws_handler import s3, S3
 
 
-
-class S3ObjectKey:
-    def __init__(self, s3_client: S3, video_id: int, src_lang: str, tar_lang: str):
+class BaseS3Key:
+    def __init__(self, s3_client: S3, video_id: int, tar_lang: str):
         self.s3_client = s3_client
+        self.tar_audio_key = f"audios/{video_id}/{tar_lang}.wav"
+        self.tar_subtitle_key = f"subtitles/{video_id}/{tar_lang}.json"
+
+    def add_objects_to_s3(self, userpath: UserPath):
+        keys = [
+            {
+                "file_name": userpath.dub_audio,
+                "object_name": self.tar_audio_key
+            },
+            {
+                "file_name": userpath.tar_subtitle,
+                "object_name": self.tar_subtitle_key
+            }
+        ]
+
+        for key in keys:
+            self.s3_client.upload_file(**key)
+
+class S3ObjectKey(BaseS3Key):
+    def __init__(self, s3_client: S3, video_id: int, src_lang: str, tar_lang: str):
+        super().__init__(s3_client, video_id, tar_lang)
         self.video_key = f"videos/{video_id}.mp4"
         self.src_audio_key = f"audios/{video_id}/{src_lang}.wav"
-        self.tar_audio_key = f"audios/{video_id}/{tar_lang}.wav"
         self.src_subtitle_key = f"subtitles/{video_id}/{src_lang}.json"
-        self.tar_subtitle_key = f"subtitles/{video_id}/{tar_lang}.json"
     
     def add_objects_to_s3(self, userpath: UserPath):
         keys = [
@@ -52,7 +70,8 @@ def add_video_to_postgres(
     userpath: UserPath,
     title: str,
     src_lang: str,
-    tar_lang: str
+    tar_lang: str,
+    voice_id: str
 ):
     try:
         video_length = length(userpath.video)
@@ -60,7 +79,8 @@ def add_video_to_postgres(
             title=title,
             length=(lambda s: f"{s // 3600:02}:{(s % 3600) // 60:02}:{s % 60:02}")(video_length),
             key=None,
-            creator_id=user_id
+            creator_id=user_id,
+            voice_id=voice_id
         )
 
         db.add(video)
@@ -102,3 +122,41 @@ def add_video_to_postgres(
         db.rollback()
         print(e)
 
+
+def add_audio_to_postgres(
+    db: Session,
+    video_id: int,
+    userpath: UserPath,
+    tar_lang: str,
+    voice_id: str
+):
+    try:
+        s3_keys = BaseS3Key(
+            s3_client=s3,
+            video_id=video_id,
+            tar_lang=tar_lang
+        )
+        video = db.query(Video).filter(Video.id == video_id).first()
+        if not video.voice_id:
+            video.voice_id = voice_id
+
+        language = VideoLanguage(
+            lang_code=tar_lang,
+            video_id=video_id,
+            audio_key=s3_keys.tar_audio_key,
+            subtitle_key=s3_keys.tar_subtitle_key
+        )
+
+        db.add(language)
+
+        try:
+            s3_keys.add_objects_to_s3(userpath=userpath)
+            db.commit()
+            db.refresh(language)
+            return language
+        except Exception as e:
+            db.rollback()
+            print(e)
+    except Exception as e:
+        db.rollback()
+        print(e)

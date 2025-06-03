@@ -4,7 +4,6 @@ import styles from "../css/VideoStack.module.css";
 import VideoStack, {VideoItem} from "../components/VideoStack";
 import { getVideos } from "../api/video";
 
-// TODO: 꾸미기
 const Userpage: React.FC = () => {
   const [videos, setVideos] = useState<VideoItem[]>([]);;
 

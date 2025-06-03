@@ -14,6 +14,7 @@ class Video(Base):
     creator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    voice_id = Column(String(32), nullable=True)
 
     user = relationship("User", back_populates="videos")
     languages = relationship("VideoLanguage", back_populates="video", cascade="all, delete-orphan")

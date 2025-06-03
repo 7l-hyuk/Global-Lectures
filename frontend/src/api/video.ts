@@ -2,8 +2,9 @@ import {axiosVideoInstance} from "./axiosInstance";
 import { AxiosResponse } from "axios";
 
 
-interface SubtitleEntry {
+export interface SubtitleEntry {
   time: number;
+  end: number;
   text: string;
 }
 

@@ -29,3 +29,15 @@
     border-color: #b53836;
     color: white;
 }
+
+.ConvertButton {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
