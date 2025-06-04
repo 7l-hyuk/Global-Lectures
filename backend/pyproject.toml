@@ -8,7 +8,9 @@ dependencies = [
     "bcrypt>=4.3.0",
     "boto3>=1.38.23",
     "cutlet>=0.5.0",
+    "elevenlabs>=2.1.0",
     "fastapi>=0.115.12",
+    "openai>=1.82.1",
     "psycopg2-binary>=2.9.10",
     "pydantic-settings>=2.9.1",
     "pydantic[email]>=2.11.4",
@@ -18,6 +20,7 @@ dependencies = [
     "soundfile>=0.13.1",
     "sqlalchemy>=2.0.40",
     "transformers>=4.51.3",
+    "unidic-lite>=1.0.8",
     "uvicorn>=0.34.2",
     "whisperx",
 ]
