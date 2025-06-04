@@ -11,6 +11,7 @@ from src.db.video_language import VideoLanguage
 from src.auth.authenticate import authenticate
 from src.schema.video import VideoResponse
 from src.utils.logger import logger
+from src.schema.video import VideoUpdate
 
 video_router = APIRouter(prefix="/api/videos", tags=["Videos"])
 
@@ -47,6 +48,27 @@ async def get_video(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Video {id} not found."
         )
+
+
+@video_router.patch("/{id}")
+async def update_video(
+    id: int,
+    video_update: VideoUpdate,
+    db: Session=Depends(get_db)
+):
+    video = db.query(Video).filter(Video.id == id).first()
+
+    if not video:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="video dose not exist"
+        )
+
+    for field, value in video_update.model_dump(exclude_unset=True).items():
+        setattr(video, field, value)
+    
+    db.commit()
+    db.refresh(video)
 
 
 @video_router.get("/bundle/{video_id}/{lang_code}")

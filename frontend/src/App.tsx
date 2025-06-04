@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Userpage from "./pages/Userpage";
+import Videos from "./pages/Videos";
 import Layout from "./components/Layout";
 import VideoDetailPage from "./pages/VideoDetailPage";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import UserPageLayout from "./components/UserPageLayout";
 
 
 function App() {
@@ -19,14 +20,16 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/videos/:id" element={<VideoDetailPage />} />
-            <Route 
-              path="/mypage"
-              element={
-                <PrivateRoute>
-                  <Userpage />
-                </PrivateRoute>
-              } 
-            />
+            <Route element={<UserPageLayout />}>
+              <Route 
+                path="/videos"
+                element={
+                  <PrivateRoute>
+                    <Videos />
+                  </PrivateRoute>
+                } 
+              />
+            </Route>
           </Route>
         </Routes>
       </Router>

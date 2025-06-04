@@ -9,11 +9,13 @@ class Video(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
     length = Column(String(16), nullable=False)
     key = Column(Text)
     creator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    voice_id = Column(String(32), nullable=True)
 
     user = relationship("User", back_populates="videos")
     languages = relationship("VideoLanguage", back_populates="video", cascade="all, delete-orphan")

@@ -8,3 +8,36 @@
 .subtitle:hover {
     color: #9a9a9a;
 }
+
+.ButtonContainer {
+    display: flex;
+    text-align: left;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 20px;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.Button {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    background-color: #b53836;
+    border-color: #b53836;
+    color: white;
+}
+
+.ConvertButton {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}

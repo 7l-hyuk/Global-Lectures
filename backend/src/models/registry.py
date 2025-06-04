@@ -5,11 +5,14 @@ from src.models.language import SupportedLanguages
 
 
 SERVICE_MODEL_REGISTRY: dict[str, Type[BaseServiceModel]] = {}
-Services = Literal["stt", "tts", "translator"]
+Services = Literal["stt", "tts", "translator", "stt-elevenlabs", "translator-gpt", "tts-elevenlabs"]
 support_language_codes = {
     "stt": SupportedLanguages.WHISPERX,
     "tts": SupportedLanguages.XTTS_V2,
-    "translator": SupportedLanguages.NLLB
+    "translator": SupportedLanguages.NLLB,
+    "stt-elevenlabs": SupportedLanguages.WHISPERX,
+    "translator-gpt": SupportedLanguages.WHISPERX,
+    "tts-elevenlabs": SupportedLanguages.WHISPERX
 }
 
 
