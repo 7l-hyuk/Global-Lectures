@@ -4,7 +4,7 @@ import { faUser, faLock, faSignIn } from "@fortawesome/free-solid-svg-icons";
 
 import { login } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
-import styles from "../css/Login.module.css"
+import styles from "../css/Login.module.css";
 import { BaseButton, LoginInput } from "../components/Form";
 
 
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{display: "flex", justifyContent: "center"}}>
+    <div style={{display: "flex", justifyContent: "center", maxWidth: "1280px", minWidth: "800px", justifySelf: "center"}}>
       <div className={styles.LoginFormContainer}>
           <h1>LOGIN</h1>
           <LoginInput

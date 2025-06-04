@@ -1,0 +1,108 @@
+.LoginFormContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    color: #5a5a5a;
+    line-height: 1.45;
+    background-color: #fff;
+}
+
+.row {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.Label {
+    margin-bottom: 10px;
+    padding-bottom: calc(.55rem + 1px);
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    font-size: 17px;
+    width: 100%;
+    color: #474747;
+
+}
+
+.InputContainer {
+    display: block;
+    flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    width: 100%;
+}
+
+
+.Input {
+    border: 1px solid #dadada;
+    color: #606060;
+    transition: none;
+    height: calc(1.45em + 1.1rem + 2px);
+    line-height: 1.45;
+    padding: .55rem .9rem;
+    width: 400px;
+    border-radius: .25rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.LoginButtonContainer {
+    display: flex;
+    justify-content: flex-start;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 30px;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.UpdateButton {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    margin-right: 10px;
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.UpdateButton:hover {
+    background-color: #18662a;
+    border-color: #18662a;
+}
+
+.DeleteButton {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    padding: .55rem .9rem;
+    margin-right: 10px;
+    background-color: #b53836;
+    border-color: #b53836;
+    color: white;
+}
+
+.DeleteButton:hover {
+    background-color: #842928;
+    border-color: #842928;
+}
+
+.CloseButton {
+    border-color: transparent;
+    background-color: transparent;
+    font-size: 20px;            
+}
+
+.CloseButton:hover {
+    color: #7d7c7c;
+}

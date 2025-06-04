@@ -19,32 +19,6 @@ from src.config import service_settings
 dub_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
 
 
-client = OpenAI(
-    api_key=service_settings.GPT_API_KEY
-)
-
-def correct_and_translate(sentences: list[str], source_lang, target_lang) -> list[str]:
-    combined_text = '\n'.join(f"- {sentence}" for sentence in sentences)
-    
-    prompt = (
-        f"You are a professional translator. Consider the overall context of the following sentences, "
-        f"silently correct any awkward or unnatural expressions based on that context, "
-        f"then translate the corrected sentences directly from {source_lang} to {target_lang}. "
-        f"Respond only with the final translated sentences as a list, preserving the original order, and no additional explanation:\n\n"
-        f"{combined_text}\n\nTranslations:"
-    )
-    response = client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.2,
-    )
-    
-    translations = response.choices[0].message.content.strip().split('\n')
-    translations = [line.lstrip('- ').strip() for line in translations if line.startswith('-')]
-    
-    return translations
-
-
 @dub_router.post("/")
 async def get_dub_video(
     video: UploadFile,

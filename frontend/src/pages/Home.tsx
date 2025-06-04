@@ -171,6 +171,8 @@ const Home: React.FC = () => {
       </div>
       )}
       </div>
+      <div className={IntroStyles.contentWrapper} style={{border: "1px solid black", height: "400px"}}>
+      </div>
     </div>
   );
 };

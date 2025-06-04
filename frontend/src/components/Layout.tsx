@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 
 const Layout: React.FC = () => {

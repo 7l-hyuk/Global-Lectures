@@ -9,6 +9,7 @@ class Video(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
     length = Column(String(16), nullable=False)
     key = Column(Text)
     creator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)

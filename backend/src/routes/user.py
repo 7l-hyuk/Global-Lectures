@@ -4,9 +4,10 @@ import bcrypt
 
 from src.db.postgres import get_db
 from src.db.user import User
-from src.schema.user import UserCreate, UserLogin
+from src.schema.user import UserCreate, UserLogin, UserUpdate
 from src.auth.jwt_handler import create_access_token
 from src.services.user import get_current_user
+from src.auth.authenticate import authenticate
 
 user_router = APIRouter(prefix="/api/users", tags=["Users"])
 
@@ -64,6 +65,15 @@ async def read_users_me(request: Request):
 
 
 @user_router.post("/logout")
-def user_logout(response: Response):
+async def user_logout(response: Response):
     response.delete_cookie("access_token", path="/")
     return {"msg": "logout success"}
+
+
+@user_router.patch("/update")
+async def update_user(
+    user: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(authenticate)
+):
+    return ...

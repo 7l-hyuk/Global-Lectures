@@ -5,7 +5,13 @@ from pydantic.alias_generators import to_camel
 class VideoResponse(BaseModel):
     id: int
     title: str
+    description: str | None = None
     length: str
+
+
+class VideoUpdate(BaseModel):
+    title: str | None
+    description: str | None = None
 
 
 class SubtitleEntry(BaseModel):

@@ -50,6 +50,25 @@ const LoginInput: React.FC<LoginInputProps> = ({label, type, value, onChange, st
   );
 }
 
+const VideoUpdateInput: React.FC<LoginInputProps> = ({label, type, value, onChange, styles, icon}) => {
+  return (
+    <div className={styles.row}>
+    <div style={{padding: ".55rem .9rem"}}>
+        <FontAwesomeIcon icon={icon}/>
+        <label className={styles.Label}>{label}</label>
+    </div> 
+      <div className={styles.InputContainer}>
+        <input
+          className={styles.Input}
+          value={value}
+          type={type}
+          onChange={(e) => onChange(e.target.value)} 
+        />
+      </div>
+    </div>
+  );
+}
 
 
-export {BaseButton, SignupInput, LoginInput};
+
+export {BaseButton, SignupInput, LoginInput, VideoUpdateInput};

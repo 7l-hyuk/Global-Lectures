@@ -19,12 +19,12 @@
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
     color: black;
     z-index: 1;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .dropdownItem {
-    padding: 5px 15px;
-    color: gray; 
+    padding: 8px 25px;
+    color: black; 
     text-align: center; 
     border-block-end: 1px solid #ccc;
     opacity: 1;
@@ -55,7 +55,7 @@
 
 .scrLangDropdwonContainer {
     position: absolute;
-    margin-top: 4px;
+    margin-top: 30px;
     border: 1px solid #ccc;
     border-radius: 2px;
     background-color: white;
@@ -75,13 +75,13 @@
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
     color: black;
     z-index: 1;
-    font-size: 12px;
+    font-size: 14px;
     transform: translate3d(120px, 84px, 0px);
 }
 
 .langDropdownItem {
-    padding: 5px 15px;
-    color: gray; 
+    padding: 8px 25px;
+    color: black; 
     text-align: center; 
     border-block-end: 1px solid #ccc;
     opacity: 1;
