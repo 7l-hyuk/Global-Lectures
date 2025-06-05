@@ -72,16 +72,16 @@
 }
 
 .UserPageMenu {
-  position: absolute;
-  border: 1px solid black;
+  position: fixed;
   height: 100%;
-  width: 150px;
+  width: 200px;
   margin-right: 50px;
+  padding-left: 0;
   top: 40px;
   border: none;
   background-color: #fff;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding-top: 20px;
   list-style: none;
 }
 
@@ -95,15 +95,15 @@
 .MenuHeader {
   font-size: 14px; 
   color: #5a5a5a;
-  margin-bottom: 10px; 
-  margin-top: 10px;
-  font-weight: 600;
+  font-weight: 500;
+  padding: 24px 20px 8px;
+  text-transform: uppercase;
 }
 
 .MenuItem {
   color: #202020;
   font-size: 14px;
-  padding: 8px 0;
+  padding: 10px 30px 10px 14px;
 }
 
 .MenuItem:hover {

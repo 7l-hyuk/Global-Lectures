@@ -55,7 +55,7 @@
 
 .scrLangDropdwonContainer {
     position: absolute;
-    margin-top: 30px;
+    margin-top: 40px;
     border: 1px solid #ccc;
     border-radius: 2px;
     background-color: white;
@@ -83,6 +83,7 @@
     padding: 8px 25px;
     color: black; 
     text-align: center; 
+    font-size: 14px;
     border-block-end: 1px solid #ccc;
     opacity: 1;
 }
