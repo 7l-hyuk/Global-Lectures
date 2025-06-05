@@ -28,3 +28,11 @@ cd Global_Lectures/backend
 ```bash
 uv sync
 ```
+
+* 작업 디렉터리로 이동
+  
+```bsah
+cd src/routes
+```
+
+이제 해당 
