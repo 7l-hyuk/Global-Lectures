@@ -218,15 +218,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
       {showConvertForm && (
         <div style={{ marginTop: '16px', padding: '16px', border: '1px solid #ccc', borderRadius: '8px' }}>
           <h4>Convert Audio</h4>
-          <div style={{ marginBottom: '8px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <strong>Source:</strong> {langLabels[selectedLang]}
           </div>
-          <div style={{ marginBottom: '8px' }}>
+          <div style={{ marginBottom: '30px' }}>
             <strong>Target:</strong>
             <select
               value={targetLang}
               onChange={(e) => setTargetLang(e.target.value)}
-              style={{ marginLeft: '8px' }}
+              style={{ marginLeft: '8px', height: "30px", borderRadius: "0.3em" }}
             >
               <option value="">Select language</option>
               {Object.entries(langLabels)
