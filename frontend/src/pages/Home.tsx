@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus, faFile, faSyncAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, faFile, faSyncAlt, faTimes, faGlobe, faDatabase, faHeadphones, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 import IntroStyles from "../css/Intro.module.css";
 import DropdownStyles from "../css/Dropdown.module.css";
@@ -26,6 +27,13 @@ const Home: React.FC = () => {
     Japanese: ["Korean", "English", "Chinese"],
     Chinese: ["Korean", "English", "Japanese"],
   }
+
+
+  interface DescriptionProps {
+    icon: IconDefinition;
+    title: string;
+    description: string;
+  };
 
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +117,23 @@ const Home: React.FC = () => {
     );
   }
 
+  const Description: React.FC<DescriptionProps> = ({icon, title, description}) => {
+    return (
+      <div className={IntroStyles.DescriptionBody}>
+        <div style={{fontSize: "5rem", flex: "0 0 33.33%", maxWidth: "33.33%", textAlign: "center", alignContent: "center"}}>
+          <FontAwesomeIcon icon={icon} />
+        </div>
+        <div style={{flex: "0 0 66.66%", maxWidth: "66.66%"}}>
+          <h3 style={{margin: "0", fontSize: "1.51rem", marginBottom: ".5rem"}}>{title}</h3>
+          <p style={{marginTop: "0", marginBottom: "0", fontSize: "1rem", fontWeight: "400"}}>
+            {description}
+          </p>
+        </div>
+        
+      </div>
+    )
+  };
+
   return (
     <div>
       <Intro />
@@ -171,7 +196,45 @@ const Home: React.FC = () => {
       </div>
       )}
       </div>
-      <div className={IntroStyles.contentWrapper} style={{border: "1px solid black", height: "400px"}}>
+      <div className={IntroStyles.contentWrapper} style={{display: "flex"}}>
+        <div className={IntroStyles.DescriptionRow}>
+          <Description 
+            icon={faGlobe} 
+            title="Global Service" 
+            description="
+              Global Lectures supports multilingual lecture dubbing. Choose any language you prefer.
+              Now, you won't miss out on great lectures just because they're in a language you don't understand, 
+              and there's no need to record the same lecture multiple times to offer it in different languages.
+            " />
+          <Description 
+            icon={faHeadphones} 
+            title="Dubbing Lectures" 
+            description="
+              Dubbed lectures offer a more immersive experience compared to subtitles. 
+              Global Lectures also provides subtitles alongside dubbing to ensure even greater accuracy in lecture translation.
+            " 
+          />
+        </div>
+        <div className={IntroStyles.DescriptionRow}>
+          <Description 
+            icon={faRotate} 
+            title="Fast Conversion" 
+            description="
+              The Global Lectures paid plan delivers dubbed versions of one-hour videos in just 10 minutes. 
+              Quickly translate and watch the lectures you want.
+            " 
+          />
+          <Description 
+            icon={faDatabase} 
+            title="Lecture Database" 
+            description="
+              By signing up, you can store your converted videos and subtitles directly on our website—without taking up space on your local computer. 
+              You can also add translations into other languages anytime you want. 
+              All data is securely stored using Amazon S3.
+            " 
+          />
+          
+        </div>
       </div>
     </div>
   );

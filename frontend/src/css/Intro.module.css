@@ -83,3 +83,20 @@
     flex-direction: row;
     box-sizing: border-box;
 }
+
+.DescriptionRow {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.DescriptionBody {
+    display: flex;
+    flex: 1;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
