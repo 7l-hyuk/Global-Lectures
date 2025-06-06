@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getMediaBundle } from '../api/video';
 import styles from "../css/Video.module.css";
 import { BaseButton } from './Form';
-import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSyncAlt, faChevronDown, faGear } from '@fortawesome/free-solid-svg-icons';
 import { dubByAudio } from '../api/service';
 import { SubtitleEntry } from '../api/video';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 interface VideoPlayerProps {
@@ -35,7 +36,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
   const [selectedLang, setSelectedLang] = useState<string>(supportedLang[0]);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [showConvertForm, setShowConvertForm] = useState(false);
-  const [targetLang, setTargetLang] = useState('');
+  const [sourceLang, setSourceLang] = useState(supportedLang[0]);
+  const untranslatedLangs = Object.keys(langLabels).filter(
+    (code) => !supportedLang.includes(code)
+  );
+  const [targetLang, setTargetLang] = useState(untranslatedLangs[0] || "");
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [translationModel, setTranslationModel] = useState("basic model");
+  const [ttsModel, setTtsModel] = useState("basic model");
 
   useEffect(() => {
     const loadMedia = async () => {
@@ -149,6 +157,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'sans-serif' }}>
+      <div style={{flexDirection: "row", justifyContent: "space-between", marginBottom: "20px"}}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {supportedLang.map((lang) => (
+            <button
+              className={`${styles.Button} ${selectedLang === lang ? styles.Selected : styles.Unselected}`}
+              key={lang}
+              onClick={() => handleLanguageChange(lang)}
+            >
+              {langLabels[lang] ?? lang.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </div>
       <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', minHeight: '300px', maxHeight: '500px', height: '100%', width: '100%' }}>
         <video ref={videoRef} src={presignedUrl} muted controls style={{ width: '50%', height: '100%', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
         {audioUrl && (
@@ -194,41 +215,44 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
       </div>
 
       <div className={styles.ButtonContainer} style={{flexDirection: "row", justifyContent: "space-between"}}>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {supportedLang.map((lang) => (
-            <button
-              className={styles.Button}
-              key={lang}
-              onClick={() => handleLanguageChange(lang)}
-              style={{
-                backgroundColor: selectedLang === lang ? "#b53836" : '#ccc',
-                borderColor: selectedLang === lang ? "#b53836" : '#ccc'
-              }}
-            >
-              {langLabels[lang] ?? lang.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <BaseButton label="Convert" icon={faSyncAlt} buttonStyle={styles.ConvertButton} onClick={() => setShowConvertForm(true)} disabled={false}/>
+        <div style={{ paddingTop: "0.1rem", paddingBottom: "0.1rem" }}>
+          <div onClick={() => setShowConvertForm(!showConvertForm)} className={styles.advancedToggle}>
+            <FontAwesomeIcon icon={faSyncAlt} style={{ marginRight: "0.5rem" }} />
+            <span>Translate into Another Language</span>
+            <FontAwesomeIcon icon={faChevronDown} style={{ marginLeft: "0.5rem" }} />
+          </div>
         </div>
       </div>
 
       {showConvertForm && (
-        <div style={{ marginTop: '16px', padding: '16px', border: '1px solid #ccc', borderRadius: '8px' }}>
-          <h4>Convert Audio</h4>
-          <div style={{ marginBottom: '20px' }}>
-            <strong>Source:</strong> {langLabels[selectedLang]}
-          </div>
-          <div style={{ marginBottom: '30px' }}>
-            <strong>Target:</strong>
+        <div className={styles.advancedSettingsBox}>
+          <div className={styles.advancedSettingsRow}>
+            <label className={styles.advancedSettingsLabel}>Source Language</label>
             <select
-              value={targetLang}
-              onChange={(e) => setTargetLang(e.target.value)}
-              style={{ marginLeft: '8px', height: "30px", borderRadius: "0.3em" }}
+              className={styles.advancedSettingsSelect}
+              value={sourceLang}
+              onChange={(e) => {
+                setSourceLang(e.target.value);
+              }}
             >
-              <option value="">Select language</option>
+              {Object.entries(langLabels)
+                .filter(([code]) => supportedLang.includes(code))
+                .map(([code, label]) => (
+                  <option key={code} value={code}>
+                    {label}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className={styles.advancedSettingsRow}>
+            <label className={styles.advancedSettingsLabel}>Target Language</label>
+            <select
+              className={styles.advancedSettingsSelect}
+              value={targetLang}
+              onChange={(e) => {
+                setTargetLang(e.target.value);
+              }}
+            >
               {Object.entries(langLabels)
                 .filter(([code]) => !supportedLang.includes(code))
                 .map(([code, label]) => (
@@ -237,20 +261,51 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
                   </option>
                 ))}
             </select>
+            <div style={{ paddingTop: "2rem", paddingBottom: "1rem" }}>
+              <div onClick={() => setShowAdvanced(prev => !prev)} className={styles.advancedToggle}>
+                <FontAwesomeIcon icon={faGear} style={{paddingRight: "0.5rem"}}/>
+                <span>Advanced Settings</span>
+                <FontAwesomeIcon icon={faChevronDown} style={{ marginLeft: "0.5rem" }} />
+              </div>
+            </div>
+            {showAdvanced && (
+              <div className={styles.advancedSettingsBox}>
+                <div className={styles.advancedSettingsRow}>
+                  <label className={styles.advancedSettingsLabel}>Translation Model</label>
+                  <select className={styles.advancedSettingsSelect} value={translationModel} onChange={(e) => setTranslationModel(e.target.value)}>
+                    <option value="basic model">Basic Model</option>
+                    <option value="advanced model">Advanced Model</option>
+                  </select>
+                </div>
+                
+                <div className={styles.advancedSettingsRow}>
+                  <label className={styles.advancedSettingsLabel}>TTS Model</label>
+                  <select className={styles.advancedSettingsSelect} value={ttsModel} onChange={(e) => setTtsModel(e.target.value)}>
+                    <option value="basic model">Basic Model</option>
+                    <option value="advanced model">Advanced Model</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
+          <div className={styles.advancedSettingsRow}>
           <BaseButton
-            label="Submit"
+            label="Convert"
             icon={faSyncAlt}
             buttonStyle={styles.ConvertButton}
             onClick={async () => {
-              if (!targetLang || !audioUrl) return;
+              if (!sourceLang || !targetLang || !audioUrl) return;
               const payload = {
                 videoId: Number(videoId),
                 subtitle: subtitles,
                 audioPresignedUrl: audioUrl,
-                sourceLang: langLabels[selectedLang],
-                targetLang: langLabels[targetLang]
+                sourceLang: langLabels[sourceLang],
+                targetLang: langLabels[targetLang],
+                ttsModel: ttsModel,
+                translationModel: translationModel
               };
+              console.log(sourceLang);
+              console.log(targetLang);
               try {
                 await dubByAudio(payload);
                 alert("Dubbing request sent!");
@@ -262,6 +317,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ presignedUrl, videoId, suppor
             }}
             disabled={!targetLang}
           />
+          </div>
         </div>
       )}
     </div>

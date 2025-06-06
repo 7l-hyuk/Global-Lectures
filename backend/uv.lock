@@ -201,6 +201,7 @@ dependencies = [
     { name = "bcrypt" },
     { name = "boto3" },
     { name = "cutlet" },
+    { name = "demucs" },
     { name = "elevenlabs" },
     { name = "fastapi" },
     { name = "openai" },
@@ -223,6 +224,7 @@ requires-dist = [
     { name = "bcrypt", specifier = ">=4.3.0" },
     { name = "boto3", specifier = ">=1.38.23" },
     { name = "cutlet", specifier = ">=0.5.0" },
+    { name = "demucs", specifier = ">=4.0.1" },
     { name = "elevenlabs", specifier = ">=2.1.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "openai", specifier = ">=1.82.1" },
@@ -437,6 +439,15 @@ wheels = [
 ]
 
 [[package]]
+name = "cloudpickle"
+version = "3.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/39/069100b84d7418bc358d81669d5748efb14b9cceacd2f9c75f550424132f/cloudpickle-3.1.1.tar.gz", hash = "sha256:b216fa8ae4019d5482a8ac3c95d8f6346115d8835911fd4aefd1a445e4242c64", size = 22113 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7e/e8/64c37fadfc2816a7701fa8a6ed8d87327c7d54eacfbfb6edab14a2f2be75/cloudpickle-3.1.1-py3-none-any.whl", hash = "sha256:c8c5a44295039331ee9dad40ba100a9c7297b6f988e50e87ccdf3765a668350e", size = 20992 },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -608,6 +619,23 @@ wheels = [
 ]
 
 [[package]]
+name = "demucs"
+version = "4.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dora-search" },
+    { name = "einops" },
+    { name = "julius" },
+    { name = "lameenc" },
+    { name = "openunmix" },
+    { name = "pyyaml" },
+    { name = "torch" },
+    { name = "torchaudio" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/87/38/55f835ebd9f443465087a6954ede19d4a41aebdf5e28567e89b99d6d2f57/demucs-4.0.1.tar.gz", hash = "sha256:e45a5a788bae79767c37bbf6e69aae03862ddcca05550fb79b926346a177d713", size = 1212924 }
+
+[[package]]
 name = "distro"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -630,6 +658,19 @@ name = "docopt"
 version = "0.6.2"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491", size = 25901 }
+
+[[package]]
+name = "dora-search"
+version = "0.1.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "omegaconf" },
+    { name = "retrying" },
+    { name = "submitit" },
+    { name = "torch" },
+    { name = "treetable" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d5/9d/9a13947db237375486c0690f4741dd2b7e1eee20e0ffcb55dbd1b21cc600/dora_search-0.1.12.tar.gz", hash = "sha256:2956fd2c4c7e4b9a4830e83f0d4cf961be45cfba1a2f0570281e91d15ac516fb", size = 87111 }
 
 [[package]]
 name = "ecdsa"
@@ -1185,6 +1226,36 @@ wheels = [
 ]
 
 [[package]]
+name = "lameenc"
+version = "1.8.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/3c/3656ae0fffb96560d3831e0464a3898569b1ea9f24727bec0b297dcfd261/lameenc-1.8.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:40973c2195b8ff8d20c0bed0f491e39e491661849d003c918d19eea2234f7af7", size = 193761 },
+    { url = "https://files.pythonhosted.org/packages/52/0f/37eab9c091018e49c124c4b6b89b853e0c126e445044d1bf3594ec34b3cb/lameenc-1.8.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:83e8d1195074e36647082ae5b062b40a7433a7d840a543d70e2fd7c62e877d65", size = 182216 },
+    { url = "https://files.pythonhosted.org/packages/1e/0d/b4dccabc5446548a386c7fb989a0f49f215c40327cabbd6f06ca0b7538d3/lameenc-1.8.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_24_aarch64.whl", hash = "sha256:8a3ebb5806bdaf0cdf8a6a3b7ef0a5fb8a0eb4113192d73edce034f430d86663", size = 268703 },
+    { url = "https://files.pythonhosted.org/packages/1c/69/db432d88a6990ba2fe91b0e32c8eebcc8f024cff5a06e888fc0aeb0b739a/lameenc-1.8.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a70c8199ad47016c466b6c784924f9a2b87a3379e194345b01158e8b320a76fc", size = 254347 },
+    { url = "https://files.pythonhosted.org/packages/53/d0/6ad9555127866933028b427ea1e01a3e545a568b6d590e52d8da67ee4743/lameenc-1.8.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:12d6331c7b80c1e51a215f8d516ded90d79e3e95e7578b34268ac1b143ecf29d", size = 273636 },
+    { url = "https://files.pythonhosted.org/packages/7d/36/4bc1ea5f0571bacfd3334ccdd5f28d6e682eba9acf462596bd099b05ca2a/lameenc-1.8.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:5b8464e4ce61126fffc4e15b08daea2f9dda4853bcb5e5ead9e59030cbce996b", size = 249729 },
+    { url = "https://files.pythonhosted.org/packages/08/ba/bc428c26169d2f6748f726d591b45be7c899a1af2dd21c342697555c2579/lameenc-1.8.1-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_24_i686.whl", hash = "sha256:510bcd1cb28fad751a8a85c41fc5af8c1babbe6c8bf58b1db31d4f82389ea79e", size = 201420 },
+    { url = "https://files.pythonhosted.org/packages/b4/9c/35659d2a41230667fed6e546ee3093c82955697e019c5504ed7346ec286c/lameenc-1.8.1-cp311-cp311-win32.whl", hash = "sha256:884b8c50cccd6ab8f853bb73c45c7d4196415990c77f5d65bcc78034e19dda67", size = 125428 },
+    { url = "https://files.pythonhosted.org/packages/bf/af/750617898a2baf8a03da38ca60e726cd6a162558e0c0439934ee02956a17/lameenc-1.8.1-cp311-cp311-win_amd64.whl", hash = "sha256:e21ec614d758b29e042a484e44318725543c3fcd4e4afeb685295efd97aa9a1f", size = 152000 },
+    { url = "https://files.pythonhosted.org/packages/e4/87/25e9619de89b64e9c66c5205a8de15671ee0e129b2e045c23c1f98fd9ec6/lameenc-1.8.1-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:ef7d7ccad32f5febd812fb078fe63e46b4ec411d2ef612a79fd0391ef9f65b35", size = 193831 },
+    { url = "https://files.pythonhosted.org/packages/0b/43/d17cd461a1bdc29661739350f04c0a7e12b11241a975662b8c6578d27f82/lameenc-1.8.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c980a676314d3c344f080be8ef05c98d60d201da6a492c3658c6bf5a733a1e11", size = 182214 },
+    { url = "https://files.pythonhosted.org/packages/61/49/b749718d6deaebb6d653f292599560b52df27a6709c25e8f0e4e7b4d4e6f/lameenc-1.8.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a86f51bc50421db8e122c627bc2d0e7526da4505ebb6699c20c8b7352cb8df19", size = 253358 },
+    { url = "https://files.pythonhosted.org/packages/46/19/6aa2313271b4635572c353b1b64c5612efedf0373ab0e0061bb5d916d8e5/lameenc-1.8.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:693a6cb42494dde1ae78756f1323b07dea041a152a1f4805639490bfea0e9ba3", size = 249108 },
+    { url = "https://files.pythonhosted.org/packages/75/f5/bd86cfe4cf44e583c14722164e621336a02cbe26645e3be1d8b874bf8b81/lameenc-1.8.1-cp312-cp312-win32.whl", hash = "sha256:26720094ed7cb9f3364f79fdc7ad3459aabb71b94f30936dfe0ad7430078af07", size = 125452 },
+    { url = "https://files.pythonhosted.org/packages/3f/c6/919e890cc135d590dc3b041414ef5a94997f3bc2f614afa16b7c2f0f73ee/lameenc-1.8.1-cp312-cp312-win_amd64.whl", hash = "sha256:715e0e72ed5429f00042379e48a7903e54ee5dc01069db34338536f3595059c3", size = 152019 },
+    { url = "https://files.pythonhosted.org/packages/41/7d/87eb694ec04e87f49c059f4f40c2bc3543a419d9aee258efc4941ef9b888/lameenc-1.8.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:1ef8f8ad8de7a038aa0624efc6c585ad600c7e6d34acc2583631883027bd6752", size = 193822 },
+    { url = "https://files.pythonhosted.org/packages/b7/99/d7442223a955295543fdeafd8a61058a323b577bfe77ef57915d8d3bb2aa/lameenc-1.8.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:e4bf9c20e41a66964ff5c2f0ab3072cd39df9fc19ecc419ad8ef0c9bb1e80ac1", size = 182221 },
+    { url = "https://files.pythonhosted.org/packages/d6/b9/fc5e11043cdfcddbb1c7c15d570c6285a6e46a9ae7a80caed017c93cbd86/lameenc-1.8.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b6b4f4318e43314da20caad14c0d884546e90abdd4c7fe884c6558db355c8efb", size = 253424 },
+    { url = "https://files.pythonhosted.org/packages/05/f2/ad9616f1dfd8ae156325720e11792eceedd5adadc9300d3694a4be28ba98/lameenc-1.8.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:0399f7dec7c8d626c913023a3c7cbd89314dab6f0e67ac4a335a4a4cb8c23de3", size = 249158 },
+    { url = "https://files.pythonhosted.org/packages/7f/55/46406f014302b540b76ed4a83a16e2f58f53770a0109dcacb42acd535625/lameenc-1.8.1-cp313-cp313-win32.whl", hash = "sha256:d765b3b20baedc87286e199554975074f9f9799a13b6bddb88baae0f3aeb8904", size = 125450 },
+    { url = "https://files.pythonhosted.org/packages/ad/70/5138ee0007ca06109e6697bd2eb77f9211374f49b226c04ca08cb110fd6b/lameenc-1.8.1-cp313-cp313-win_amd64.whl", hash = "sha256:c5fa96b300d27785c3110f566961bd97487c98023ee88d0822ca7c9af0fd9b89", size = 152020 },
+    { url = "https://files.pythonhosted.org/packages/0b/dc/a150418d932f2e2e2eedece0f62c43aa973b08a48e257b382f970887dd59/lameenc-1.8.1-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3ca88a3ac5848b3ade75777288c309b2db18fa0788c140811b3852533d9dc291", size = 255301 },
+    { url = "https://files.pythonhosted.org/packages/c6/52/f5f2d979372f3718e2792e8c3390f9eb89bc836eb484c85110c3333c9813/lameenc-1.8.1-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:68dbacf39fc049dae22b08614d363d3293822d7255908b1bfe50d51c1a0fd6a1", size = 250524 },
+]
+
+[[package]]
 name = "lightning"
 version = "2.5.1.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1712,6 +1783,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5e/53/fd5318cd79202744711c120f008d9bd987eacc063b15910a820bc9b9f40e/openai-1.82.1.tar.gz", hash = "sha256:ffc529680018e0417acac85f926f92aa0bbcbc26e82e2621087303c66bc7f95d", size = 461322 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/d9/7ec61c010f0d0b0bc57dab8b8dff398f84230d269e8bfa068ad542ff050c/openai-1.82.1-py3-none-any.whl", hash = "sha256:334eb5006edf59aa464c9e932b9d137468d810b2659e5daea9b3a8c39d052395", size = 720466 },
+]
+
+[[package]]
+name = "openunmix"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "torch" },
+    { name = "torchaudio" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/42/ef/4ad54e3ecb1e89f7f7bdb4c7b751e43754e892d3c32a8550e5d0882565df/openunmix-1.3.0.tar.gz", hash = "sha256:cc9245ce728700f5d0b72c67f01be4162777e617cdc47f9b035963afac180fc8", size = 45889 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/43/37/320afd9458abb186f09a5183f36e48829df7151821bf887f272a63b2584d/openunmix-1.3.0-py3-none-any.whl", hash = "sha256:e893ae22c5b8001a6107022499c2587b70d5c2e4777cc7c9ed6272b68a69534e", size = 40047 },
 ]
 
 [[package]]
@@ -2420,6 +2506,18 @@ wheels = [
 ]
 
 [[package]]
+name = "retrying"
+version = "1.3.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ce/70/15ce8551d65b324e18c5aa6ef6998880f21ead51ebe5ed743c0950d7d9dd/retrying-1.3.4.tar.gz", hash = "sha256:345da8c5765bd982b1d1915deb9102fd3d1f7ad16bd84a9700b85f64d24e8f3e", size = 10929 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/04/9e36f28be4c0532c0e9207ff9dc01fb13a2b0eb036476a213b0000837d0e/retrying-1.3.4-py3-none-any.whl", hash = "sha256:8cc4d43cb8e1125e0ff3344e9de678fefd85db3b750b81b2240dc0183af37b35", size = 11602 },
+]
+
+[[package]]
 name = "rich"
 version = "14.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2773,6 +2871,19 @@ wheels = [
 ]
 
 [[package]]
+name = "submitit"
+version = "1.5.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cloudpickle" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1f/2c/a824e3e03cbc4a48892014c5826fee7350994f4b6ae45c120e7713b2b7a1/submitit-1.5.3.tar.gz", hash = "sha256:d1cbc5d8859b519b1e47adc4aaa6001dcefe8a835f3032b151cb3de7d2841068", size = 81019 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/db/80/90e0a0f4008f6572de58b042b1db9daced15d348a3586dda5efc9faba65e/submitit-1.5.3-py3-none-any.whl", hash = "sha256:ccc35100da12fe916541489deccccb6b9fa93dae8c01ade53e7f643552dc1795", size = 75463 },
+]
+
+[[package]]
 name = "sympy"
 version = "1.14.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2991,6 +3102,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/f1/11/7414d5bc07690002c
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/b6/5257d04ae327b44db31f15cce39e6020cc986333c715660b1315a9724d82/transformers-4.51.3-py3-none-any.whl", hash = "sha256:fd3279633ceb2b777013234bbf0b4f5c2d23c4626b05497691f00cfda55e8a83", size = 10383940 },
 ]
+
+[[package]]
+name = "treetable"
+version = "0.2.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/35/c6/b6d8dd6d3216bf19f11cd3a93e34109fb55412f4b6752f05d22dbdbf8f2a/treetable-0.2.5.tar.gz", hash = "sha256:29c95b797a8ecff4bb894cb7b103e39a78c905ab78a88a9a247de30c87743a2f", size = 10251 }
 
 [[package]]
 name = "triton"

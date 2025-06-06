@@ -5,6 +5,7 @@ import whisperx
 from src.models.basemodel import BaseServiceModel, device
 from src.models.registry import register_service
 from src.config import service_settings
+from src.utils.logger import logger
 
 
 @register_service("stt")
@@ -19,6 +20,7 @@ class STTServiceModel(BaseServiceModel):
             language_code=self.language[0],
             device=device
         )
+        logger.info(self.language[0])
 
     def process(self):
         audio = str(self.userpath.reference_speaker)
@@ -30,6 +32,7 @@ class STTServiceModel(BaseServiceModel):
             audio,
             device
         )
+        print(aligned["segments"])
         return aligned["segments"]
 
 
@@ -42,7 +45,8 @@ class ElevenlabsSTTServiceModel(BaseServiceModel):
         }
         self.data = {
             "model_id": "scribe_v1",
-            "language_code": "ko",
+            "language_code": self.language[0],
+            "tag_audio_events": False,
             "diarize": False  # 스피커 분리 필요 없으면 False
         }
         self.headers = {
@@ -88,13 +92,3 @@ class ElevenlabsSTTServiceModel(BaseServiceModel):
                 sentence = ""
         print(subtitle)
         return subtitle
-    
-
-
-
-
-    
-
-
-    
-    

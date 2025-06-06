@@ -100,3 +100,39 @@
     margin-bottom: 1.5rem;
     width: 100%;
 }
+
+.advancedToggle {
+    font-size: 18px;
+    color: #202020;
+}
+
+.advancedToggle:hover {
+    color: #878787;
+}
+
+.advancedSettingsBox {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .1);
+    border-radius: 0.3em;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.advancedSettingsRow {
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.advancedSettingsLabel {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.advancedSettingsSelect {
+    width: 30%;
+    height: 30px;
+}

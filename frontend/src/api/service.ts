@@ -6,6 +6,9 @@ interface DubData {
     video: File;
     sourceLang: string;
     targetLang: string;
+    sttModel: string;
+    translationModel: string;
+    ttsModel: string;
 } 
 
 interface DubAudioData {
@@ -14,6 +17,8 @@ interface DubAudioData {
   audioPresignedUrl: string,
   sourceLang: string;
   targetLang: string;
+  ttsModel: string;
+  translationModel: string;
 }
 
 

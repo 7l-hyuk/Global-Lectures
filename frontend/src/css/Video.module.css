@@ -14,7 +14,8 @@
     text-align: left;
     border-top: 1px solid #e0e0e0;
     margin-top: 20px;
-    padding: 20px 0;
+    padding-top: 20px;
+    padding-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -28,6 +29,7 @@
     background-color: #b53836;
     border-color: #b53836;
     color: white;
+    border-radius: 2em;
 }
 
 .ConvertButton {
@@ -40,4 +42,61 @@
     background-color: #28a745;
     border-color: #28a745;
     color: white;
+    width: 15%;
+}
+
+.advancedToggle {
+    font-size: 16px;
+    color: #202020;
+}
+
+.advancedToggle:hover {
+    color: #878787;
+}
+
+.advancedSettingsBox {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, .1);
+    border-radius: 0.3em;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.advancedSettingsRow {
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.advancedSettingsLabel {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.advancedSettingsSelect {
+    width: 30%;
+    height: 30px;
+}
+
+.Selected {
+  background-color: #b53836;
+  border-color: #b53836;
+}
+
+.Selected:hover {
+  background-color: #a0302e;
+  border-color: #a0302e;
+}
+
+.Unselected {
+  background-color: #ccc;
+  border-color: #ccc;
+}
+
+.Unselected:hover {
+  background-color: #bbb;
+  border-color: #bbb;
 }

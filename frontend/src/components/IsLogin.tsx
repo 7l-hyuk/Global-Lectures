@@ -6,6 +6,7 @@ import { Dropdown } from "./Dropdown"
 
 const IsLogin: React.FC = () => {
   const { user } = useAuth();
+  console.log("user in IsLogin:", user)
   return (
     <>
       {user ? (

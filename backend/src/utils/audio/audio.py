@@ -5,11 +5,18 @@ from pathlib import Path
 from src.utils.path import UserPath
 import src.utils.audio.cmd.ffmpeg as ffmpeg
 import src.utils.audio.cmd.sox as sox
+import src.utils.audio.cmd.demucs as demucs
 from src.utils.logger import logger
 
 
+def seperate_vocal(userpath: UserPath):
+    cmd = demucs.seperate_vocal(userpath)
+    subprocess.run(cmd)
+
+
 # TODO: 오디오와 비디오를 분리하는 로직 -> seperate_audio
-def seperate_audio(userpath: UserPath):
+def seperate_audio(userpath: UserPath, vocal_seperation: bool):
+
     original_video = userpath.original_video
     reference_speaker = userpath.reference_speaker
 
@@ -21,8 +28,6 @@ def seperate_audio(userpath: UserPath):
         wav_path=reference_speaker
     )
 
-    remove_audio_command = ffmpeg.remove_audio_from_video(original_video, userpath.video)
-
     try:
         subprocess.run(
             extract_audio_command,
@@ -32,12 +37,23 @@ def seperate_audio(userpath: UserPath):
         )
         
         logger.info(f"Audio extracted successfully: {reference_speaker}")
-
+        
+        remove_audio_command = ffmpeg.remove_audio_from_video(original_video, userpath.video)
         subprocess.run(
             remove_audio_command,
             check=True,
         )
         logger.info(f"Audio removed successfully: {original_video}")
+
+        if vocal_seperation:
+            seperate_vocal(userpath)
+            output_path = userpath.user / "video_with_bgm.mp4"
+            merge_video_bgm_command = ffmpeg.merge_video_bgm(userpath, output_path=output_path)
+
+            subprocess.run(merge_video_bgm_command)
+            userpath.reference_speaker = userpath.vocal
+            userpath.video = output_path
+            
     except subprocess.CalledProcessError as e:
         logger.error("AUDIO processing FAILED!!!", e)
 
@@ -60,7 +76,7 @@ def merge_audio(segments: list[dict], output_path: Path):
     logger.info("Merge audio")
 
 
-def length(mp4_path: Path) -> int:
+def length(mp4_path: Path) -> float:
     command = ffmpeg.extract_video_length(mp4_path)
     length = subprocess.run(
         command,
@@ -68,4 +84,4 @@ def length(mp4_path: Path) -> int:
         stderr=subprocess.PIPE,
         text=True
     )
-    return int(float(length.stdout.strip()))
+    return float(length.stdout.strip())

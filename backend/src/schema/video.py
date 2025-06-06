@@ -26,6 +26,8 @@ class DubAudioRequest(BaseModel):
     source_lang: str
     target_lang: str
     subtitle: list[SubtitleEntry]
+    translation_model: str
+    tts_model: str
 
     model_config = ConfigDict(
         alias_generator=to_camel,

@@ -10,15 +10,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchCurrentUser = async () => {
-    try {
-      const res = await fetchMe();
-      setUser({ username: res.data.username });
-    } catch {
+  try {
+    const res = await fetchMe();
+    const username = res?.data?.username;
+
+    if (username) {
+      setUser({ username });
+    } else {
       setUser(null);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  } catch {
+    setUser(null);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const logout = async () => {
     try {

@@ -24,7 +24,7 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         print(e)
-        raise HTTPException(status_code=400, detail="이미 존재하는 사용자입니다.")
+        raise HTTPException(status_code=200, detail="이미 존재하는 사용자입니다.")
     return {"msg": "회원가입 완료!", "username": user.username}
 
 
@@ -39,7 +39,7 @@ async def user_login(user: UserLogin, response: Response, db: Session = Depends(
             db_user.password.encode()
         )
     ):
-        raise HTTPException(status_code=401, detail="잘못된 로그인 정보입니다.")
+        raise HTTPException(status_code=200, detail="잘못된 로그인 정보입니다.")
 
     access_token = create_access_token(data={"user": db_user.username, "id": db_user.id})
     response.set_cookie(
@@ -58,7 +58,7 @@ async def read_users_me(request: Request):
     token = request.cookies.get("access_token")
 
     if not token:
-        raise HTTPException(status_code=401, detail="토큰이 없습니다.")
+        raise HTTPException(status_code=200, detail="토큰이 없습니다.")
 
     current_user = get_current_user(token)
     return {"username": current_user}

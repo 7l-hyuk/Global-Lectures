@@ -17,13 +17,16 @@ from src.schema.video import DubAudioRequest
 from src.config import service_settings
 
 dub_router = APIRouter(prefix="/v1/dub", tags=["dub service"])
-
+BASIC_MODEL = "basic model"
 
 @dub_router.post("/")
 async def get_dub_video(
     video: UploadFile,
     source_lang: str = Form(..., alias="sourceLang"),
     target_lang: str = Form(..., alias="targetLang"),
+    stt_model: str = Form(..., alias="sttModel"),
+    translation_model: str = Form(..., alias="translationModel"),
+    tts_model: str = Form(..., alias="ttsModel"),
     db: Session = Depends(get_db),
     user: dict = Depends(authenticate)
 ):
@@ -40,6 +43,9 @@ async def get_dub_video(
         tar_lang=target_lang,
         user_id=user["id"],
         video_title=Path(video.filename).stem,
+        stt_model="stt" if stt_model == BASIC_MODEL else "stt-elevenlabs",
+        translation_model="translator" if translation_model == BASIC_MODEL else "translator-gpt",
+        tts_model="tts" if tts_model == BASIC_MODEL else "tts-elevenlabs",
         db=db
     )
 
@@ -62,6 +68,8 @@ async def get_dub_audio(
         video_id=payload.video_id,
         src_lang=source_lang,
         tar_lang=target_lang,
+        translation_model="translator" if payload.translation_model == BASIC_MODEL else "translator-gpt",
+        tts_model="tts" if payload.tts_model == BASIC_MODEL else "tts-elevenlabs",
         db=db
     )
     

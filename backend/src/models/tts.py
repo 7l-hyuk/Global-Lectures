@@ -11,7 +11,7 @@ from elevenlabs import VoiceSettings
 
 from src.models.basemodel import BaseServiceModel, device
 from src.models.registry import register_service
-from src.utils.audio.audio import audio_sync
+from src.utils.audio import audio
 from src.utils.logger import logger
 from src.config import service_settings
 
@@ -45,14 +45,14 @@ class TTSSeviceModel(BaseServiceModel):
                 language=self.language[0],
                 file_path=file_path,
             )
-            audio, samplerate = soundfile.read(file_path)
-            duration = len(audio) / samplerate
+            # audio, samplerate = soundfile.read(file_path)
+            # duration = len(audio) / samplerate
             tar_duration = segment["end"] - segment["start"]
             segment["file"] = tts_audio_sync / file_name
-            audio_sync(
+            audio.audio_sync(
                 file_path,
                 segment["file"],
-                speed=duration / tar_duration
+                speed=audio.length(file_path) / tar_duration
             )
         return None
 
@@ -95,16 +95,16 @@ class TTSSeviceModel(BaseServiceModel):
                     if chunk:
                         f.write(chunk)
             
-            audio, samplerate = soundfile.read(file_path)
-            duration = len(audio) / samplerate
+            # audio, samplerate = soundfile.read(file_path)
+            # duration = len(audio) / samplerate
             tar_duration = segment["end"] - segment["start"]
             segment["file"] = tts_audio_sync / file_name
 
             try:
-                audio_sync(
+                audio.audio_sync(
                     file_path,
                     segment["file"],
-                    speed=duration / tar_duration
+                    speed=audio.length(file_path) / tar_duration
                 )
             except Exception as e:
                 print(e)

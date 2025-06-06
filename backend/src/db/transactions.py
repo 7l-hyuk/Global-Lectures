@@ -74,7 +74,7 @@ def add_video_to_postgres(
     voice_id: str
 ):
     try:
-        video_length = length(userpath.video)
+        video_length = int(length(userpath.video))
         video = Video(
             title=title,
             length=(lambda s: f"{s // 3600:02}:{(s % 3600) // 60:02}:{s % 60:02}")(video_length),

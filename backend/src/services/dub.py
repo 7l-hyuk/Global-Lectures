@@ -10,7 +10,6 @@ from src.utils.path import UserPath
 from src.utils.audio.audio import seperate_audio, merge_audio
 from src.models.registry import create_service
 from src.db.transactions import add_video_to_postgres, add_audio_to_postgres
-from src.db.aws_handler import s3
 from src.schema.video import SubtitleEntry
 from src.db.video import Video
 
@@ -39,11 +38,12 @@ def dub(
     user_id: int,
     video_title: Path,
     db: Session,
-    stt_model: str = "stt-elevenlabs",  
-    translation_model: str = "translator-gpt",
-    tts_model: str = "tts-elevenlabs"  
-) -> Path:
-    seperate_audio(userpath)
+    stt_model: str = "stt",  
+    translation_model: str = "translator",
+    tts_model: str = "tts",
+    vocal_seperation: bool = True
+):
+    seperate_audio(userpath, vocal_seperation=vocal_seperation)
 
     stt = create_service(
         stt_model,
@@ -51,6 +51,7 @@ def dub(
         language=[src_lang],
     )
     segments = stt.run()
+    logger.info(f"MAIN: src = {src_lang}, tar = {tar_lang}")
     make_subtitle_json(segments=segments, path=userpath.src_subtitle)
 
     translator = create_service(
@@ -58,7 +59,6 @@ def dub(
         userpath=None,
         language=[src_lang, tar_lang],
     )
-    
     translator.run(segments)
     make_subtitle_json(segments=segments, path=userpath.tar_subtitle)
 

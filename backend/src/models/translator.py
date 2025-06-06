@@ -21,6 +21,7 @@ class TranslationServiceModel(BaseServiceModel):
         )
 
     def process(self, segments: list[dict[str, Any]]):
+        logger.info("translation")
         for segment in segments:
             logger.info(segment["text"])
             segment["text"] = self.model(
@@ -35,24 +36,28 @@ class GptTranslationServiceModel(BaseServiceModel):
     def init_model(self):
         self.client = OpenAI(api_key=service_settings.GPT_API_KEY)
 
-    def process(self, segments: list[dict[str, Any]]):
+    def process(self, segments: list[dict[str, Any]], model: str = 'gpt-3.5-turbo'):
         sentences = [sub["text"] for sub in segments]
+        logger.info(f"TRANSLATION: {self.language[0]} -> {self.language[1]}")
         combined_text = '\n'.join(f"- {sentence}" for sentence in sentences)
         prompt = (
-            f"You are a professional translator. Consider the overall context of the following sentences, "
-            f"silently correct any awkward or unnatural expressions based on that context, "
-            f"then translate the corrected sentences directly from {self.language[0]} to {self.language[1]}. "
-            f"Respond only with the final translated sentences as a list, preserving the original order, and no additional explanation:\n\n"
+            f"You are a professional translator. Carefully consider the meaning and natural usage of the following sentences in full context. "
+            f"Silently correct any unnatural or awkward expressions if necessary, "
+            f"and translate them naturally and idiomatically from {self.language[0]} to {self.language[1]}. "
+            f"Respond only with the translated sentences in list form, preserving order, and give no additional explanation.\n\n"
             f"{combined_text}\n\nTranslations:"
         )
         response = self.client.chat.completions.create(
-            model='gpt-3.5-turbo',
+            model=model,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
+            temperature=0,
         )
         translations = response.choices[0].message.content.strip().split('\n')
         translations = [line.lstrip('- ').strip() for line in translations if line.startswith('-')]
-        
+        print(translations)
+
         for i, segment in enumerate(segments):
+            print(segment["text"])
+            print(translations[i])
             segment["text"] = translations[i]
         print(segments)

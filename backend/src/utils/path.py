@@ -17,6 +17,8 @@ class UserPath:
         self.tts_audio_sync = self.user / "tts_audio_sync"
         self.src_subtitle = self.user / "src_subtitle.json"
         self.tar_subtitle = self.user / "tar_subtitle.json"
+        self.vocal = self.user / "htdemucs" / "reference_speaker" / "vocals.wav"
+        self.no_vocal = self.user / "htdemucs" / "reference_speaker" / "no_vocals.wav"
 
 
         for dir in [self.user, self.tts_audio, self.tts_audio_sync]:

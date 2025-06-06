@@ -12,12 +12,9 @@ const UserPageLayout: React.FC = () => {
   return (
     <div className={styles.UserPageLayout}>
       <ul className={styles.UserPageMenu}>
-        <li className={styles.MenuHeader}>
-          <span>your account</span>
-        </li>
         <li
           className={styles.MenuItem}
-          style={isActive("/videos") ? { backgroundColor: "#f5f5f5" } : {}}
+          style={isActive("/videos") ? { backgroundColor: "#f5f5f5", color: "#b53836" } : {}}
         >
           <FontAwesomeIcon icon={faDatabase} style={{ marginRight: "10px" }} />
           <Link to="/videos" style={{ color: "inherit", textDecoration: "none" }}>
