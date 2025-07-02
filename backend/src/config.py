@@ -8,10 +8,10 @@ class DatabaseSettings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_PORT: str
     POSTGRES_HOST: str
-    POSTGRES_DSN: PostgresDsn = None
+    POSTGRES_DSN: PostgresDsn | None = None
 
     model_config = SettingsConfigDict(
-        env_file="../envs/.env.database",
+        env_file="../envs/.env.psql",
         env_file_encoding='utf-8'
     )
 
@@ -41,6 +41,16 @@ class JWTSettings(BaseSettings):
         env_file_encoding='utf-8'
     )
 
+
+class RedisSettings(BaseSettings):
+    REDIS_DSN: str
+
+    model_config = SettingsConfigDict(
+        env_file="../envs/.env.redis",
+        env_file_encoding='utf-8'
+    )
+
+
 database_settings = DatabaseSettings()
-print(database_settings.POSTGRES_DSN)
 jwt_settings = JWTSettings()
+redis_settings = RedisSettings()
