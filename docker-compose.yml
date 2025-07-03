@@ -1,0 +1,18 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  db:
+    image: 7lhyuk/global-lecutures-db:0.0.0
+    container_name: global-lectures-db
+    build: ./database
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - ./envs/.env.psql
+
+volumes:
+  db_data:
