@@ -1,0 +1,12 @@
+[project]
+name = "translation-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.14",
+    "torch>=2.7.1",
+    "transformers>=4.53.0",
+    "uvicorn>=0.34.3",
+]

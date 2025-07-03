@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.routes.auth import auth_router
+from src.routes.dubbing import dubbing_router
 
 
 app = FastAPI()
@@ -10,7 +11,8 @@ origins = [
     "*"
 ]
 routes = [
-    auth_router
+    auth_router,
+    dubbing_router
 ]
 
 app.add_middleware(
