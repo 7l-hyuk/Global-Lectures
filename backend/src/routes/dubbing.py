@@ -1,42 +1,44 @@
 from fastapi import APIRouter, UploadFile, Depends, File, Form
-import shutil
 
-from src.auth.authentication import authenticate, AuthenticatedPayload
-from src.path_manager import get_user_path
-from src.services.stt import SttClient
-from src.services.translator import TranslatorClient
-from src.utils.video_processor import seperate_audio
+# from src.auth.authentication import authenticate, AuthenticatedPayload
+from src.services.dubbing import get_setup_pipeline, get_dubbing_pipeline
+from src.path_manager import get_user_path, UserFile, UserDir
+from src.utils.pipelines.dubbing_stages import DubbingPipelineConfig
+from src.utils.pipelines.pipeline import Pipeline
 
 dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
-stt_client = SttClient(API_URL="http://localhost:8001/api/v1/stt")
-translator_client = TranslatorClient(API_URL="http://localhost:8002/api/v1/translation")
 
 
 @dubbing_router.post("/")
-async def get_dubbing_video(
+def get_dubbing_video(
     video: UploadFile = File(...),
     source_lang: str = Form(...),
     target_lang: str = Form(...),
     stt_model: str = Form(...),
     translation_model: str = Form(...),
     tts_model: str = Form(...),
+    dubbing_resource_pipeline: Pipeline = Depends(get_setup_pipeline),
+    dubbing_pipeline: Pipeline = Depends(get_dubbing_pipeline),
     # user: AuthenticatedPayload = Depends(authenticate)
 ):
-    with get_user_path() as user_path:
-        with open(user_path.initial_video, "wb") as f:
-            shutil.copyfileobj(video.file, f)
-        seperate_audio(user_path=user_path)
-        subtitles = stt_client.run(
-            audio_path=user_path.vocals,
-            language=source_lang,
-            model=stt_model
+    with get_user_path() as user_path_ctx:
+        dubbing_resource_pipeline.run(
+            user_path_ctx,
+            video
         )
-        translated_subtitles = translator_client.run(
-            subtitles=subtitles,
-            source_lang=source_lang,
-            target_lang=target_lang,
-            model=translation_model,
-            timeout=600
+        dubbing_pipeline.run(
+            user_path_ctx.get_path(UserFile.AUDIO.VOCALS),
+            DubbingPipelineConfig(
+                source_lang=source_lang,
+                target_lang=target_lang,
+                stt_model=stt_model,
+                translation_model=translation_model,
+                tts_model=tts_model,
+                stt_requset_timeout=600,
+                translation_requset_timeout=600,
+                tts_request_timeout=600,
+                reference_speaker=user_path_ctx.get_path(UserFile.AUDIO.REFERENCE_SPEAKER),
+                tts_output=user_path_ctx.get_path(UserDir.DUBBING),
+                dubbing_audio_output=user_path_ctx.get_path(UserFile.AUDIO.DUBBING)
+            )
         )
-        return translated_subtitles
-

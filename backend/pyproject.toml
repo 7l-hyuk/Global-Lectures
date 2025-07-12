@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "bcrypt>=4.3.0",
     "celery>=5.5.3",
+    "demucs>=4.0.1",
     "fastapi>=0.115.12",
     "httpx>=0.28.1",
     "psycopg2-binary>=2.9.10",
@@ -14,6 +15,7 @@ dependencies = [
     "pydantic[email]>=2.11.7",
     "python-jose>=3.5.0",
     "python-multipart>=0.0.20",
+    "soundfile>=0.13.1",
     "sqlalchemy>=2.0.41",
     "uvicorn>=0.34.3",
 ]

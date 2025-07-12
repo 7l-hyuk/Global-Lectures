@@ -1,11 +1,9 @@
-from src.utils.path import UserPath
-
 DEMUCS = "demucs"
 
-def seperate_vocal(user_path: UserPath):
+def seperate_bgm(output: str, wav_path: str):
     return [
         DEMUCS,
         "--two-stems=vocals",
-        "-o", user_path.user,
-        user_path.reference_speaker
+        "-o", output,
+        wav_path
     ]
