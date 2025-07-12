@@ -26,7 +26,7 @@ class CoquiTtsService(BaseServiceModel):
         )
         self.model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 
-    async def process(
+    def process(
             self,
             text: str,
             speaker_wav: str

@@ -1,3 +1,5 @@
+import time
+
 from fastapi import APIRouter, UploadFile, Depends, File, Form
 
 # from src.auth.authentication import authenticate, AuthenticatedPayload
@@ -21,6 +23,7 @@ def get_dubbing_video(
     dubbing_pipeline: Pipeline = Depends(get_dubbing_pipeline),
     # user: AuthenticatedPayload = Depends(authenticate)
 ):
+    start = time.time()
     with get_user_path() as user_path_ctx:
         dubbing_resource_pipeline.run(
             user_path_ctx,
@@ -42,3 +45,4 @@ def get_dubbing_video(
                 dubbing_audio_output=user_path_ctx.get_path(UserFile.AUDIO.DUBBING)
             )
         )
+    print(f"Service Processed In: {time.time() - start} s")

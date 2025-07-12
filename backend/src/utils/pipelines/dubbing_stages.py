@@ -79,18 +79,17 @@ class TTS(PipelineStage):
             output=config.tts_output,
             timeout=config.tts_request_timeout
         )
-        return config.audio_segments, config
+        return [config]
 
 
 class RenderingVideo(PipelineStage):
     def process(
         self,
-        audio_segments: list[dict],
         config: DubbingPipelineConfig
     ):
         command = ["sox", "-m"]
 
-        for i, sgmt in enumerate(audio_segments):
+        for i, sgmt in enumerate(config.audio_segments):
             audio_time = sgmt["end"] - sgmt["start"]
             audio_path = config.tts_output / f"{i:03d}.wav"
             AudioSegment(str(audio_path)).resize(audio_time)

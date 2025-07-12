@@ -26,7 +26,7 @@ class VoiceIdNotFoundError(Exception):
         super().__init__(self.message)
 
 
-async def iter_file_chunk(file: BytesIO, chunk_size: int=1024*1024):
+def iter_file_chunk(file: BytesIO, chunk_size: int=1024*1024):
     while True:
         data = file.read(chunk_size)
         if not data:
@@ -49,7 +49,7 @@ async def get_voice_id(speaker_wav: UploadFile = File(...)):
 
 
 @app.post("/api/v1/tts")
-async def subtitle_translate(
+def subtitle_translate(
     target_lang: str = Form(...),
     model: str = Form(...),
     text: str = Form(...),
@@ -69,7 +69,7 @@ async def subtitle_translate(
             name=model,
             target_lang=target_lang,
         )
-    buffer, _ = await tts_model.run(
+    buffer, _ = tts_model.run(
         text=text,
         speaker_wav=speaker_wav
     )
@@ -82,6 +82,6 @@ async def subtitle_translate(
 
 
 @app.delete("/api/v1/voice-id")
-async def get_voice_id(voice_id: str):
+def get_voice_id(voice_id: str):
     os.remove(f"./ref/{voice_id}.wav")
     return f"Delete {voice_id}"
