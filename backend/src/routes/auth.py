@@ -14,7 +14,7 @@ auth_router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
 
 @auth_router.post("/signup")
-async def sign_up(
+def sign_up(
     user: UserCreate,
     db: Session = Depends(get_db)
 ) -> dict[str, str]:
@@ -43,7 +43,7 @@ async def sign_up(
 
 
 @auth_router.post("/signin")
-async def sign_in(
+def sign_in(
     user: UserLogin,
     response: Response,
     db: Session = Depends(get_db)
@@ -76,7 +76,7 @@ async def sign_in(
 
 
 @auth_router.get("/me")
-async def check_me(request: Request) -> dict[str, str]:
+def check_me(request: Request) -> dict[str, str]:
     access_token = request.cookies.get("access_token")
     if not access_token:
         raise HTTPException(
@@ -88,6 +88,6 @@ async def check_me(request: Request) -> dict[str, str]:
 
 
 @auth_router.post("/signout")
-async def sign_out(response: Response):
+def sign_out(response: Response):
     response.delete_cookie("access_token", path="/")
     return {"msg": "User sign out success"}
