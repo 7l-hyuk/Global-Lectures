@@ -51,6 +51,21 @@ class RedisSettings(BaseSettings):
     )
 
 
+class AwsSettings(BaseSettings):
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    BUCKET_NAME: str
+    REGION: str
+
+    model_config = SettingsConfigDict(
+        env_file="../envs/.env.aws",
+        env_file_encoding='utf-8'
+    )
+
+
+
+
 database_settings = DatabaseSettings()
 jwt_settings = JWTSettings()
 redis_settings = RedisSettings()
+aws_settings = AwsSettings()

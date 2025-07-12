@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "bcrypt>=4.3.0",
+    "boto3>=1.39.4",
     "celery>=5.5.3",
     "demucs>=4.0.1",
     "fastapi>=0.115.12",
