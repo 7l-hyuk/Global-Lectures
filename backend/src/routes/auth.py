@@ -1,4 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+    Response,
+    Request
+)
 from jose import jwt, JWTError
 from src.config import jwt_settings
 
@@ -31,6 +38,7 @@ def sign_up(
             "username": user.username
         }
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_200_OK,
             detail="User already exist"
