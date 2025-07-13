@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker, Session
-from src.database.repositories import UserRepository, VideoRepository, VideoLanguageRepository
-from src.database.postgres import SessionLocal
+from src.models.repositories import UserRepository, VideoRepository, VideoLanguageRepository
+from src.models.postgres import SessionLocal
 
 
 class UnitOfWork:

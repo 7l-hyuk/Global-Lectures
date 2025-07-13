@@ -1,5 +1,4 @@
 import os
-import threading
 from dataclasses import dataclass
 from contextlib import contextmanager
 from pathlib import Path

@@ -2,11 +2,9 @@ from datetime import datetime, timezone, timedelta
 
 from fastapi import HTTPException, status
 from jose import jwt, JWTError
-from sqlalchemy.orm import Session
 
 from src.config import jwt_settings    
-from src.database.tables import User
-from src.database.unit_of_work import UnitOfWork
+from src.models.unit_of_work import UnitOfWork
 
 
 def create_access_token(payload: dict, expires_delta: int = None):

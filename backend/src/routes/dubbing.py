@@ -4,14 +4,22 @@ from pathlib import Path
 from fastapi import APIRouter, UploadFile, Depends, File, Form
 
 from src.auth.authentication import authenticate, AuthenticatedPayload
-from src.services.dubbing import get_setup_pipeline, get_dubbing_pipeline
 from src.path_manager import get_user_path, UserFile, UserDir
-from src.utils.pipelines.dubbing_stages import DubbingPipelineConfig
-from src.utils.pipelines.pipeline import Pipeline
+
 from src.utils.audio import AudioSegment
-from src.database.unit_of_work import UnitOfWork, get_uow
-from src.database.tables import Video, VideoLanguage
-from src.database.s3_handler import s3, S3UploadFileConfig
+from src.utils.pipelines.dubbing_stages import DubbingPipelineConfig, STT, TranslateSubtitle, TTS, RenderingVideo
+from src.utils.pipelines.pipeline import Pipeline
+from src.utils.pipelines.setup_stages import (
+    DownloadVideo,
+    ExtractAudio,
+    SeperateBGMFromAudio,
+    RemoveVocalsFromVideo,
+    ExtractReferenceSpeaker
+)
+
+from src.models.unit_of_work import UnitOfWork, get_uow
+from src.models.tables import Video, VideoLanguage
+from src.models.s3_handler import s3, S3UploadFileConfig
 
 dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
 
@@ -24,12 +32,27 @@ def get_dubbing_video(
     stt_model: str = Form(...),
     translation_model: str = Form(...),
     tts_model: str = Form(...),
-    dubbing_resource_pipeline: Pipeline = Depends(get_setup_pipeline),
-    dubbing_pipeline: Pipeline = Depends(get_dubbing_pipeline),
     user: AuthenticatedPayload = Depends(authenticate),
     uow: UnitOfWork = Depends(get_uow)
 ):
     start = time.time()
+    dubbing_resource_pipeline = Pipeline(
+        [
+            DownloadVideo(),
+            ExtractAudio(),
+            SeperateBGMFromAudio(),
+            RemoveVocalsFromVideo(),
+            ExtractReferenceSpeaker()
+        ]
+    )
+    dubbing_pipeline = Pipeline(
+        [
+            STT(),
+            TranslateSubtitle(),
+            TTS(),
+            RenderingVideo()
+        ]
+    )
     with get_user_path() as user_path_ctx:
         dubbing_resource_pipeline.run(
             user_path_ctx,

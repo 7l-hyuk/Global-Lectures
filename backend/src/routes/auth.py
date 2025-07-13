@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
+from jose import jwt, JWTError
+from src.config import jwt_settings
 
 from src.schemas.auth import UserCreate, UserLogin
-from src.database.tables import User
-from src.database.unit_of_work import get_uow
-from src.database.unit_of_work import UnitOfWork
+from src.models.tables import User
+from src.models.unit_of_work import get_uow
+from src.models.unit_of_work import UnitOfWork
 from src.auth.hash_handler import create_hash, verify_hash
-from src.auth.jwt_handler import create_access_token, verify_acess_token
-from src.services.auth import get_current_user
-
+from src.auth.jwt_handler import create_access_token
 
 auth_router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
@@ -84,8 +84,25 @@ def check_me(request: Request) -> dict[str, str]:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not Login"
         )
-    current_user_name = get_current_user(access_token=access_token)
-    return {"username": current_user_name}
+    try:
+        payload = jwt.decode(
+            token=access_token,
+            key=jwt_settings.SECRET_KEY,
+            algorithms=jwt_settings.ALGORITHM
+        )
+        username = payload.get("username")
+
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authenticaion payload",
+            )
+        return {"username": username}
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authenticaion failed"
+        )
 
 
 @auth_router.post("/signout")

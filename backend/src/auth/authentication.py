@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from fastapi import Request, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from src.database.unit_of_work import get_uow, UnitOfWork
+from src.models.unit_of_work import get_uow, UnitOfWork
 from src.auth.jwt_handler import verify_acess_token
 
 JWTPayload = dict[str, str | int]
