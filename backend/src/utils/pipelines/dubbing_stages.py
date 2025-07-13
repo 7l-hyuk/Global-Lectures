@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import subprocess
 import httpx
@@ -5,6 +6,19 @@ from pydantic import BaseModel
 from src.utils.pipelines.base_stage import PipelineStage
 from src.utils.pipelines.tts import TtsClient
 from src.utils.audio import AudioSegment
+
+
+def _sub2json(subtitle: list[dict], json_path: Path):
+    subtitle = [
+        {
+            "time": segment["start"],
+            "text": segment["text"],
+            "end": segment["end"]
+        }
+        for segment in subtitle
+    ]
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(subtitle, f, ensure_ascii=False, indent=2)
 
 
 class DubbingPipelineConfig(BaseModel):
@@ -19,6 +33,8 @@ class DubbingPipelineConfig(BaseModel):
     reference_speaker: Path
     tts_output: Path
     dubbing_audio_output: Path
+    source_subtitle_path: Path
+    target_subtitle_path: Path
     audio_segments: list[dict] | None = None
 
 
@@ -38,6 +54,7 @@ class STT(PipelineStage):
             json=payload,
             timeout=config.stt_requset_timeout
         ).json()
+        _sub2json(subtitle, config.source_subtitle_path)
         config.audio_segments = [
             {"start": sub["start"], "end": sub["end"]}
             for sub in subtitle
@@ -61,6 +78,7 @@ class TranslateSubtitle(PipelineStage):
             json=payload,
             timeout=config.translation_requset_timeout
         ).json()
+        _sub2json(translated_subtitle, config.target_subtitle_path)
         return [sub["text"] for sub in translated_subtitle], config
         
 
