@@ -25,11 +25,20 @@ class UserRepository(BaseRepository):
             .filter(User.username == username)
             .first()
         )
+    
+    def get_user_by_id(self, id: int) -> User | None:
+        return (
+            self.session
+            .query(User)
+            .filter(User.id== id)
+            .first()
+        )
 
 
 class VideoRepository(BaseRepository):
     def __init__(self, session: Session):
         super().__init__(session=session)
+    
 
 
 class VideoLanguageRepository(BaseRepository):

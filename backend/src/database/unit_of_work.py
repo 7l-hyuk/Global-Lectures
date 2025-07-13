@@ -29,7 +29,7 @@ class UnitOfWork:
 
     @property
     def video_language(self):
-        return VideoLanguageRepository
+        return VideoLanguageRepository(self.session)
 
 
 def get_uow():

@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from src.config import jwt_settings    
 from src.database.tables import User
+from src.database.unit_of_work import UnitOfWork
 
 
 def create_access_token(payload: dict, expires_delta: int = None):
@@ -22,9 +23,9 @@ def create_access_token(payload: dict, expires_delta: int = None):
     )
 
 
-async def verify_acess_token(
+def verify_acess_token(
     access_token: str,
-    db: Session
+    uow: UnitOfWork
 ) -> dict:
     try:
         payload = jwt.decode(
@@ -47,7 +48,7 @@ async def verify_acess_token(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Access token was expired"
             )
-        user = db.query(User).filter(User.id == payload["id"]).first()
+        user = uow.users.get_user_by_id(payload["id"])
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
