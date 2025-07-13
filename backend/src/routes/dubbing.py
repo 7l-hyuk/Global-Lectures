@@ -5,10 +5,14 @@ from fastapi import APIRouter, UploadFile, Depends, File, Form
 
 from src.auth.authentication import authenticate, AuthenticatedPayload
 from src.path_manager import get_user_path, UserFile, UserDir
-
 from src.utils.audio import AudioSegment
-from src.utils.pipelines.dubbing_stages import DubbingPipelineConfig, STT, TranslateSubtitle, TTS, RenderingVideo
-from src.utils.pipelines.pipeline import Pipeline
+from src.utils.pipelines.dubbing_stages import (
+    DubbingPipelineConfig,
+    STT,
+    TranslateSubtitle,
+    TTS,
+    RenderingVideo
+)
 from src.utils.pipelines.setup_stages import (
     DownloadVideo,
     ExtractAudio,
@@ -16,10 +20,10 @@ from src.utils.pipelines.setup_stages import (
     RemoveVocalsFromVideo,
     ExtractReferenceSpeaker
 )
-
 from src.models.unit_of_work import UnitOfWork, get_uow
 from src.models.tables import Video, VideoLanguage
 from src.models.s3_handler import s3, S3UploadFileConfig
+from src.utils.pipelines.pipeline import Pipeline
 
 dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
 
@@ -123,5 +127,3 @@ def get_dubbing_video(
         except Exception as e:
             print(e)
     print(f"Service Processed In: {time.time() - start} s")
-
-

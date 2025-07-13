@@ -6,6 +6,14 @@ from src.config import AwsSettings, aws_settings
 from src.path_manager import UserPathContext, UserFile
 
 
+def audio_key_format(video_id: int, lang: str):
+    return f"audios/{video_id}/{lang}.wav"
+
+
+def subtitle_key_format(video_id: int, lang: str):
+    return f"subtitles/{video_id}/{lang}.json"
+
+
 class S3UploadFileConfig:
     def __init__(
         self,
@@ -13,16 +21,16 @@ class S3UploadFileConfig:
         target_lang: str,
         source_lang: str | None = None
     ):
-        audio_key_format = lambda video_id, lang: f"audios/{video_id}/{lang}.wav"
-        subtitle_key_format = lambda video_id, lang: f"subtitles/{video_id}/{lang}.json"
-
         self.target_audio_key = audio_key_format(video_id, target_lang)
         self.target_subtitle_key = subtitle_key_format(video_id, target_lang)
 
         if source_lang:
             self.video_key = f"videos/{video_id}.mp4"
             self.source_audio_key = audio_key_format(video_id, source_lang)
-            self.source_subtitle_key = subtitle_key_format(video_id, source_lang)
+            self.source_subtitle_key = subtitle_key_format(
+                video_id,
+                source_lang
+            )
 
     def mapping_file(self, user_path_ctx: UserPathContext):
         keys = [self.target_audio_key, self.target_subtitle_key]
@@ -31,7 +39,11 @@ class S3UploadFileConfig:
             user_path_ctx.get_path(UserFile.SUBTITLE.TARGET)
         ]
         if hasattr(self, "video_key"):
-            keys += [self.video_key, self.source_audio_key, self.source_subtitle_key]
+            keys += [
+                self.video_key,
+                self.source_audio_key,
+                self.source_subtitle_key
+            ]
             files += [
                 user_path_ctx.get_path(UserFile.VIDEO.NO_VOCAL),
                 user_path_ctx.get_path(UserFile.AUDIO.VOCALS),
@@ -68,6 +80,7 @@ class S3:
                 object_name
             )
         except ClientError as e:
+            print(e)
             return False
         return True
 
@@ -96,15 +109,20 @@ class S3:
                 ExpiresIn=expiration,
             )
         except ClientError as e:
+            print(e)
             return None
         return response
-    
+
     def get_object(self, object_name: str):
         try:
-            s3_object = self.client.get_object(Bucket=self.BUCKET_NAME, Key=object_name)
+            s3_object = self.client.get_object(
+                Bucket=self.BUCKET_NAME,
+                Key=object_name
+            )
+            return s3_object["Body"].read()
         except ClientError as e:
+            print(e)
             return None
-        return s3_object["Body"].read()
 
 
 s3 = S3(aws_settings)

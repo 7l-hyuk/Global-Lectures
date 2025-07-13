@@ -1,12 +1,9 @@
 from dataclasses import dataclass
 
 from fastapi import Request, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 
 from src.models.unit_of_work import get_uow, UnitOfWork
-from src.auth.jwt_handler import verify_acess_token
-
-JWTPayload = dict[str, str | int]
+from src.auth.jwt_handler import verify_acess_token, JWTPayload
 
 
 @dataclass
@@ -15,10 +12,10 @@ class AuthenticatedPayload:
     username: str
 
 
-async def authenticate(
+def authenticate(
     request: Request,
     uow: UnitOfWork = Depends(get_uow)
-) -> JWTPayload:
+) -> AuthenticatedPayload:
     token = request.cookies.get("access_token")
     if token is None:
         raise HTTPException(

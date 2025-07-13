@@ -3,15 +3,17 @@ from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException, status
 from jose import jwt, JWTError
 
-from src.config import jwt_settings    
+from src.config import jwt_settings
 from src.models.unit_of_work import UnitOfWork
+
+JWTPayload = dict[str, str | int]
 
 
 def create_access_token(payload: dict, expires_delta: int = None):
     to_encode = payload.copy()
-    to_encode["exp"] = datetime.now(timezone.utc) 
+    to_encode["exp"] = datetime.now(timezone.utc)
     + (
-        expires_delta 
+        expires_delta
         or timedelta(minutes=jwt_settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     return jwt.encode(
@@ -24,7 +26,7 @@ def create_access_token(payload: dict, expires_delta: int = None):
 def verify_acess_token(
     access_token: str,
     uow: UnitOfWork
-) -> dict:
+) -> JWTPayload:
     try:
         payload = jwt.decode(
             token=access_token,
@@ -46,12 +48,17 @@ def verify_acess_token(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Access token was expired"
             )
+
         user = uow.users.get_user_by_id(payload["id"])
+    
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid token"
             )
+    
+        return payload
+
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
