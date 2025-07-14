@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/Navbar.module.css";
+import styles from "../../styles/Navbar.module.css";
 
 
 interface NavbarProps {
@@ -8,8 +8,10 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
     return (
-        <nav className={styles.}>
+        <nav className={styles.Navbar}>
 
         </nav>
-    )
-}
+    );
+};
+
+export default Navbar;
