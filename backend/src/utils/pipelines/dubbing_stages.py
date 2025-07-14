@@ -2,10 +2,11 @@ import json
 from pathlib import Path
 import subprocess
 import httpx
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from src.utils.pipelines.base_stage import PipelineStage
 from src.utils.pipelines.tts import TtsClient
 from src.utils.audio import AudioSegment
+from src.path_manager import UserPathContext, UserFile, UserDir
 
 
 def _sub2json(subtitle: list[dict], json_path: Path):
@@ -30,12 +31,12 @@ class DubbingPipelineConfig(BaseModel):
     stt_requset_timeout: float
     translation_requset_timeout: float
     tts_request_timeout: float
-    reference_speaker: Path
-    tts_output: Path
-    dubbing_audio_output: Path
-    source_subtitle_path: Path
-    target_subtitle_path: Path
+    user_path_ctx: UserPathContext
     audio_segments: list[dict] | None = None
+
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True
+    )
 
 
 class STT(PipelineStage):
@@ -54,12 +55,16 @@ class STT(PipelineStage):
             json=payload,
             timeout=config.stt_requset_timeout
         ).json()
-        _sub2json(subtitle, config.source_subtitle_path)
+        _sub2json(
+            subtitle,
+            config.user_path_ctx.get_path(UserFile.SUBTITLE.SOURCE)
+        )
         config.audio_segments = [
             {"start": sub["start"], "end": sub["end"]}
             for sub in subtitle
         ]
         return subtitle, config
+
 
 class TranslateSubtitle(PipelineStage):
     def process(
@@ -78,9 +83,12 @@ class TranslateSubtitle(PipelineStage):
             json=payload,
             timeout=config.translation_requset_timeout
         ).json()
-        _sub2json(translated_subtitle, config.target_subtitle_path)
+        _sub2json(
+            translated_subtitle,
+            config.user_path_ctx.get_path(UserFile.SUBTITLE.TARGET)
+        )
         return [sub["text"] for sub in translated_subtitle], config
-        
+
 
 class TTS(PipelineStage):
     def process(
@@ -93,8 +101,10 @@ class TTS(PipelineStage):
             texts=texts,
             target_lang=config.target_lang,
             model=config.tts_model,
-            speaker_wav=config.reference_speaker,
-            output=config.tts_output,
+            speaker_wav=config.user_path_ctx.get_path(
+                UserFile.AUDIO.REFERENCE_SPEAKER
+            ),
+            output=config.user_path_ctx.get_path(UserDir.DUBBING),
             timeout=config.tts_request_timeout
         )
         return [config]
@@ -109,13 +119,22 @@ class RenderingVideo(PipelineStage):
 
         for i, sgmt in enumerate(config.audio_segments):
             audio_time = sgmt["end"] - sgmt["start"]
-            audio_path = config.tts_output / f"{i:03d}.wav"
+            audio_path = (
+                config.user_path_ctx
+                .get_path(UserDir.DUBBING) / f"{i:03d}.wav"
+            )
             AudioSegment(str(audio_path)).resize(audio_time)
             command.append(f'"|sox {audio_path} -p pad {sgmt["start"]}"')
 
-        temp_output = config.tts_output .with_suffix(".temp.wav")            
+        temp_output = (
+            config.user_path_ctx
+            .get_path(UserDir.DUBBING)
+            .with_suffix(".temp.wav")
+        )
         command.append(str(temp_output))
         mix_command = " ".join(command)
-        gain_command = f'sox {temp_output} {config.dubbing_audio_output} gain -n'
-        subprocess.run(f"{mix_command} && {gain_command} && rm {temp_output}", shell=True)
-        
+        gain_command = f'sox {temp_output} {config.user_path_ctx.get_path(UserFile.AUDIO.DUBBING)} gain -n'
+        subprocess.run(
+            f"{mix_command} && {gain_command} && rm {temp_output}",
+            shell=True
+        )

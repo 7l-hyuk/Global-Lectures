@@ -12,7 +12,43 @@ from src.schemas.video import VideoResponse, VideoUpdate, SubtitleEntry
 video_router = APIRouter(prefix="/api/videos", tags=["Video"])
 
 
-@video_router.get("/")
+@video_router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Fetch videos success",
+            "content": {
+                "application/json": {
+                    "example": [
+                        {
+                            "id": 1,
+                            "title": "My First Lecture",
+                            "description": "no description",
+                            "length": "00:00:30"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Your Lectures",
+                            "description": "This Lecture is boring...",
+                            "length": "99:59:59"
+                        }
+                    ]
+                }
+            }
+        },
+        400: {
+            "description": "Authentication fail",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Invalid token"
+                    }
+                }
+            }
+        },
+    }
+)
 def get_videos(
     user: AuthenticatedPayload = Depends(authenticate),
     uow: UnitOfWork = Depends(get_uow)
@@ -26,7 +62,60 @@ def get_videos(
         print(e)
 
 
-@video_router.get("/{id}")
+@video_router.get(
+    "/{id}",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Fetch video success",
+            "content": {
+                "application/json": {
+                    "example": [
+                        {
+                            "url": "https://aws.presigned.url/...",
+                            "languages": [
+                                "en",
+                                "ko",
+                                "ja"
+                            ],
+                            "title": "My Lecture"
+                        }
+                    ]
+                }
+            }
+        },
+        400: {
+            "description": "Authentication fail",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Invalid token"
+                    }
+                }
+            }
+        },
+        404: {
+            "description": "User have no access rights or video dose not exist.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Video 1 not found."
+                    }
+                }
+            }
+        },
+        502: {
+            "description": "S3 request fail",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Fetch video from S3 failed."
+                    }
+                }
+            }
+        },
+    }
+)
 def get_video(
     id: int,
     uow: UnitOfWork = Depends(get_uow),
@@ -64,7 +153,7 @@ def get_video(
             except Exception as e:
                 print(e)
                 raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    status_code=status.HTTP_502_BAD_GATEWAY,
                     detail="Fetch video from S3 failed."
                 )
 
@@ -72,7 +161,40 @@ def get_video(
         print(e)
 
 
-@video_router.patch("/{id}")
+@video_router.patch(
+    "/{id}",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Update video success",
+            "content": {
+                "application/json": {
+                    "example": {"msg": "video id: 1 was changed successfully"}
+                }
+            }
+        },
+        400: {
+            "description": "Authentication fail",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Invalid token"
+                    }
+                }
+            }
+        },
+        404: {
+            "description": "Video not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "video dose not exist"
+                    }
+                }
+            }
+        },
+    }
+)
 def update_video(
     id: int,
     video_update: VideoUpdate,
@@ -99,7 +221,51 @@ def update_video(
         print(e)
 
 
-@video_router.get("/bundle/{video_id}/{lang_code}")
+@video_router.get(
+    "/bundle/{video_id}/{lang_code}",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Fetch video bundle success",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "audio": "https://aws.presigned.url/...",
+                        "subtitle": [
+                            {
+                                "time": 1.432,
+                                "text": "Hello eveyone.",
+                                "end": 6.098
+                            },
+                            {
+                                "time": 6.698,
+                                "text": "This is my first lectures.",
+                                "end": 12.025
+                            },
+                        ]
+                    }
+                }
+            }
+        },
+        404: {
+            "description": "Fetch video bundle fail",
+            "content": {
+                "application/json": {
+                    "examples": {
+                        "video_not_exist": {
+                            "summary": "video not exist",
+                            "value": {"detail": "video id: 1 not found or video have not converted to ko."}
+                        },
+                        "invalid_user": {
+                            "summary": "Invalid user",
+                            "value": {"detail": "Video 1 not found."}
+                        },
+                    }
+                }
+            }
+        }
+    }
+)
 def get_bundle(
     video_id: int,
     lang_code: str,
@@ -133,7 +299,7 @@ def get_bundle(
                 print(e)
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"video id: {video_id} not found or video have not converted to {lang_code}."
+                    detail=(f"video id: {video_id} not found or video have not converted to {lang_code}.")
                 )
 
     except Exception as e:

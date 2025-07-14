@@ -16,6 +16,15 @@ class VideoUpdate(BaseModel):
     title: str | None
     description: str | None = None
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "title": "My Lecture",
+                "description": "Updated description...",
+            }
+        }
+    )
+
 
 class SubtitleEntry(BaseModel):
     time: float

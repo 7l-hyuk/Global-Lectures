@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class _BaseUserModel(BaseModel):
@@ -9,12 +9,25 @@ class _BaseUserModel(BaseModel):
 class UserCreate(_BaseUserModel):
     email: EmailStr
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "username": "global_lectures",
+                "password": "1234",
+                "email": "donotreply@global.lectures"
+            }
+        }
+    )
+
 
 class UserLogin(_BaseUserModel):
     pass
 
-
-class UserUpdate(BaseModel):
-    username: str | None = None
-    password: str | None = None
-    email: EmailStr | None = None
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "username": "global_lectures",
+                "password": "1234"
+            }
+        }
+    )

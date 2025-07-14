@@ -1,10 +1,10 @@
 import time
 from pathlib import Path
 
-from fastapi import APIRouter, UploadFile, Depends, File, Form
+from fastapi import APIRouter, UploadFile, Depends, File, Form,  status
 
 from src.auth.authentication import authenticate, AuthenticatedPayload
-from src.path_manager import get_user_path, UserFile, UserDir
+from src.path_manager import get_user_path, UserFile
 from src.utils.audio import AudioSegment
 from src.utils.pipelines.dubbing_stages import (
     DubbingPipelineConfig,
@@ -28,7 +28,20 @@ from src.utils.pipelines.pipeline import Pipeline
 dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
 
 
-@dubbing_router.post("/")
+@dubbing_router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        201: {
+            "description": "Video processing success.",
+            "content": {
+                "application/json": {
+                    "example": {"msg": "Video processing success."}
+                }
+            }
+        },
+    }
+)
 def get_dubbing_video(
     video: UploadFile = File(...),
     source_lang: str = Form(...),
@@ -73,11 +86,7 @@ def get_dubbing_video(
                 stt_requset_timeout=600,
                 translation_requset_timeout=600,
                 tts_request_timeout=600,
-                reference_speaker=user_path_ctx.get_path(UserFile.AUDIO.REFERENCE_SPEAKER),
-                tts_output=user_path_ctx.get_path(UserDir.DUBBING),
-                dubbing_audio_output=user_path_ctx.get_path(UserFile.AUDIO.DUBBING),
-                source_subtitle_path=user_path_ctx.get_path(UserFile.SUBTITLE.SOURCE),
-                target_subtitle_path=user_path_ctx.get_path(UserFile.SUBTITLE.TARGET)
+                user_path_ctx=user_path_ctx
             )
         )
         audio_time = round(
@@ -127,3 +136,4 @@ def get_dubbing_video(
         except Exception as e:
             print(e)
     print(f"Service Processed In: {time.time() - start} s")
+    return {"msg": "Video processing success"}

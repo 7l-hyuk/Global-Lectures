@@ -19,7 +19,33 @@ from src.auth.jwt_handler import create_access_token
 auth_router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
 
-@auth_router.post("/signup")
+@auth_router.post(
+    "/signup",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        201: {
+            "description": "User sign up success",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "msg": "User sign up completed successfully",
+                        "username": "global_lectures"
+                    }
+                }
+            }
+        },
+        409: {
+            "description": "Username or email already registered",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "User already registered"
+                    }
+                }
+            }
+        },
+    }
+)
 def sign_up(
     user: UserCreate,
     uow: UnitOfWork = Depends(get_uow)
@@ -40,12 +66,35 @@ def sign_up(
     except Exception as e:
         print(e)
         raise HTTPException(
-            status_code=status.HTTP_200_OK,
+            status_code=status.HTTP_409_CONFLICT,
             detail="User already exist"
         )
 
 
-@auth_router.post("/signin")
+@auth_router.post(
+    "/signin",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "User sign in success",
+            "content": {
+                "application/json": {
+                    "example": {"msg": "Login success"}
+                }
+            }
+        },
+        401: {
+            "description": "Invalid username or password.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Invalid credentials"
+                    }
+                }
+            }
+        },
+    }
+)
 def sign_in(
     user: UserLogin,
     response: Response,
@@ -84,7 +133,41 @@ def sign_in(
         print(e)
 
 
-@auth_router.get("/me")
+@auth_router.get(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "User sign in success",
+            "content": {
+                "application/json": {
+                    "example": {"username": "global_lectures"}
+                }
+            }
+        },
+        401: {
+            "description": "Invalid username or password.",
+            "content": {
+                "application/json": {
+                    "examples": {
+                        "user_not_login": {
+                            "summary": "User not login",
+                            "value": {"detail": "User not Login"}
+                        },
+                        "invalid_username": {
+                            "summary": "Invalid username",
+                            "value": {"detail": "Invalid authenticaion payload"}
+                        },
+                        "invalid_password": {
+                            "summary": "Invalid password",
+                            "value": {"detail": "Authenticaion failed"}
+                        }
+                    }
+                }
+            }
+        },
+    }
+)
 def check_me(request: Request) -> dict[str, str]:
     access_token = request.cookies.get("access_token")
     if not access_token:
@@ -113,7 +196,9 @@ def check_me(request: Request) -> dict[str, str]:
         )
 
 
-@auth_router.post("/signout")
+@auth_router.post(
+    "/signout",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def sign_out(response: Response):
     response.delete_cookie("access_token", path="/")
-    return {"msg": "User sign out success"}
