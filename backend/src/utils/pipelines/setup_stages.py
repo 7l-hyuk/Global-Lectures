@@ -11,7 +11,11 @@ import src.utils.cmd.demucs as demucs
 
 
 class DownloadVideo(PipelineStage):
-    def process(self, user_path_ctx: UserPathContext, video: UploadFile) -> UserPathContext:
+    def process(
+            self,
+            user_path_ctx: UserPathContext,
+            video: UploadFile
+    ) -> UserPathContext:
         with open(user_path_ctx.get_path(UserFile.VIDEO.BASE), "wb") as f:
             shutil.copyfileobj(video.file, f)
         return user_path_ctx,
@@ -25,7 +29,7 @@ class ExtractAudio(PipelineStage):
         if not os.path.exists(base_video):
             raise FileNotFoundError(f"File not found: {base_video}")
 
-        cmd= ffmpeg.extract_audio(
+        cmd = ffmpeg.extract_audio(
             mp4_path=str(base_video),
             wav_path=str(base_audio)
         )

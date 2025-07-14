@@ -3,6 +3,7 @@ from pathlib import Path
 import subprocess
 import httpx
 from pydantic import BaseModel, ConfigDict
+from src.config import api_settings
 from src.utils.pipelines.base_stage import PipelineStage
 from src.utils.pipelines.tts import TtsClient
 from src.utils.audio import AudioSegment
@@ -51,7 +52,7 @@ class STT(PipelineStage):
             "model": config.stt_model
         }
         subtitle = httpx.post(
-            "http://localhost:8001/api/v1/stt",
+            api_settings.STT_SERVER_URL,
             json=payload,
             timeout=config.stt_requset_timeout
         ).json()
@@ -79,7 +80,7 @@ class TranslateSubtitle(PipelineStage):
             "subtitles": subtitle
         }
         translated_subtitle = httpx.post(
-            "http://localhost:8002/api/v1/translation",
+            api_settings.TRANSLATION_SERVER_URL,
             json=payload,
             timeout=config.translation_requset_timeout
         ).json()

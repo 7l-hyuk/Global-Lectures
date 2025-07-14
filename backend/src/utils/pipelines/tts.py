@@ -6,6 +6,8 @@ from enum import Enum
 
 import httpx
 
+from src.config import api_settings
+
 
 class TtsTask(Enum):
     VOICE_ID_GENERATION = 1
@@ -15,9 +17,9 @@ class TtsTask(Enum):
 
 @dataclass
 class TtsClient:
-    API_URL: str = "http://localhost:8003/api/v1/"
+    API_URL: str = api_settings.TTS_SERVER_URL
     voice_id: str | None = None
-    
+
     def _get_api_url(self, task: TtsTask):
         match task:
             case TtsTask.VOICE_ID_GENERATION:
@@ -41,10 +43,11 @@ class TtsClient:
 
         voice_id = res.json()["voice_id"]
         yield voice_id
-        
+
         with httpx.Client() as client:
             res = client.delete(
-                self._get_api_url(TtsTask.VOICE_ID_GENERATION) + f"?voice_id={voice_id}",
+                self._get_api_url(TtsTask.VOICE_ID_GENERATION)
+                + f"?voice_id={voice_id}",
             )
 
     def run(
