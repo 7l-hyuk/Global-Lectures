@@ -1,0 +1,140 @@
+.NavbarContainer {
+  display: flex;
+  background-image: linear-gradient(
+    45deg,
+    #1e1e1e,
+    #2b2b2b
+  );
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  position: fixed;
+  height: 2rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+
+.NavbarContent {
+  display: flex;
+  min-width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+
+.NavbarStart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.MenuButton {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: inherit;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+.MenuButton:hover {
+  color: #d7d7d7;
+}
+.Logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.Logo a {
+  text-decoration: none;
+  color: inherit;
+  padding-right: 2.8rem;
+}
+.Logo:hover {
+  color: #d7d7d7;
+}
+
+
+.NavbarMiddle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  gap: 2rem;
+  padding: 0;
+  padding-left: 1.5rem;
+}
+.NavbarMiddle li a {
+  text-decoration: none;
+  font-size: 1rem;
+  color: inherit;
+}
+.NavbarMiddle li a:hover {
+  color: #d7d7d7;
+}
+
+
+.NavbarEnd {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  padding: 0;
+  padding-left: 20rem;
+}
+.NavbarEnd li a {
+  text-decoration: none;
+  font-size: 1rem;
+  color: inherit;
+}
+.NavbarEnd li a:hover {
+  color: #d7d7d7;
+}
+
+
+.NavbarUser {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  padding: 0;
+  padding-left: 20rem;
+}
+.NavbarUser button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+  gap: 0.5rem;
+}
+.NavbarUser button:hover {
+  color: #d7d7d7;
+}
+.NavbarUser ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  background-color: #ffffff;
+  border: #e6e6e6 solid 1px;
+  border-top: none;
+  border-radius: 0 0 .3rem .3rem;
+}
+.NavbarUser li {
+  border-top: 1px solid #e6e6e6;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.8rem;
+}
+.NavbarUser a {
+  text-decoration: none;
+  color: #141414;
+}
+.NavbarUser li:hover {
+  background-color: #e1e1e1;
+}

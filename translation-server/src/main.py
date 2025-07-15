@@ -16,7 +16,7 @@ app.add_middleware(
 
 
 @app.post("/api/v1/translation", response_model=list[SubtitleEntry])
-async def subtitle_translate(
+def subtitle_translate(
     model_config: TranslationModelConfig,
 ):
     start = time.time()

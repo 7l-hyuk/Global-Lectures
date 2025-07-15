@@ -1,35 +1,53 @@
 import os
 import shutil
+from enum import Enum
 from pathlib import Path
 from contextlib import contextmanager
 
-from fastapi import UploadFile
 import uuid
 
 
-class UserPath:
-    def __init__(self, user_id: uuid.UUID):
-        self.user_dir = Path("/tmp") / str(user_id)
+class UserFile:
+    class VIDEO(Enum):
+        BASE = "video.mp4"
+        NO_SOUND = "no_sound.mp4"
+        NO_VOCAL = "no_vocal.mp4"
 
-        self.initial_video = self.user_dir / "video.mp4"
-        self.initial_audio = self.user_dir / "audio.wav"
+    class AUDIO(Enum):
+        BASE = "audio.wav"
+        REFERENCE_SPEAKER = "reference_speaker.wav"
+        DUBBING = "dubbing.wav"
+        VOCALS = "htdemucs/audio/vocals.wav"
+        BGM = "htdemucs/audio/no_vocals.wav"
     
-        self.dubbing_video = self.user_dir / "dubbing.mp4"
-        self.dubbing_audio = self.user_dir / "dubbing.wav"
+    class SUBTITLE(Enum):
+        SOURCE = "source_subtitle.json"
+        TARGET = "target_subtitle.json"
 
-        self.tts_audio_dir = self.user_dir / "dubbing"
-        self.tts_audio_sync_dir = self.user_dir / "sync"
 
-        self.source_subtitle = self.user_dir / "source_subtitle.json"
-        self.target_subtitle = self.user_dir / "target_subtitle.json"
+class UserDir(Enum):
+    DUBBING = "dubbing"
+    SYNC_DUBBING = "sync"
+    HTDEMUCS = "htdemucs/audio"
 
-        bgm_seperation_dir = self.user_dir / "htdemucs" / "audio"
-        self.vocals = bgm_seperation_dir / "vocals.wav"
-        self.reference_speaker = self.user_dir / "reference_speaker.wav"
-        self.background = bgm_seperation_dir / "no_vocals.wav"
 
-        for dir in [self.user_dir, self.tts_audio_dir, self.tts_audio_sync_dir, bgm_seperation_dir]:
-            os.makedirs(dir, exist_ok=True)
+class UserPathContext:
+    def __init__(self, user_id: uuid.UUID, base_dir: Path = Path("/tmp")):
+        self.user_dir = base_dir / str(user_id)
+
+        self._ensure_dirs([
+            self.user_dir,
+            self.user_dir / UserDir.DUBBING.value,
+            self.user_dir / UserDir.SYNC_DUBBING.value,
+            self.user_dir / UserDir.HTDEMUCS.value
+        ])
+
+    def _ensure_dirs(self, dirs):
+        for d in dirs:
+            os.makedirs(d, exist_ok=True)
+
+    def get_path(self, src: UserFile | UserDir) -> Path:
+        return self.user_dir / src.value
 
     def clear(self):
         shutil.rmtree(self.user_dir)
@@ -37,6 +55,6 @@ class UserPath:
 
 @contextmanager
 def get_user_path():
-    user_path = UserPath(user_id=uuid.uuid4())
-    yield user_path
-    # user_path.clear()
+    user_path_ctx = UserPathContext(user_id=uuid.uuid4())
+    yield user_path_ctx
+    # user_path_ctx.clear()

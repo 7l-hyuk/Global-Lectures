@@ -16,7 +16,7 @@ app.add_middleware(
 
 
 @app.post("/api/v1/stt", response_model=list[SubtitleEntry])
-async def stt(
+def stt(
     model_config: SttModelConfig
 ):
     start = time.time()
