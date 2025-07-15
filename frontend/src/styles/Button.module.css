@@ -1,0 +1,29 @@
+.Button {
+    display: flex;
+    gap: .5rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    padding: .55rem .9rem;
+    font-size: 1rem;
+    color: white;
+}
+
+.red {
+    background-color: #b53836;
+    border-color: #b53836;
+}
+.red:hover {
+    background-color: #982e2c;
+    border-color: #982e2c;
+}
+
+
+.green {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.green:hover {
+    background-color: #23913d;
+    border-color: #23913d;
+}

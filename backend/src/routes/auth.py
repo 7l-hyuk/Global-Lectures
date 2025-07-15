@@ -173,6 +173,7 @@ def sign_in(
 )
 def check_me(request: Request) -> dict[str, str]:
     access_token = request.cookies.get("access_token")
+    
     if not access_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -192,7 +193,7 @@ def check_me(request: Request) -> dict[str, str]:
                 detail="Invalid authenticaion payload",
             )
         return {"username": username}
-    except JWTError:
+    except JWTError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Authenticaion failed"

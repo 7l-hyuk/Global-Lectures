@@ -5,20 +5,23 @@ import Navbar from "./Navbar";
 
 
 const Layout: React.FC = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    }
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  }
 
-    return (
-        <div>
-            <Navbar toggleSidebar={toggleSidebar}/>
-            <main>
-                <Outlet />
-            </main>
-        </div>
-    )
+  return (
+    <>
+      <div>
+        <Navbar toggleSidebar={toggleSidebar} />
+        <main>
+          <Outlet />
+        </main>
+      </div>
+      
+    </>
+  )
 }
 
 
