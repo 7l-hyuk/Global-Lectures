@@ -1,5 +1,7 @@
 ######### FRONTEND #########
 
+frontend/.env
+
 # dependencies
 frontend/node_modules
 frontend/.pnp
@@ -39,7 +41,7 @@ wheels/
 *.wav
 *.mp4
 *.mp3
-*.json
+
 
 # Virtual environments
 .venv
