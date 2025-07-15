@@ -11,10 +11,12 @@ JWTPayload = dict[str, str | int]
 
 def create_access_token(payload: dict, expires_delta: int = None):
     to_encode = payload.copy()
-    to_encode["exp"] = datetime.now(timezone.utc)
-    + (
-        expires_delta
-        or timedelta(minutes=jwt_settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode["exp"] = (
+        datetime.now(timezone.utc)
+        + (
+            expires_delta
+            or timedelta(minutes=jwt_settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
     )
     return jwt.encode(
         claims=to_encode,
