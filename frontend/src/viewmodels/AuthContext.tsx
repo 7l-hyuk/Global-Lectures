@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { fetchMe, userSignout as signoutAPI } from "../models/auth";
 import { AuthContextType } from "../types/auth";
@@ -9,21 +8,28 @@ import { User } from "../types/auth";
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
-export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
+export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    
+    const [isLoading, setIsLoding] = useState(true);
+
     const fetchCurrentUser = async () => {
         try {
+            setIsLoding(true);
             const user = await fetchMe();
             const username = user?.data?.username;
 
             if (username) {
                 setUser({username});
+                setIsLoding(false);
             } else {
                 setUser(null);
+                setIsLoding(false);
             }
         } catch {
             setUser(null);
+            setIsLoding(false);
+        } finally {
+            setIsLoding(false);
         }
     };
 
@@ -36,13 +42,13 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
         }
     };
 
-    useEffect(
-        () => {fetchCurrentUser()},
-        []
-    );
+    useEffect(() => {
+        setIsLoding(true);
+        fetchCurrentUser();
+    }, []);
 
     return (
-        <AuthContext.Provider value={{user, setUser, fetchCurrentUser, userSignout}}>
+        <AuthContext.Provider value={{user, setUser, fetchCurrentUser, userSignout, isLoading}}>
             {children}
         </AuthContext.Provider>
     );

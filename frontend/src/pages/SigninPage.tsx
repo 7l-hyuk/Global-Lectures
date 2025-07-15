@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLock, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faLock, faSignIn, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import { useAuth } from "../viewmodels/AuthContext";
 import { userSignin as signinAPI } from "../models/auth";
@@ -10,8 +10,13 @@ import Button from "../components/Button";
 import styles from "../styles/SigninPage.module.css";
 
 
-const SigninFormGroup: React.FC<SigninFormGroupProps> = 
-  ({ icon, label, type, value, setValue }) => {
+const SigninFormGroup: React.FC<SigninFormGroupProps> = ({ icon, label, type, value, setValue }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = type === "password";
+  const inputType = isPassword && !showPassword ? "password" : "text";
+  const toggleIcon = showPassword ? faEye : faEyeSlash;
+
   return (
     <div className={styles.SigninFormGroupContainer}>
       <label>{label}</label>
@@ -19,9 +24,17 @@ const SigninFormGroup: React.FC<SigninFormGroupProps> =
         <FontAwesomeIcon icon={icon} />
         <input
           value={value}
-          type={type}
+          type={inputType}
           onChange={(event) => setValue(event.target.value)}
         />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            <FontAwesomeIcon icon={toggleIcon} />
+          </button>
+        )}
       </div>
     </div>
   )
