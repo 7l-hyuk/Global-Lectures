@@ -129,6 +129,9 @@ def sign_in(
                 path="/"
             )
             return {"msg": "Login success"}
+    except HTTPException as e:
+        raise e
+
     except Exception as e:
         print(e)
 
