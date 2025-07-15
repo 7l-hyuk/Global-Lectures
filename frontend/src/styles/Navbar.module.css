@@ -1,9 +1,10 @@
-.NavbarMain {
+.NavbarContainer {
   display: flex;
   background-image: linear-gradient(
     45deg,
     #1e1e1e,
-    #2b2b2b);
+    #2b2b2b
+  );
   align-items: center;
   justify-content: center;
   padding: 0.8rem 1.5rem;

@@ -1,5 +1,7 @@
 ######### FRONTEND #########
 
+frontend/.env
+
 # dependencies
 frontend/node_modules
 frontend/.pnp

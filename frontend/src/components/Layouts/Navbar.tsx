@@ -57,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
     };
 
     return (
-      <nav className={styles.NavbarMain}>
+      <nav className={styles.NavbarContainer}>
         <div className={styles.NavbarContent}>
           <div className={styles.NavbarStart}>
             <button className={styles.MenuButton} onClick={toggleSidebar}>
