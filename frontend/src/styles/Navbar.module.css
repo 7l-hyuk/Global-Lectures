@@ -19,6 +19,7 @@
 
 .NavbarContent {
   display: flex;
+  flex-flow: wrap;
   min-width: 950px;
   margin-left: auto;
   margin-right: auto;
