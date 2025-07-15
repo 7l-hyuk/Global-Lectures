@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 import { NavbarProps } from "../../types/components";
 import { useAuth } from "../../viewmodels/AuthContext";
@@ -11,8 +11,6 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const {user, userSignout} = useAuth();
-
-    // const user = {username: "test"};
 
     const UserMenu: React.FC = () => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -36,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
           <div className={styles.NavbarUser} ref={dropdownRef}>
             <button onClick={() => {setIsDropdownOpen(!isDropdownOpen)}}>
               {user.username}
-              <FontAwesomeIcon icon={faCaretDown}/>
+              <FontAwesomeIcon icon={faAngleDown}/>
             </button>
             {isDropdownOpen && (
               <ul>
