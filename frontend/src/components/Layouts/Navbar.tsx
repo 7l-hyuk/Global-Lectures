@@ -10,7 +10,7 @@ import styles from "../../styles/Navbar.module.css";
 const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const {user, userSignout} = useAuth();
+    const {user, userSignout, isLoading} = useAuth();
 
     const UserMenu: React.FC = () => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -28,29 +28,39 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
           document.removeEventListener("mousedown", handleClickOutside)
         }
       }, [])
-
-      if (user) {
-        return (
-          <div className={styles.NavbarUser} ref={dropdownRef}>
-            <button onClick={() => {setIsDropdownOpen(!isDropdownOpen)}}>
-              {user.username}
-              <FontAwesomeIcon icon={faAngleDown}/>
-            </button>
-            {isDropdownOpen && (
-              <ul>
-                <li><a href="/">mypage</a></li>
-                <li><a href="/">signout</a></li>
-              </ul>
-            )}
-          </div>
-        );
+      
+      if (!isLoading) {
+        if (user) {
+          return (
+            <div className={styles.NavbarUser} ref={dropdownRef}>
+              <button onClick={() => {setIsDropdownOpen(!isDropdownOpen)}}>
+                {user.username}
+                <FontAwesomeIcon icon={faAngleDown}/>
+              </button>
+              {isDropdownOpen && (
+                <ul>
+                  <li><a href="/">mypage</a></li>
+                  <li>
+                    <a href="/" onClick={async (event) => {
+                      event.preventDefault();
+                      await userSignout();
+                    }}>
+                    signout</a>
+                  </li>
+                </ul>
+              )}
+            </div>
+          );
+        } else {
+          return (
+            <ul className={styles.NavbarEnd}>
+              <li><a href="/signup">Sign Up</a></li>
+              <li><a href="/signin">Sign In</a></li>
+            </ul>
+          );
+        }
       } else {
-        return (
-          <ul className={styles.NavbarEnd}>
-            <li><a href="/signup">Sign Up</a></li>
-            <li><a href="/signin">Sign In</a></li>
-          </ul>
-        );
+        return <></>
       }
     };
 
