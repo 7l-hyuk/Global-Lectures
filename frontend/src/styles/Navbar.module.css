@@ -25,6 +25,8 @@
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+  font-size: .8rem;
+  font-weight: 500;
 }
 
 
@@ -69,8 +71,9 @@
 }
 .NavbarMiddle li a {
   text-decoration: none;
-  font-size: 1rem;
   color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 .NavbarMiddle li a:hover {
   color: #d7d7d7;
@@ -86,7 +89,7 @@
 }
 .NavbarEnd li a {
   text-decoration: none;
-  font-size: 1rem;
+  font-size: inherit;
   color: inherit;
 }
 .NavbarEnd li a:hover {
@@ -100,6 +103,8 @@
   gap: 2rem;
   padding: 0;
   padding-left: 20rem;
+  font-size: inherit;
+  font-weight: inherit;
 }
 .NavbarUser button {
   display: flex;
@@ -131,6 +136,7 @@
   border-top: 1px solid #e6e6e6;
   padding: 0.5rem 2rem;
   font-size: 0.8rem;
+  font-weight: 400;
 }
 .NavbarUser a {
   text-decoration: none;

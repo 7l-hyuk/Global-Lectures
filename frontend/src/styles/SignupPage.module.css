@@ -1,10 +1,10 @@
-.SigninFormContainer {
+.SignupFormContainer {
     display: flex;
     justify-content: center;
 }
 
-.SigninFormContent {
-    min-width: 400px;
+.SignupFormContent {
+    min-width: 700px;
     background-color: #FFF;
     color: #474747;
     margin: 2rem;
@@ -12,7 +12,7 @@
     border-radius: .25rem;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
 }
-.SigninFormContent h1 {
+.SignupFormContent h1 {
     padding: 0;
     margin: 0;
     font-size: 1.2rem;
@@ -21,19 +21,49 @@
     border-bottom: 1px solid #dadada;
 }
 
-.SigninFormGroupContainer {
+.SignupFormGroupContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 1.5rem;
     width: 100%;
 }
-.SigninFormGroupContainer label {
+.SignupFormGroupContainer label {
     margin-bottom: .7rem;
-    font-size: .85rem;
+    flex: 1;
+    font-size: 1rem;
     font-weight: 400;
     color: inherit;
 }
-.SigninFormGroupContainer div {
+.SignupFormGroupContainer input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+    font-size: inherit;
+    width: 100%;
+    height: 100%;
+}
+.SignupFormGroupContainer small {
+    font-size: .85rem;
+    margin-top: .25rem;
+    color: #888888;
+}
+.SignupFormGroupContainer button {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+}
+.SignupFormGroupContainer button:hover {
+    color: #6a6a6a;
+}
+
+.SignupFormGroupInputContainer {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+}
+.SignupFormGroupInput {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -43,25 +73,7 @@
     padding: .7rem 1rem;
     font-size: .85rem;
 }
-.SigninFormGroupContainer input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: inherit;
-    font-size: inherit;
-    width: 100%;
-    height: 100%;
-}
-.SigninFormGroupContainer button {
-    background-color: transparent;
-    border: none;
-    color: inherit;
-    font-size: inherit;
-}
-.SigninFormGroupContainer button:hover {
-    color: #6a6a6a;
-}
-.SiginFormAction {
+.SignupFormAction {
     display: flex;
     justify-content: end;
     margin-top: 3rem;

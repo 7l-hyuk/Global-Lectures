@@ -45,7 +45,8 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
                       event.preventDefault();
                       await userSignout();
                     }}>
-                    signout</a>
+                      signout
+                    </a>
                   </li>
                 </ul>
               )}

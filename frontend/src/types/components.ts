@@ -14,6 +14,14 @@ export interface SigninFormGroupProps {
   setValue: (e: string) => void;
 }
 
+export interface SignupFormGroupProps {
+  label: string;
+  description: string;
+  value: string;
+  type: string;
+  setValue: (e: string) => void;
+}
+
 
 export interface ButtonProps {
   icon: IconDefinition;
