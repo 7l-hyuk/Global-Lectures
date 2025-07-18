@@ -14,6 +14,7 @@ export interface SigninFormGroupProps {
   setValue: (e: string) => void;
 }
 
+
 export interface SignupFormGroupProps {
   label: string;
   description: string;
@@ -26,6 +27,37 @@ export interface SignupFormGroupProps {
 export interface ButtonProps {
   icon: IconDefinition;
   label: string;
-  color?: 'red' | 'green';
+  buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
+  color?: 'red' | 'green' | 'gray' | 'transparent';
+  width?: 'wide' | 'common';
   onClick: () => Promise<void> | void;
+}
+
+
+export interface CountryButtonProps {
+  country: 'KR' | 'US' | "JP" | "CN";
+  label: string;
+  buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
+  color?: 'red' | 'green' | 'gray' | 'transparent';
+  width?: 'wide' | 'common';
+  onClick: () => Promise<void> | void;
+}
+
+
+export interface BasicButtonProps {
+  label: string;
+  color?: 'gray' | 'red';
+  onClick: () => Promise<void> | void;
+}
+
+
+export interface VideoProps {
+  videoPath: string;
+  audioPath: string;
+}
+
+
+export interface ServiceIntroProps {
+  title: string;
+  description: string;
 }

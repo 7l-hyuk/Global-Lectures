@@ -5,7 +5,7 @@ import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import { userSignup as signupAPI } from "../models/auth";
 import { SignupFormGroupProps } from "../types/components";
-import Button from "../components/Button";
+import { IconButton } from "../components/Button";
 import styles from "../styles/SignupPage.module.css";
 
 
@@ -58,38 +58,37 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.SignupFormContainer}>
-      <div className={styles.SignupFormContent}>
-        <h1>REGISTER</h1>
-        <SignupFormGroup
-          label="Choose Username"
-          description="Only letters, numbers, - and _ can be used."
-          value={username}
-          type="text"
-          setValue={setUsername}
-        />
-        <SignupFormGroup
-          label="Email Address"
-          description="Not used for marketing. We'll never share your email with anyone else."
-          value={email}
-          type="text"
-          setValue={setEmail}
-        />
-        <SignupFormGroup
-          label="Password"
-          description="At least 8 characters."
-          value={password}
-          type="password"
-          setValue={setPassword}
-        />
-        <div className={styles.SignupFormAction}>
-        <Button
-          icon={faUser}
-          label="Register"
-          color="red"
-          onClick={userSignup}
-        />
-        </div>
+    <div className={styles.SignupFormContent}>
+      <h1>REGISTER</h1>
+      <SignupFormGroup
+        label="Choose Username"
+        description="Only letters, numbers, - and _ can be used."
+        value={username}
+        type="text"
+        setValue={setUsername}
+      />
+      <SignupFormGroup
+        label="Email Address"
+        description="Not used for marketing. We'll never share your email with anyone else."
+        value={email}
+        type="text"
+        setValue={setEmail}
+      />
+      <SignupFormGroup
+        label="Password"
+        description="At least 8 characters."
+        value={password}
+        type="password"
+        setValue={setPassword}
+      />
+      <div className={styles.SignupFormAction}>
+      <IconButton
+        icon={faUser}
+        label="Register"
+        color="red"
+        buttonType="Button"
+        onClick={userSignup}
+      />
       </div>
     </div>
   );
