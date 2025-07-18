@@ -2,10 +2,11 @@
 
 .container {
   width: 100%;
-  max-width: 800px;
+  max-width: inherit;
+  min-width: inherit;
   margin: .5rem .5rem;
   background-color: #111;
-  border-radius: 12px;
+  border-radius: .5rem;
   overflow: hidden;
   color: white;
   font-family: sans-serif;

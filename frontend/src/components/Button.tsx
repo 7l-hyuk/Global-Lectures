@@ -1,8 +1,9 @@
+// @ts-ignore
+import Flag from 'react-world-flags'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonProps, BasicButtonProps, CountryButtonProps } from "../types/components";
 import styles from "../styles/Button.module.css";
-// @ts-ignore
-import Flag from 'react-world-flags'
+
 
 const IconButton: React.FC<ButtonProps> = ({icon, label, onClick, color = "red", buttonType = "Button"}) => {
     return (
@@ -10,12 +11,12 @@ const IconButton: React.FC<ButtonProps> = ({icon, label, onClick, color = "red",
             className={`${styles[buttonType]} ${styles[color]}`}
             onClick={onClick}
         >
-            {/* <FontAwesomeIcon icon={icon} /> */}
-            <Flag code="KR" style={{ width: 24, height: 16 }} />
+            <FontAwesomeIcon icon={icon} />
             {label}
         </button>
     );
 };
+
 
 const ButtonIcon: React.FC<ButtonProps> = ({icon, label, onClick, color = "red", buttonType = "Button"}) => {
     return (
@@ -29,16 +30,18 @@ const ButtonIcon: React.FC<ButtonProps> = ({icon, label, onClick, color = "red",
     );
 };
 
+
 const BasicButton: React.FC<BasicButtonProps> = ({label, onClick, color="gray"}) => {
   return (
     <button
-      className={`${styles.MenuBotton} ${styles[color]}`}
+      className={`${styles.BasicBotton} ${styles[color]}`}
       onClick={onClick}
     >
       {label}
     </button>
   )
 }
+
 
 const CountryButton: React.FC<CountryButtonProps> = ({label, onClick, buttonType = "LangBotton", country="KR"}) => {
     return (
@@ -51,5 +54,6 @@ const CountryButton: React.FC<CountryButtonProps> = ({label, onClick, buttonType
         </button>
     );
 };
+
 
 export { IconButton, ButtonIcon, BasicButton, CountryButton };

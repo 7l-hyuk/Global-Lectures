@@ -58,6 +58,8 @@ export interface VideoProps {
 
 
 export interface ServiceIntroProps {
+  icon: IconDefinition;
+  iconColor: string;
   title: string;
   description: string;
 }

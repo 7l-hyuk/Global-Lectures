@@ -6,6 +6,7 @@
     border: 1px solid #2d2d2d;
     border-top: none;
     min-width: 800px;
+    max-width: 1000px;
 }
 
 .IndexContentContainer h1 {
@@ -41,12 +42,17 @@
     flex-direction: column;
 }
 .ServiceIntroContainer h1 {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
     font-size: 1.5rem;
 }
 .ServiceIntroContainer p {
     font-size: 1rem;
     margin-top: .5rem;
     font-weight: 400;
+    line-height: 1.35rem;
 }
 
 .ServiceIntroTable {
@@ -58,6 +64,8 @@
 }
 .ServiceIntroTable li {
     flex: 1;
-    border: 1px solid #2d2d2d;
     padding: 1.5rem;
+}
+.ServiceIntroTable > li:not(:last-child) {
+  border-right: 1px solid #2d2d2d;;
 }

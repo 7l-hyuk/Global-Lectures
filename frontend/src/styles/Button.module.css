@@ -30,7 +30,6 @@
   border: 1px solid transparent;
   cursor: pointer;
   height: 1.7rem;
-  width: 5rem;
   border-radius: .5rem;
   color: inherit;
   font-size: .8rem;
@@ -38,7 +37,7 @@
 }
 
 
-.MenuBotton {
+.BasicBotton {
   border: 1px solid transparent;
   cursor: pointer;
   height: 1.7rem;
