@@ -13,11 +13,11 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     const [isLoading, setIsLoding] = useState(true);
 
     const fetchCurrentUser = async () => {
+        console.log("try fetch user");
         try {
             setIsLoding(true);
             const user = await fetchMe();
             const username = user?.data?.username;
-
             if (username) {
                 setUser({username});
                 setIsLoding(false);
@@ -25,11 +25,14 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
                 setUser(null);
                 setIsLoding(false);
             }
+            console.log("end fetch user");
         } catch {
             setUser(null);
             setIsLoding(false);
+            console.log("end fetch user");
         } finally {
             setIsLoding(false);
+            console.log("end fetch user");
         }
     };
 

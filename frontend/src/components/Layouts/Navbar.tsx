@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 import { NavbarProps } from "../../types/components";
+import { BasicButton, ButtonIcon } from "../Button";
 import { useAuth } from "../../viewmodels/AuthContext";
 import styles from "../../styles/Navbar.module.css";
 
@@ -11,6 +13,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const {user, userSignout, isLoading} = useAuth();
+    const navigate = useNavigate();
 
     const UserMenu: React.FC = () => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -33,10 +36,13 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         if (user) {
           return (
             <div className={styles.NavbarUser} ref={dropdownRef}>
-              <button onClick={() => {setIsDropdownOpen(!isDropdownOpen)}}>
-                {user.username}
-                <FontAwesomeIcon icon={faAngleDown}/>
-              </button>
+              <ButtonIcon 
+                label={user.username}
+                color="gray"
+                buttonType="UserButton"
+                icon={faAngleDown}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              />
               {isDropdownOpen && (
                 <ul>
                   <li><a href="/">mypage</a></li>
@@ -44,8 +50,10 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
                     <a href="/" onClick={async (event) => {
                       event.preventDefault();
                       await userSignout();
+                      setIsDropdownOpen(false);
                     }}>
-                    signout</a>
+                      signout
+                    </a>
                   </li>
                 </ul>
               )}
@@ -54,8 +62,8 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         } else {
           return (
             <ul className={styles.NavbarEnd}>
-              <li><a href="/signup">Sign Up</a></li>
-              <li><a href="/signin">Sign In</a></li>
+              <li><BasicButton label="Sign In" onClick={()=>{navigate("/signin")}}/></li>
+              <li><BasicButton label="Sign Up" color="red" onClick={()=>{navigate("/signup")}}/></li>
             </ul>
           );
         }

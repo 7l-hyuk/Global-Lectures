@@ -1,29 +1,114 @@
 .Button {
-    display: flex;
-    gap: .5rem;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: .25rem;
-    padding: .55rem .9rem;
-    font-size: 1rem;
-    color: white;
+  display: flex;
+  gap: .5rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  padding: .55rem .9rem;
+  font-size: 1rem;
+  color: white;
 }
+
+.IndexPageBotton {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .7rem;
+  padding: .55rem .9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.UserButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  height: 1.7rem;
+  width: 5rem;
+  border-radius: .5rem;
+  color: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+
+.MenuBotton {
+  border: 1px solid transparent;
+  cursor: pointer;
+  height: 1.7rem;
+  width: 5rem;
+  border-radius: .5rem;
+  color: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.LangBotton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  gap: .3rem;
+  border: 1px solid #343434;
+  cursor: pointer;
+  height: 1.7rem;
+  width: 100%;
+  border-radius: .2rem;
+  color: #a8a8a8;
+  font-weight: 600;
+  font-size: .8rem;
+  margin: .5rem .5em;
+}
+.ActivatedLangBotton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  border: 1px solid #343434;
+  background-color: #2a2a2a;
+  cursor: pointer;
+  height: 1.7rem;
+  width: 100%;
+  border-radius: .2rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: .8rem;
+  margin: .5rem .5em;
+}
+
 
 .red {
-    background-color: #b53836;
-    border-color: #b53836;
+  background-color: #b53836;
 }
 .red:hover {
-    background-color: #982e2c;
-    border-color: #982e2c;
+  background-color: #982e2c;
 }
 
+.gray {
+  background-color: #494949;
+  color: #a8a8a8
+}
+.gray:hover {
+  background-color: #373737;
+}
 
 .green {
-    background-color: #28a745;
-    border-color: #28a745;
+  background-color: #28a745;
 }
 .green:hover {
-    background-color: #23913d;
-    border-color: #23913d;
+  background-color: #23913d;
+}
+
+.transparent:hover {
+  color: #717171;
+}
+
+.wide {
+  width: 100%;
 }

@@ -6,7 +6,7 @@ import { faUser, faLock, faSignIn, faEye, faEyeSlash } from "@fortawesome/free-s
 import { useAuth } from "../viewmodels/AuthContext";
 import { userSignin as signinAPI } from "../models/auth";
 import { SigninFormGroupProps } from "../types/components";
-import Button from "../components/Button";
+import { IconButton } from "../components/Button";
 import styles from "../styles/SigninPage.module.css";
 
 
@@ -57,31 +57,30 @@ const SigninPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.SigninFormContainer}>
-      <div className={styles.SigninFormContent}>
-        <h1>SIGN IN</h1>
-        <SigninFormGroup
-          icon={faUser}
-          label="E-Mail Address or Username"
-          value={username}
-          type="text"
-          setValue={setUsername}
-        />
-        <SigninFormGroup
-          icon={faLock}
-          label="Password"
-          value={password}
-          type="password"
-          setValue={setPassword}
-        />
-        <div className={styles.SiginFormAction}>
-        <Button
-          icon={faSignIn}
-          label="Sign In"
-          color="red"
-          onClick={userSignin}
-        />
-        </div>
+    <div className={styles.SigninFormContent}>
+      <h1>SIGN IN</h1>
+      <SigninFormGroup
+        icon={faUser}
+        label="E-Mail Address or Username"
+        value={username}
+        type="text"
+        setValue={setUsername}
+      />
+      <SigninFormGroup
+        icon={faLock}
+        label="Password"
+        value={password}
+        type="password"
+        setValue={setPassword}
+      />
+      <div className={styles.SiginFormAction}>
+      <IconButton
+        icon={faSignIn}
+        label="Sign In"
+        buttonType="Button"
+        color="red"
+        onClick={userSignin}
+      />
       </div>
     </div>
   );

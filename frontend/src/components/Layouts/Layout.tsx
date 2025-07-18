@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "./Navbar";
+import styles from "../../styles/global.module.css";
 
 
 const Layout: React.FC = () => {
@@ -15,7 +16,7 @@ const Layout: React.FC = () => {
     <>
       <div>
         <Navbar toggleSidebar={toggleSidebar} />
-        <main>
+        <main className={styles.MainContainer}>
           <Outlet />
         </main>
       </div>

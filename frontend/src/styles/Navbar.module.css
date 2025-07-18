@@ -20,11 +20,13 @@
 .NavbarContent {
   display: flex;
   flex-flow: wrap;
-  min-width: 950px;
+  min-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+  font-size: .8rem;
+  font-weight: 500;
 }
 
 
@@ -69,24 +71,25 @@
 }
 .NavbarMiddle li a {
   text-decoration: none;
-  font-size: 1rem;
-  color: inherit;
+  color: #a8a8a8;
+  font-size: inherit;
+  font-weight: inherit;
 }
 .NavbarMiddle li a:hover {
-  color: #d7d7d7;
+  color: #878787;
 }
 
 
 .NavbarEnd {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: .5rem;
   padding: 0;
   padding-left: 20rem;
 }
 .NavbarEnd li a {
   text-decoration: none;
-  font-size: 1rem;
+  font-size: inherit;
   color: inherit;
 }
 .NavbarEnd li a:hover {
@@ -96,23 +99,14 @@
 
 .NavbarUser {
   display: flex;
+  align-items: center;
+  justify-content: center;
   list-style: none;
   gap: 2rem;
   padding: 0;
   padding-left: 20rem;
-}
-.NavbarUser button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
   font-size: inherit;
-  color: inherit;
-  gap: 0.5rem;
-}
-.NavbarUser button:hover {
-  color: #d7d7d7;
+  font-weight: inherit;
 }
 .NavbarUser ul {
   display: flex;
@@ -131,6 +125,7 @@
   border-top: 1px solid #e6e6e6;
   padding: 0.5rem 2rem;
   font-size: 0.8rem;
+  font-weight: 400;
 }
 .NavbarUser a {
   text-decoration: none;

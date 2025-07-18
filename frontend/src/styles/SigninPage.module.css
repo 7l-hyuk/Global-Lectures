@@ -1,24 +1,16 @@
-.SigninFormContainer {
-    display: flex;
-    justify-content: center;
-}
-
 .SigninFormContent {
-    max-width: 1280px;
-    min-width: 500px;
+    min-width: 300px;
+    background-color: #404040;
+    color: #ffffff;
     margin: 2rem;
     padding: 1rem 2rem;
-    color: #474747;
-    border: 1px solid #dadada;
-    border-radius: .2rem;
+    border-radius: .3rem;
 }
 .SigninFormContent h1 {
     padding: 0;
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding-bottom: 1rem;
-    margin-bottom: 2rem;
-    border-bottom: inherit;
 }
 
 .SigninFormGroupContainer {
@@ -29,7 +21,7 @@
 }
 .SigninFormGroupContainer label {
     margin-bottom: .7rem;
-    font-size: 1rem;
+    font-size: .85rem;
     font-weight: 400;
     color: inherit;
 }
@@ -38,16 +30,17 @@
     align-items: center;
     gap: 1rem;
     color: inherit;
-    border: 1px solid #dadada;
+    border: 1px solid #5d5d5d;
     border-radius: .2rem;
     padding: .7rem 1rem;
+    font-size: .85rem;
 }
 .SigninFormGroupContainer input {
     background: transparent;
     border: none;
     outline: none;
     color: inherit;
-    font-size: 1rem;
+    font-size: inherit;
     width: 100%;
     height: 100%;
 }
@@ -58,12 +51,12 @@
     font-size: inherit;
 }
 .SigninFormGroupContainer button:hover {
-    color: rgb(100, 99, 99);
+    color: #6a6a6a;
 }
 .SiginFormAction {
     display: flex;
     justify-content: end;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #dadada;;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #5d5d5d;
 }
