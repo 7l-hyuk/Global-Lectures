@@ -25,6 +25,28 @@
     width: 100%;
     border-top: 1px solid #2d2d2d;
 }
+.UseCaseContent {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem;
+}
+.UseCaseContent span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b53836;
+    font-weight: 700;
+    font-size: 1rem;
+    gap: .5rem;
+}
+.UseCaseContent p {
+ text-align: center;
+ color: #bfbfbf;
+ width: 70%;
+}
 .ButtonContainer {
     display: flex;
     gap: 2rem;
@@ -68,4 +90,10 @@
 }
 .ServiceIntroTable > li:not(:last-child) {
   border-right: 1px solid #2d2d2d;;
+}
+.ServiceIntroTable h1 {
+    font-size: 1.1rem;
+}
+.ServiceIntroTable p {
+    color: #8d8d8d;
 }

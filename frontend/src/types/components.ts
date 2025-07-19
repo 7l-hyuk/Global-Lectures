@@ -54,6 +54,7 @@ export interface BasicButtonProps {
 export interface VideoProps {
   videoPath: string;
   audioPath: string;
+  scriptPath: string;
 }
 
 
@@ -62,4 +63,16 @@ export interface ServiceIntroProps {
   iconColor: string;
   title: string;
   description: string;
+}
+
+
+export interface SubtitleEntry {
+  start: number;
+  end: number;
+  text: string;
+}
+
+
+export interface ScriptContentRowProps {
+  script: SubtitleEntry;
 }

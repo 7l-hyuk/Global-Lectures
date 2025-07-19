@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { faChevronRight, faDatabase, faGlobe, faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faDatabase, faGlobe, faMicrophoneLines, faRotate } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "../styles/IndexPage.module.css";
 import { ButtonIcon, CountryButton } from "../components/Button";
@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ServiceIntro: React.FC<ServiceIntroProps> = ({ title, description, icon, iconColor }) => {
   return (
     <div className={styles.ServiceIntroContainer}>
-      <h1>
-        <FontAwesomeIcon icon={icon} style={{color: iconColor}} />
+      <h1 style={{color: iconColor}}>
+        <FontAwesomeIcon icon={icon} />
         {title}
       </h1>
       <p>{description}</p>
@@ -36,21 +36,20 @@ const IndexPage: React.FC = () => {
     <div className={styles.IndexContentContainer}>
       <h1>Dub Any Lecture, In Any Language</h1>
       <p>Multilingual lecture translation and dubbing service</p>
-      <div style={{boxShadow: " -53px -6px 87px 68px rgba(108,21,21, 0.32), 53px 13px 100px 50px rgba(98,17,17, 0.37)", width: "40%"}} />
       <div className={styles.ButtonContainer}>
         <ButtonIcon
           icon={faChevronRight}
           label="Get Started"
           buttonType="IndexPageBotton"
           color="red"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <ButtonIcon
           icon={faChevronRight}
           label="Watch Preview"
           buttonType="IndexPageBotton"
           color="gray"
-          onClick={() => { }}
+          onClick={() => {}}
         />
       </div>
       <div className={styles.IndexContent}>
@@ -59,10 +58,8 @@ const IndexPage: React.FC = () => {
             <ServiceIntro
               title="Global Service"
               icon={faGlobe}
-              iconColor="#baa7ff"
-              description=" Global Lectures supports multilingual lecture dubbing. Choose any language you prefer.
-                          Now, you won't miss out on great lectures just because they're in a language you don't understand, 
-                          and there's no need to record the same lecture multiple times to offer it in different languages."
+              iconColor="#b53836"
+              description=" Global Lectures offers multilingual dubbing, so you can enjoy great lectures without language barriers—no need to re-record in every language.."
             />
           </li>
           <li>
@@ -70,8 +67,7 @@ const IndexPage: React.FC = () => {
               title="Dubbing Lectures"
               icon={faMicrophoneLines}
               iconColor="#27b08b"
-              description="Dubbed lectures offer a more immersive experience compared to subtitles. 
-                          Global Lectures also provides subtitles alongside dubbing to ensure even greater accuracy in lecture translation."
+              description="Dubbed lectures offer a more immersive experience than subtitles, and Global Lectures includes both for greater translation accuracy."
             />
           </li>
           <li>
@@ -79,12 +75,20 @@ const IndexPage: React.FC = () => {
               title="Lecture Database"
               icon={faDatabase}
               iconColor="#ffca16"
-              description="By signing up, you can store your converted videos and subtitles directly on our website—without taking up space on your local computer. 
-                          You can also add translations into other languages anytime you want. 
-                          All data is securely stored using Amazon S3."
+              description="Sign up to store your videos and subtitles online—no local storage needed. Add translations anytime, with secure Amazon S3 storage."
             />
           </li>
         </ul>
+      </div>
+      <div className={styles.IndexContent}>
+        <div className={styles.UseCaseContent}>
+          <span>
+            <FontAwesomeIcon icon={faRotate} />
+            Lectuer Translation
+          </span>
+          <h1>Use Cases of Sample Lectures</h1>
+          <p>Here are sample use cases of an English lecture translated into Korean, Japanese, and Chinese. Feel free to switch languages and watch comfortably.</p>
+        </div>
       </div>
       <div className={styles.IndexContent}>
         <div className={styles.LangButtonContainer}>
@@ -119,7 +123,11 @@ const IndexPage: React.FC = () => {
         </div>
       </div>
       <div className={styles.IndexContent}>
-        <LecturePlayer videoPath="/sample.mp4" audioPath={`/${LangCodeMap[activatedLang]}.wav`} />
+        <LecturePlayer 
+          videoPath="/sample.mp4"
+          audioPath={`/${LangCodeMap[activatedLang]}.wav`}
+          scriptPath={`/${LangCodeMap[activatedLang]}.json`}
+        />
       </div>
     </div>
   );

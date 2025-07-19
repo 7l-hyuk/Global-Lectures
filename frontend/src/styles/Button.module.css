@@ -64,6 +64,10 @@
   font-size: .8rem;
   margin: .5rem .5em;
 }
+.LangBotton:hover {
+  color: #ffffff;
+}
+
 .ActivatedLangBotton {
   display: flex;
   align-items: center;

@@ -1,28 +1,29 @@
-/* video.module.css */
-
 .container {
   width: 100%;
-  max-width: inherit;
-  min-width: inherit;
-  margin: .5rem .5rem;
-  background-color: #111;
-  border-radius: .5rem;
+  display: flex;
+  background-color: #1e1e1e;
   overflow: hidden;
   color: white;
   font-family: sans-serif;
 }
+.content {
+  margin: .5rem;
+}
 
 .video {
   width: 100%;
+  border-radius: .5rem .5rem 0 0;
+  background-color: inherit;
   display: block;
 }
 
 .controls {
   display: flex;
   flex-direction: column;
+  border-radius: 0 0 .5rem .5rem;
   gap: 12px;
   padding: 16px;
-  background-color: #222;
+  background-color: #252525;
 }
 
 .controlButtonContainer {
@@ -110,7 +111,7 @@
 
 .volumeSlider {
   width: 0rem;
-  height: 6px;
+  height: .25rem;
   appearance: none;
   background: #555;
   outline: none;
@@ -134,17 +135,77 @@
 
 .volumeSlider::-webkit-slider-thumb {
   appearance: none;
-  height: .8rem;
-  width: .8rem;
+  height: .6rem;
+  width: .6rem;
   background: #ffffff;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .volumeSlider::-moz-range-thumb {
-  height: .8rem;
-  width: .8rem;
+  height: .6rem;
+  width: .6rem;
   background: #ffffff;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.ScriptContainer {
+  display: flex;
+  flex-direction: column;
+  width: 60rem;
+  border-radius: .5rem;
+  margin: .5rem;
+  background-color: #252525;
+}
+.Script {
+  margin: 1rem;
+}
+.ScriptHeader {
+  display: flex;
+  justify-content: space-between;
+}
+.ScriptHeader h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.ScriptHeader button{
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.2rem;
+}
+.ScriptHeader button:hover{
+  color: #b0b0b0;
+}
+.Script ul {
+  display: flex;
+  flex-direction: column;
+  height: 24rem;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+.Script ul li {
+  display: flex;
+  margin: .5rem 0;
+  padding: .5rem;
+  gap: 1rem;
+}
+.Script ul li:hover {
+  background-color: #505050;
+}
+.ScriptContentRowTime {
+  background-color: #263850;
+  color: #3EA6FF;
+  padding: 0 .4rem;
+  border-radius: .2rem;
+}
+.ScriptContentRowText {
+  width: 100%;
+  word-break: break-word;
+  margin-right: 1rem;
 }
