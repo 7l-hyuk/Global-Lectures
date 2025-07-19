@@ -27,7 +27,7 @@ export interface SignupFormGroupProps {
 export interface ButtonProps {
   icon: IconDefinition;
   label: string;
-  buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
+  buttonType?: string;
   color?: 'red' | 'green' | 'gray' | 'transparent';
   width?: 'wide' | 'common';
   onClick: () => Promise<void> | void;

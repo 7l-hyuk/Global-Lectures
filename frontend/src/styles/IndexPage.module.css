@@ -86,6 +86,7 @@
 }
 .ServiceIntroTable li {
     flex: 1;
+    z-index: 1;
     padding: 1.5rem;
 }
 .ServiceIntroTable > li:not(:last-child) {

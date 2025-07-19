@@ -58,7 +58,7 @@ const IndexPage: React.FC = () => {
             <ServiceIntro
               title="Global Service"
               icon={faGlobe}
-              iconColor="#b53836"
+              iconColor="#FFFFFF"
               description=" Global Lectures offers multilingual dubbing, so you can enjoy great lectures without language barriers—no need to re-record in every language.."
             />
           </li>
@@ -66,7 +66,7 @@ const IndexPage: React.FC = () => {
             <ServiceIntro
               title="Dubbing Lectures"
               icon={faMicrophoneLines}
-              iconColor="#27b08b"
+              iconColor="#FFFFFF"
               description="Dubbed lectures offer a more immersive experience than subtitles, and Global Lectures includes both for greater translation accuracy."
             />
           </li>
@@ -74,7 +74,7 @@ const IndexPage: React.FC = () => {
             <ServiceIntro
               title="Lecture Database"
               icon={faDatabase}
-              iconColor="#ffca16"
+              iconColor="#FFFFFF"
               description="Sign up to store your videos and subtitles online—no local storage needed. Add translations anytime, with secure Amazon S3 storage."
             />
           </li>

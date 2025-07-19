@@ -36,6 +36,19 @@
   font-weight: 600;
 }
 
+.GithubButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  height: 1.7rem;
+  border-radius: .5rem;
+  color: #a8a8a8;
+  font-size: .8rem;
+  font-weight: 600;
+}
 
 .BasicBotton {
   border: 1px solid transparent;
@@ -108,8 +121,13 @@
   background-color: #23913d;
 }
 
+.transparent {
+  background-color: transparent;
+  border-color: #545454;
+}
 .transparent:hover {
   color: #717171;
+  background-color: #303030;
 }
 
 .wide {

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {faGithub} from '@fortawesome/free-brands-svg-icons'
 import { useNavigate } from "react-router-dom";
 
 import { NavbarProps } from "../../types/components";
-import { BasicButton, ButtonIcon } from "../Button";
+import { BasicButton, ButtonIcon, IconButton } from "../Button";
 import { useAuth } from "../../viewmodels/AuthContext";
 import styles from "../../styles/Navbar.module.css";
 
@@ -38,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
             <div className={styles.NavbarUser} ref={dropdownRef}>
               <ButtonIcon 
                 label={user.username}
-                color="gray"
+                color="transparent"
                 buttonType="UserButton"
                 icon={faAngleDown}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -62,6 +63,13 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         } else {
           return (
             <ul className={styles.NavbarEnd}>
+              <IconButton 
+                label="GitHub"
+                color="transparent"
+                buttonType="GithubButton"
+                icon={faGithub}
+                onClick={() => {window.open('https://github.com/7l-hyuk/Global-Lectures', '_blank')}}
+              />
               <li><BasicButton label="Sign In" onClick={()=>{navigate("/signin")}}/></li>
               <li><BasicButton label="Sign Up" color="red" onClick={()=>{navigate("/signup")}}/></li>
             </ul>
