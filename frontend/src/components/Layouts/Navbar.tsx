@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import {faGithub} from '@fortawesome/free-brands-svg-icons'
+import {faGithub, faYoutube} from '@fortawesome/free-brands-svg-icons'
 import { useNavigate } from "react-router-dom";
 
 import { NavbarProps } from "../../types/components";
@@ -66,9 +66,16 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
               <IconButton 
                 label="GitHub"
                 color="transparent"
-                buttonType="GithubButton"
+                buttonType="LinkButton"
                 icon={faGithub}
                 onClick={() => {window.open('https://github.com/7l-hyuk/Global-Lectures', '_blank')}}
+              />
+              <IconButton 
+                label="Youtube"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faYoutube}
+                onClick={() => {window.open('https://www.youtube.com/@global-lectures-korea', '_blank')}}
               />
               <li><BasicButton label="Sign In" onClick={()=>{navigate("/signin")}}/></li>
               <li><BasicButton label="Sign Up" color="red" onClick={()=>{navigate("/signup")}}/></li>
@@ -93,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
           </div>
   
           <ul className={styles.NavbarMiddle}>
-            <li><a href="/">Service</a></li>
+            <li><a href="/service">Service</a></li>
             <li><a href="/">Pricing</a></li>
             <li><a href="/">Contact</a></li>
           </ul>

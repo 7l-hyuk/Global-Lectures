@@ -35,8 +35,8 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
         style={script.start <= currentTime && currentTime <= script.end ? {backgroundColor: "#505050"} : {}}
         onClick={() => {
           if (video && audio) {
-            video.currentTime = script.start;
-            audio.currentTime = script.start;
+            video.currentTime = script.start + 0.01;
+            audio.currentTime = script.start + 0.01;
           }
         }}
       >

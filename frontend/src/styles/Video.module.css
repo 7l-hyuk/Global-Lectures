@@ -1,12 +1,14 @@
 .container {
   width: 100%;
   display: flex;
+  justify-content: center;
   background-color: #1e1e1e;
   overflow: hidden;
   color: white;
   font-family: sans-serif;
 }
 .content {
+  width: 50%;
   margin: .5rem;
 }
 
@@ -153,7 +155,7 @@
 .ScriptContainer {
   display: flex;
   flex-direction: column;
-  width: 60rem;
+  width: 50%;
   border-radius: .5rem;
   margin: .5rem;
   background-color: #252525;
@@ -181,7 +183,7 @@
 .Script ul {
   display: flex;
   flex-direction: column;
-  height: 24rem;
+  height: 15rem;
   overflow-y: auto;
   list-style: none;
   margin: 0;

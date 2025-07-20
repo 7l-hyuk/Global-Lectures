@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { faChevronRight, faDatabase, faGlobe, faMicrophoneLines, faRotate } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "../styles/IndexPage.module.css";
@@ -25,6 +26,7 @@ const IndexPage: React.FC = () => {
   type LangKey = 'Korean' | 'English' | 'Japanese' | 'Chinese';
   const [activatedLang, setActivatedLang] = useState<LangKey>("Korean");
   const Languages: LangKey[] = ["Korean", "English", "Japanese", "Chinese"];
+  const navigate = useNavigate();
 
   const LangCodeMap = {
     Korean: "ko",
@@ -42,7 +44,7 @@ const IndexPage: React.FC = () => {
           label="Get Started"
           buttonType="IndexPageBotton"
           color="red"
-          onClick={() => {}}
+          onClick={() => navigate("/service")}
         />
         <ButtonIcon
           icon={faChevronRight}
