@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { faPlay, faPause, faClosedCaptioning, faVolumeXmark, faVolumeLow, faVolumeHigh, faEllipsisVertical, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faClosedCaptioning, faVolumeXmark, faVolumeLow, faVolumeHigh, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { VideoProps, ScriptContentRowProps, SubtitleEntry } from '../types/components';
+import { VideoProps, ScriptContentRowProps, ControlButtonProps ,SubtitleEntry } from '../types/components';
 import styles from '../styles/Video.module.css';
 
 
@@ -13,18 +13,26 @@ const formatTime = (seconds: number): string => {
 };
 
 
+const ControlButton: React.FC<ControlButtonProps> = ({onClick, icon, style}) => {
+  return (
+    <button onClick={onClick} className={styles[style]}>
+      <FontAwesomeIcon icon={icon} />
+    </button>
+  );
+};
+
+
 const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath}) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showScript, setShowScript] = useState(false);
+  const [scripts, setScripts] = useState<SubtitleEntry[]>([])
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const [scripts, setScripts] = useState<SubtitleEntry[]>([])
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-
 
   const ScriptContentRow: React.FC<ScriptContentRowProps> = ({ script }) => {
     const video = videoRef.current;
@@ -41,7 +49,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
         }}
       >
         <div>
-        <span className={styles.ScriptContentRowTime}>{formatTime(script.start)}</span>
+          <span className={styles.ScriptContentRowTime}>{formatTime(script.start)}</span>
         </div>
         <div className={styles.ScriptContentRowText}>
           <span>{script.text}</span>
@@ -49,6 +57,25 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
       </li>
     );
   };
+
+  const Script: React.FC = () => {
+    return (
+      <div className={styles.ScriptContainer}>
+        <div className={styles.Script}>
+          <div className={styles.ScriptHeader}>
+            <h1>Script</h1>
+            <button onClick={() => {setShowScript(false)}}><FontAwesomeIcon icon={faTimes} /></button>
+          </div>
+          <ul>
+            {scripts.map((script, _) => (
+              <ScriptContentRow script={script}/>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  };
+
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -92,8 +119,8 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
     }
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
+  const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(event.target.value);
     const video = videoRef.current;
     const audio = audioRef.current;
   
@@ -165,13 +192,17 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
             }}
           />
           <div className={styles.controlButtonContainer}>
-            <button onClick={togglePlay} className={styles.playButton}>
-              <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-            </button>
+            <ControlButton
+              onClick={togglePlay}
+              icon={isPlaying ? faPause : faPlay}
+              style='playButton'
+            />
             <div className={styles.videoSettingControl}>
-              <button onClick={() => {setShowVolumeControl(!showVolumeControl)}} className={styles.subtitleButton}>
-                <FontAwesomeIcon icon={(volume == 0) ? faVolumeXmark : (volume < 0.5) ? faVolumeLow : faVolumeHigh} />
-              </button>
+              <ControlButton
+                onClick={() => {setShowVolumeControl(!showVolumeControl)}}
+                icon={(volume == 0) ? faVolumeXmark : (volume < 0.5) ? faVolumeLow : faVolumeHigh}
+                style='ControlButton'
+              />
               <input
                 type="range"
                 min={0}
@@ -184,28 +215,16 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
                   background: `linear-gradient(to right, #ffffff ${volume * 100}%, #333 ${volume * 100}%)`,
                 }}
               />
-              <button onClick={() => {setShowSubtitle(!showSubtitle)}} className={styles.subtitleButton}>
-                <FontAwesomeIcon icon={faClosedCaptioning} />
-              </button>
+              <ControlButton
+                onClick={() => {setShowScript(!showScript)}}
+                icon={faClosedCaptioning}
+                style='ControlButton'
+              />
             </div>
           </div>
         </div>
       </div>
-      {showSubtitle && (
-        <div className={styles.ScriptContainer}>
-          <div className={styles.Script}>
-            <div className={styles.ScriptHeader}>
-              <h1>Script</h1>
-              <button onClick={() => {setShowSubtitle(false)}}><FontAwesomeIcon icon={faTimes} /></button>
-            </div>
-            <ul>
-              {scripts.map((script, index) => (
-                <ScriptContentRow script={script}/>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      {showScript && <Script />}
     </div>
   );
 };

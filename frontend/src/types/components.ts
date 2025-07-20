@@ -76,3 +76,10 @@ export interface SubtitleEntry {
 export interface ScriptContentRowProps {
   script: SubtitleEntry;
 }
+
+
+export interface ControlButtonProps {
+  onClick: () => void;
+  icon: IconDefinition;
+  style: string;
+}

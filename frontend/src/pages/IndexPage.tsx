@@ -34,6 +34,7 @@ const IndexPage: React.FC = () => {
     Japanese: "ja",
     Chinese: "zh"
   };
+
   return (
     <div className={styles.IndexContentContainer}>
       <h1>Dub Any Lecture, In Any Language</h1>
@@ -86,7 +87,7 @@ const IndexPage: React.FC = () => {
         <div className={styles.UseCaseContent}>
           <span>
             <FontAwesomeIcon icon={faRotate} />
-            Lectuer Translation
+            Lecture Translation
           </span>
           <h1>Use Cases of Sample Lectures</h1>
           <p>Here are sample use cases of an English lecture translated into Korean, Japanese, and Chinese. Feel free to switch languages and watch comfortably.</p>
