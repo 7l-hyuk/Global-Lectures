@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 5rem 0;
-    border: 1px solid #2d2d2d;
+    border: 1px solid var(--bg-border-color);
     border-top: none;
     min-width: 800px;
     max-width: 1000px;
@@ -14,7 +14,7 @@
     font-weight: 600;
 }
 .IndexContentContainer p {
-    color: #898989;
+    color: var(--gray-font-color);
     font-weight: 500;
 }
 
@@ -23,7 +23,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    border-top: 1px solid #2d2d2d;
+    border-top: 1px solid var(--bg-border-color);
 }
 .UseCaseContent {
     display: flex;
@@ -37,14 +37,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #b53836;
+    color: var(--red-btn-color);
     font-weight: 700;
     font-size: 1rem;
     gap: .5rem;
 }
 .UseCaseContent p {
  text-align: center;
- color: #bfbfbf;
+ color: var(--gray-font-color);
  width: 70%;
 }
 .ButtonContainer {
@@ -90,11 +90,11 @@
     padding: 1.5rem;
 }
 .ServiceIntroTable > li:not(:last-child) {
-  border-right: 1px solid #2d2d2d;;
+  border-right: 1px solid var(--bg-border-color);
 }
 .ServiceIntroTable h1 {
     font-size: 1.1rem;
 }
 .ServiceIntroTable p {
-    color: #8d8d8d;
+    color: var(--gray-font-color);
 }

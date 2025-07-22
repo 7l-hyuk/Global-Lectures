@@ -34,7 +34,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const ScriptContentRow: React.FC<ScriptContentRowProps> = ({ script }) => {
+  const ScriptRow: React.FC<ScriptContentRowProps> = ({ script }) => {
     const video = videoRef.current;
     const audio = audioRef.current;
   
@@ -49,9 +49,9 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
         }}
       >
         <div>
-          <span className={styles.ScriptContentRowTime}>{formatTime(script.start)}</span>
+          <span className={styles.ScriptTimeStamp}>{formatTime(script.start)}</span>
         </div>
-        <div className={styles.ScriptContentRowText}>
+        <div className={styles.ScriptText}>
           <span>{script.text}</span>
         </div>
       </li>
@@ -61,14 +61,16 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   const Script: React.FC = () => {
     return (
       <div className={styles.ScriptContainer}>
-        <div className={styles.Script}>
+        <div className={styles.ScriptContent}>
           <div className={styles.ScriptHeader}>
             <h1>Script</h1>
-            <button onClick={() => {setShowScript(false)}}><FontAwesomeIcon icon={faTimes} /></button>
+            <button onClick={() => {setShowScript(false)}}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
           </div>
           <ul>
             {scripts.map((script, _) => (
-              <ScriptContentRow script={script}/>
+              <ScriptRow script={script}/>
             ))}
           </ul>
         </div>
@@ -168,17 +170,17 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   const progressPercent = (currentTime / duration) * 100;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
+    <div className={styles.LecturePlayerContainer}>
+      <div className={styles.LecturePlayer}>
         <video
           ref={videoRef}
           src={videoPath}
-          className={styles.video}
+          className={styles.Video}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
         />
         <audio ref={audioRef} src={audioPath} />
-        <div className={styles.controls}>
+        <div className={styles.VideoControlContainer}>
           <input
             type="range"
             min={0}
@@ -186,22 +188,22 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
             step={0.01}
             value={currentTime}
             onChange={handleSeek}
-            className={styles.progress}
+            className={styles.ProgressBar}
             style={{
               background: `linear-gradient(to right, #7d2020ff ${progressPercent}%, #333 ${progressPercent}%)`,
             }}
           />
-          <div className={styles.controlButtonContainer}>
+          <div className={styles.VideoControlButtonContainer}>
             <ControlButton
               onClick={togglePlay}
               icon={isPlaying ? faPause : faPlay}
-              style='playButton'
+              style='PlayButton'
             />
-            <div className={styles.videoSettingControl}>
+            <div className={styles.VideoToolContainer}>
               <ControlButton
                 onClick={() => {setShowVolumeControl(!showVolumeControl)}}
                 icon={(volume == 0) ? faVolumeXmark : (volume < 0.5) ? faVolumeLow : faVolumeHigh}
-                style='ControlButton'
+                style='VideoToolButton'
               />
               <input
                 type="range"
@@ -210,7 +212,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
                 step={0.01}
                 value={volume}
                 onChange={handleVolumeChange}
-                className={`${styles.volumeSlider} ${showVolumeControl ? styles.show : styles.hide}`}
+                className={`${styles.VolumeSlider} ${showVolumeControl ? styles.volumeSliderShow : styles.volumeSliderHide}`}
                 style={{
                   background: `linear-gradient(to right, #ffffff ${volume * 100}%, #333 ${volume * 100}%)`,
                 }}
@@ -218,7 +220,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
               <ControlButton
                 onClick={() => {setShowScript(!showScript)}}
                 icon={faClosedCaptioning}
-                style='ControlButton'
+                style='VideoToolButton'
               />
             </div>
           </div>

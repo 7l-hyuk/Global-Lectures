@@ -83,3 +83,11 @@ export interface ControlButtonProps {
   icon: IconDefinition;
   style: string;
 }
+
+
+export interface SettingDropdownProps {
+  label: string;
+  isDropdownOpen: boolean;
+  items: string[];
+  onClick: () => void;
+}

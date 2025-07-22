@@ -1,5 +1,6 @@
 .Button {
   display: flex;
+  justify-content: space-between;
   gap: .5rem;
   cursor: pointer;
   border: 1px solid transparent;
@@ -34,6 +35,7 @@
   color: inherit;
   font-size: .8rem;
   font-weight: 600;
+  padding: 0 1rem;
 }
 
 .LinkButton {
@@ -45,7 +47,7 @@
   cursor: pointer;
   height: 1.7rem;
   border-radius: .5rem;
-  color: #a8a8a8;
+  color: var(--gray-font-color);
   font-size: .8rem;
   font-weight: 600;
 }
@@ -98,27 +100,50 @@
   margin: .5rem .5em;
 }
 
+.FileSelectButton {
+  display: flex;
+  gap: .8rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  padding: .7rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+
+.ServiceSettingDropdown {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  padding: 1rem .9rem;
+  font-size: 1rem;
+  color: white;
+}
 
 .red {
-  background-color: #b53836;
+  background-color: var(--red-btn-color);
 }
 .red:hover {
-  background-color: #982e2c;
+  background-color: var(--red-btn-hv-color);
 }
 
 .gray {
-  background-color: #494949;
-  color: #a8a8a8
+  background-color: var(--gray-btn-color);
+  color: var(--gray-font-color);
 }
 .gray:hover {
-  background-color: #373737;
+  background-color: var(--gray-btn-hv-color);
 }
 
 .green {
-  background-color: #28a745;
+  background-color: var(--green-btn-color);
 }
 .green:hover {
-  background-color: #23913d;
+  background-color: var(--green-btn-hv-color);
 }
 
 .transparent {

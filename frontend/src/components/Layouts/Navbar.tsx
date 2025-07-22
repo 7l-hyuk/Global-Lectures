@@ -20,8 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
       const handleClickOutside = (event: MouseEvent) => {
         if (
           dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
+          !dropdownRef.current.contains(event.target as Node)) {
           setIsDropdownOpen(false);
         }
       };
@@ -37,6 +36,20 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         if (user) {
           return (
             <div className={styles.NavbarUser} ref={dropdownRef}>
+              <IconButton 
+                label="GitHub"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faGithub}
+                onClick={() => {window.open('https://github.com/7l-hyuk/Global-Lectures', '_blank')}}
+              />
+              <IconButton 
+                label="Youtube"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faYoutube}
+                onClick={() => {window.open('https://www.youtube.com/@global-lectures-korea', '_blank')}}
+              />
               <ButtonIcon 
                 label={user.username}
                 color="transparent"
