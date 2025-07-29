@@ -34,8 +34,12 @@ export interface ButtonProps {
 }
 
 
+export type LangCode = 'ko' | 'en' | 'ja' | 'zh';
+export type LanguageType = 'Korean' | 'English' | 'Japanese' | 'Chinese';
+
+
 export interface CountryButtonProps {
-  country: 'KR' | 'US' | "JP" | "CN";
+  country: LangCode;
   label: string;
   buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
   color?: 'red' | 'green' | 'gray' | 'transparent';
@@ -53,8 +57,8 @@ export interface BasicButtonProps {
 
 export interface VideoProps {
   videoPath: string;
-  audioPath: string;
-  scriptPath: string;
+  id?: string | null;
+  langList: LanguageType[];
 }
 
 
@@ -84,10 +88,12 @@ export interface ControlButtonProps {
   style: string;
 }
 
+export type Language = 'Korean' | 'English' | 'Japanese' | 'Chinese';
 
 export interface SettingDropdownProps {
   label: string;
   isDropdownOpen: boolean;
-  items: string[];
+  items: Language[];
   onClick: () => void;
+  setItem: (item: Language) => void;
 }

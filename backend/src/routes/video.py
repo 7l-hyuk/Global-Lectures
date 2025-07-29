@@ -25,13 +25,15 @@ video_router = APIRouter(prefix="/api/videos", tags=["Video"])
                             "id": 1,
                             "title": "My First Lecture",
                             "description": "no description",
-                            "length": "00:00:30"
+                            "length": "00:00:30",
+                            "created_at": "2025-07-13T06:15:48.270627"
                         },
                         {
                             "id": 2,
                             "title": "Your Lectures",
                             "description": "This Lecture is boring...",
-                            "length": "99:59:59"
+                            "length": "99:59:59",
+                            "created_at": "2025-07-13T06:15:48.270627"
                         }
                     ]
                 }
@@ -233,12 +235,12 @@ def update_video(
                         "audio": "https://aws.presigned.url/...",
                         "subtitle": [
                             {
-                                "time": 1.432,
+                                "start": 1.432,
                                 "text": "Hello eveyone.",
                                 "end": 6.098
                             },
                             {
-                                "time": 6.698,
+                                "start": 6.698,
                                 "text": "This is my first lectures.",
                                 "end": 12.025
                             },

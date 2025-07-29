@@ -20,7 +20,7 @@
 
 .NavbarContent {
   --padding: 1rem;
-  --hd-hv-color: #e1e1e1;
+  --hd-hv-color: var(--basic-hv-color);
   display: flex;
   justify-content: center;
   flex-flow: wrap;
@@ -124,7 +124,7 @@
   border-radius: .35rem;
 }
 .NavbarUser li {
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
   border-radius: .35rem;
   font-size: 0.8rem;
   font-weight: 400;
@@ -133,6 +133,9 @@
   border-bottom: 1px solid var(--bd-color);
 }
 .NavbarUser a {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
   text-decoration: none;
   color: #141414;
 }

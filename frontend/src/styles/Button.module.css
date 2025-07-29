@@ -7,7 +7,7 @@
   border-radius: .25rem;
   padding: .55rem .9rem;
   font-size: 1rem;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 .IndexPageBotton {
@@ -20,7 +20,7 @@
   padding: .55rem .9rem;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 .UserButton {
@@ -80,7 +80,7 @@
   margin: .5rem .5em;
 }
 .LangBotton:hover {
-  color: #ffffff;
+  color: var(--basic-font-color);
 }
 
 .ActivatedLangBotton {
@@ -94,7 +94,7 @@
   height: 1.7rem;
   width: 100%;
   border-radius: .2rem;
-  color: #ffffff;
+  color: var(--basic-font-color);
   font-weight: 600;
   font-size: .8rem;
   margin: .5rem .5em;
@@ -109,7 +109,7 @@
   padding: .7rem 2rem;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 
@@ -121,7 +121,7 @@
   width: 100%;
   padding: 1rem .9rem;
   font-size: 1rem;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 .red {

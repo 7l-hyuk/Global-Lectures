@@ -1,6 +1,8 @@
 :root {
   --bg-color: #1e1e1e;
   --bg-color-end: #2b2b2b;
+  --basic-font-color: #ffffff;
+  --basic-hv-color: #e1e1e1;
   --bg-border-color: var(--bg-color-end);
   --gray-font-color: #a8a8a8;
   --gray-font-hv-color: #878787;
@@ -10,6 +12,7 @@
   --gray-btn-hv-color: #373737;
   --green-btn-color: #28a745;
   --green-btn-hv-color: #23913d;
+  --content-margin: 2rem;
 }
 
 body {
@@ -18,10 +21,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: white;
+  color: var(--basic-font-color);
   background-color: var(--bg-color);
   margin: 0 auto;
-  padding-top: 3.5rem;
+  margin-top: 3.5rem;
 }
 
 code {

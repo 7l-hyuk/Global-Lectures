@@ -43,13 +43,20 @@ const BasicButton: React.FC<BasicButtonProps> = ({label, onClick, color="gray"})
 }
 
 
-const CountryButton: React.FC<CountryButtonProps> = ({label, onClick, buttonType = "LangBotton", country="KR"}) => {
+const CountryButton: React.FC<CountryButtonProps> = ({label, onClick, buttonType = "LangBotton", country="ko"}) => {
+    const countryFilter = {
+        ko: "KR",
+        en: "US",
+        ja: "JP",
+        zh: "CN"
+    };
+
     return (
         <button
             className={`${styles[buttonType]}`}
             onClick={onClick}
         >
-            <Flag code={country} style={{ width: 20, height: 10 }} />
+            <Flag code={countryFilter[country]} style={{ width: 20, height: 10 }} />
             {label}
         </button>
     );

@@ -1,9 +1,19 @@
-import React, { useRef, useState } from "react";
-import { faFolderPlus, faChevronDown, faChevronRight, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import React, { useRef, useState, useEffect } from "react";
+import { faFolderPlus, faChevronDown, faChevronRight, faSyncAlt, faArrowRightArrowLeft, faFile, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import { SettingDropdownProps } from "../types/components";
-import styles from "../styles/ServicePage.module.css";
+import { dubbingVideo } from "../viewmodels/dubbing";
+import { SettingDropdownProps, Language } from "../types/components";
 import { IconButton, ButtonIcon } from "../components/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "../styles/ServicePage.module.css";
+
+
+const tarLangList:  { [key in Language]: Language[] } = {
+  Korean: ["English", "Japanese", "Chinese"],
+  English: ["Korean", "Japanese", "Chinese"],
+  Japanese: ["Korean", "English", "Chinese"],
+  Chinese: ["Korean", "English", "Japanese"],
+}
 
 
 const SerivcePage: React.FC = () => {
@@ -11,6 +21,10 @@ const SerivcePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
   const [isTargetDropdownOpen, setIsTargetDropdownOpen] = useState(false);
+  const [sourceLang, setSourceLang] = useState<Language>("Korean")
+  const [targetLang, setTargetLang] = useState<Language>(tarLangList[sourceLang][0])
+
+  
 
   
   const handleButtonClick = () => {
@@ -46,7 +60,7 @@ const SerivcePage: React.FC = () => {
     );
   };
 
-  const SettingDropdown: React.FC<SettingDropdownProps> = ({label, onClick, isDropdownOpen, items}) => {
+  const SettingDropdown: React.FC<SettingDropdownProps> = ({label, onClick, isDropdownOpen, items, setItem}) => {
     return (
       <div className={styles.DropdownContainer}>
         <ButtonIcon
@@ -57,7 +71,7 @@ const SerivcePage: React.FC = () => {
         />
         <ul className={`${styles.Dropdown} ${styles[isDropdownOpen ? "showDropdown" : "hideDropdown"]}`}>
           {items.map((item, _) => (
-            <li>{item}</li>
+            <li onClick={() => setItem(item)}>{item}</li>
           ))}
         </ul>
       </div>
@@ -76,20 +90,62 @@ const SerivcePage: React.FC = () => {
     );
   };
 
+
+  const UploadedFileInfo: React.FC = () => {
+    return file ? (
+      <div className={styles.UploadedFileInfo}>
+        <div className={styles.fileName}>
+          <FontAwesomeIcon icon={faFile} />
+          <span>{file.name}</span>
+        </div>
+        <div className={styles.langInfo}>
+          <FontAwesomeIcon icon={faSyncAlt} />
+          <span>Convert</span>
+          <span className={styles.LangTextBox}>{sourceLang}</span>
+          <span>to</span>
+          <span className={styles.LangTextBox}>{targetLang}</span>
+        </div>
+        <button onClick={() => {setFile(null)}}>
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+      </div>
+    ) : (
+      <></>
+    )
+  }
   const ServiceSettingForm: React.FC = () => {
     return (
       <div className={styles.ServiceSettingForm}>
         <SettingDropdown
-          label="Source Language"
+          label={sourceLang}
           isDropdownOpen={isSourceDropdownOpen}
           items={["Korean", "English", "Japanese", "Chinese"]}
           onClick={() => {setIsSourceDropdownOpen(!isSourceDropdownOpen)}}
+          setItem={(item: Language) => {
+            setSourceLang(item);
+            if (item == targetLang) {
+              setTargetLang(tarLangList[item][0]);
+            }
+            setIsSourceDropdownOpen(false);
+          }}
         />
+        <button className={styles.LangChangeButton} onClick={() => {
+          const src: Language = sourceLang;
+          const tar: Language = targetLang;
+          setSourceLang(tar);
+          setTargetLang(src);
+        }}>
+          <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+        </button>
         <SettingDropdown
-          label="Target Language"
+          label={targetLang}
           isDropdownOpen={isTargetDropdownOpen}
-          items={["Korean", "English", "Japanese", "Chinese"]}
+          items={tarLangList[sourceLang]}
           onClick={() => {setIsTargetDropdownOpen(!isTargetDropdownOpen)}}
+          setItem={(item: Language) => {
+            setTargetLang(item);
+            setIsTargetDropdownOpen(false);
+          }}
         />
       </div>
     );
@@ -98,14 +154,32 @@ const SerivcePage: React.FC = () => {
   const ConvertButton: React.FC = () => {
     return (
       <div className={styles.ConvertContainer}>
-        <IconButton icon={faSyncAlt} label="Convert" onClick={() => {}}/>
+        <IconButton 
+          icon={faSyncAlt}
+          label="Convert"
+          onClick={async () => {
+            if (file) {
+              const dubbingRequest = {
+                video: file as File,
+                source_lang: sourceLang,
+                target_lang: targetLang,
+                stt_model: "whisperX",
+                translation_model: "NLLB-200",
+                tts_model: "coqui-xtts-v2"
+              };
+              await dubbingVideo(dubbingRequest);
+            } else {
+              alert("upload file");
+            }
+          }}
+        />
       </div>
     );
   };
 
   return (
     <div className={styles.ServiceFormContainer}>
-      <FileUploadForm />
+      {file ? <UploadedFileInfo /> : <FileUploadForm />}
       <ServiceSettingForm />
       <ConvertButton />
     </div>

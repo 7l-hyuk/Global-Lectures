@@ -8,9 +8,7 @@ const userSignup = async (payload: UserSignup) => {
 
 
 const userSignin = async (payload: UserSignin) => {
-    console.log("try sign in")
     const res = await axiosAuthInstance.post("/signin", payload);
-    console.log("end sign in")
     return res
 };
 

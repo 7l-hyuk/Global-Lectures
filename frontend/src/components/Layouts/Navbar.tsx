@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faAngleDown, faSignOut, faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import {faGithub, faYoutube} from '@fortawesome/free-brands-svg-icons'
 import { useNavigate } from "react-router-dom";
 
@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
                 color="transparent"
                 buttonType="LinkButton"
                 icon={faGithub}
-                onClick={() => {window.open('https://github.com/7l-hyuk/Global-Lectures', '_blank')}}
+                onClick={() => {window.open('https://github.com/Global-Lectures', '_blank')}}
               />
               <IconButton 
                 label="Youtube"
@@ -59,14 +59,22 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
               />
               {isDropdownOpen && (
                 <ul>
-                  <li><a href="/">mypage</a></li>
                   <li>
-                    <a href="/" onClick={async (event) => {
-                      event.preventDefault();
-                      await userSignout();
-                      setIsDropdownOpen(false);
+                    <a href="/videos">
+                      Your videos
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="/"
+                      style={{color: "var(--red-btn-color)"}}
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await userSignout();
+                        setIsDropdownOpen(false);
                     }}>
-                      signout
+                      <FontAwesomeIcon icon={faSignOut} />
+                      Sign out
                     </a>
                   </li>
                 </ul>
@@ -81,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
                 color="transparent"
                 buttonType="LinkButton"
                 icon={faGithub}
-                onClick={() => {window.open('https://github.com/7l-hyuk/Global-Lectures', '_blank')}}
+                onClick={() => {window.open('https://github.com/Global-Lectures', '_blank')}}
               />
               <IconButton 
                 label="Youtube"

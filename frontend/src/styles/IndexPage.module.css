@@ -5,8 +5,8 @@
     padding: 5rem 0;
     border: 1px solid var(--bg-border-color);
     border-top: none;
-    min-width: 800px;
-    max-width: 1000px;
+    min-width: 600px;
+    max-width: 800px;
 }
 
 .IndexContentContainer h1 {
@@ -52,11 +52,6 @@
     gap: 2rem;
     margin-top: 1rem;
     margin-bottom: 5rem;
-}
-.LangButtonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
 }
 
 .ServiceIntroContainer {

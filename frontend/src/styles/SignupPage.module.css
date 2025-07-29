@@ -1,8 +1,8 @@
 .SignupFormContent {
     min-width: 600px;
     background-color: #404040;
-    color: #ffffff;
-    margin: 2rem;
+    color: var(--basic-font-color);
+    margin-top: var(--content-margin);
     padding: 1rem 2rem;
     border-radius: .3rem;
 }

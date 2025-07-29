@@ -3,6 +3,9 @@ import { faPlay, faPause, faClosedCaptioning, faVolumeXmark, faVolumeLow, faVolu
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { VideoProps, ScriptContentRowProps, ControlButtonProps ,SubtitleEntry } from '../types/components';
+import { CountryButton } from './Button';
+import { LangCode, LanguageType } from '../types/components';
+import { getUserVideoBundle } from '../viewmodels/video';
 import styles from '../styles/Video.module.css';
 
 
@@ -22,7 +25,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({onClick, icon, style}) => 
 };
 
 
-const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath}) => {
+const LecturePlayer: React.FC<VideoProps> = ({videoPath, langList, id}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showScript, setShowScript] = useState(false);
   const [scripts, setScripts] = useState<SubtitleEntry[]>([])
@@ -30,9 +33,35 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
+  const [selectedLang, setSelectedLang] = useState<LanguageType>(langList[0]);
+  const [audioPath, setAudioPath] = useState<string | null>(null);
+  const [scriptSource, setScriptSource] = useState<string | SubtitleEntry[] | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const LangCodeMap: Record<LanguageType, LangCode> = {
+      Korean: "ko",
+      English: "en",
+      Japanese: "ja",
+      Chinese: "zh"
+    };
+
+  const LangSelectButtons: React.FC<{langList: LanguageType[]}> = ({ langList }) => {
+    return (
+      <div className={styles.LangButtonContainer}>
+        {langList.map((lang, _) => (
+          <CountryButton
+            country={LangCodeMap[lang]}
+            label={lang}
+            buttonType={selectedLang == lang ? "ActivatedLangBotton" : "LangBotton"}
+            color="transparent"
+            onClick={() => { setSelectedLang(lang) }}
+          />
+        ))}
+      </div>
+    )
+  }
 
   const ScriptRow: React.FC<ScriptContentRowProps> = ({ script }) => {
     const video = videoRef.current;
@@ -133,6 +162,23 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   };
 
   useEffect(() => {
+    if (!id) {
+      setAudioPath(`/${LangCodeMap[selectedLang]}.wav`)
+      setScriptSource(`/${LangCodeMap[selectedLang]}.json`)
+    } else {
+      const _getVideoBundle = async () => {
+          const res = await getUserVideoBundle(id, LangCodeMap[selectedLang]);
+
+          if (res) {
+              setAudioPath(res.data.audio);
+              setScriptSource(res.data.subtitle);
+          }
+      }
+      _getVideoBundle();
+    }
+  }, [id, selectedLang])
+
+  useEffect(() => {
     const audio = audioRef.current;
 
     if (!audio || !isPlaying) return;
@@ -161,17 +207,22 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
   }, []);
 
   useEffect(() => {
-    fetch(scriptPath)
+    if (!id && typeof scriptSource == "string") {
+      fetch(scriptSource)
       .then(res => res.json())
       .then(setScripts)
       .catch(err => console.error(err));
-  }, [scriptPath]);
+    } else {
+      setScripts(scriptSource as SubtitleEntry[]);
+    }
+  }, [scriptSource]);
 
   const progressPercent = (currentTime / duration) * 100;
 
   return (
     <div className={styles.LecturePlayerContainer}>
       <div className={styles.LecturePlayer}>
+        <LangSelectButtons langList={langList}  />
         <video
           ref={videoRef}
           src={videoPath}
@@ -179,7 +230,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath, scriptPath})
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
         />
-        <audio ref={audioRef} src={audioPath} />
+        <audio ref={audioRef} src={audioPath as string} />
         <div className={styles.VideoControlContainer}>
           <input
             type="range"
