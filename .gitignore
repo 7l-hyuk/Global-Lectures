@@ -38,10 +38,6 @@ build/
 dist/
 wheels/
 *.egg-info
-*.wav
-*.mp4
-*.mp3
-
 
 # Virtual environments
 .venv

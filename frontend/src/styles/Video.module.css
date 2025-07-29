@@ -1,0 +1,218 @@
+.LecturePlayerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #1e1e1e;
+  overflow: hidden;
+  color: var(--basic-font-color);
+  font-family: sans-serif;
+}
+.LecturePlayer {
+  margin: .5rem;
+}
+
+.Video {
+  width: 100%;
+  border-radius: .5rem .5rem 0 0;
+  background-color: inherit;
+  display: block;
+}
+
+.VideoControlContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 .5rem .5rem;
+  gap: 12px;
+  padding: 16px;
+  background-color: #252525;
+}
+
+.VideoControlButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+
+.PlayButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #484848;
+  color: var(--basic-font-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+}
+
+.PlayButton:hover {
+  background-color: #3d3d3d;
+}
+
+.VideoToolContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .2rem;
+}
+
+.VideoToolButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #484848;
+  color: var(--basic-font-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+  width: 2rem;
+  height: 2rem;
+}
+
+.VideoToolButton:hover {
+  background-color: #3d3d3d;
+}
+
+.ProgressBar {
+  appearance: none;
+  width: 100%;
+  height: .5rem;
+  background: linear-gradient(to right, #7d2020ff 0%, #333 0%);
+  outline: none;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.ProgressBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background: #7d2020ff;
+  cursor: pointer;
+}
+
+.ProgressBar::-moz-range-thumb {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background: #7d2020ff;
+  cursor: pointer;
+}
+
+.VolumeSlider {
+  width: 0rem;
+  height: .25rem;
+  appearance: none;
+  background: #555;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.volumeSliderShow {
+  width: 5rem;
+  margin: 0 .8rem;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.volumeSliderHide {
+  opacity: 0;
+  transform: translateX(-50px);
+  pointer-events: none;
+}
+
+.VolumeSlider::-webkit-slider-thumb {
+  appearance: none;
+  height: .6rem;
+  width: .6rem;
+  background: var(--basic-font-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.VolumeSlider::-moz-range-thumb {
+  height: .6rem;
+  width: .6rem;
+  background: var(--basic-font-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.ScriptContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: .5rem;
+  margin: .5rem;
+  background-color: #252525;
+}
+.ScriptContent {
+  margin: 1rem;
+}
+.ScriptHeader {
+  display: flex;
+  justify-content: space-between;
+}
+.ScriptHeader h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.ScriptHeader button{
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.2rem;
+}
+.ScriptHeader button:hover{
+  color: #b0b0b0;
+}
+.ScriptContent ul {
+  display: flex;
+  flex-direction: column;
+  height: 20rem;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+.ScriptContent ul li {
+  display: flex;
+  margin: .5rem 0;
+  padding: .5rem;
+  gap: 1rem;
+}
+.ScriptContent ul li:hover {
+  background-color: #505050;
+}
+.ScriptTimeStamp {
+  background-color: #263850;
+  color: #3EA6FF;
+  padding: 0 .4rem;
+  border-radius: .2rem;
+}
+.ScriptText {
+  width: 100%;
+  word-break: break-word;
+  margin-right: 1rem;
+}
+
+.LangButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

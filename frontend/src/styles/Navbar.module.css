@@ -2,14 +2,15 @@
   display: flex;
   background-image: linear-gradient(
     45deg,
-    #1e1e1e,
-    #2b2b2b
+    var(--bg-color),
+    var(--bg-color-end)
   );
   align-items: center;
   justify-content: center;
   padding: 0.8rem 1.5rem;
   position: fixed;
   height: 2rem;
+  border-bottom: 1px solid var(--bg-border-color);
   top: 0;
   left: 0;
   right: 0;
@@ -18,13 +19,18 @@
 
 
 .NavbarContent {
+  --padding: 1rem;
+  --hd-hv-color: var(--basic-hv-color);
   display: flex;
+  justify-content: center;
   flex-flow: wrap;
-  min-width: 950px;
+  min-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+  font-size: .8rem;
+  font-weight: 500;
 }
 
 
@@ -42,7 +48,7 @@
   cursor: pointer;
 }
 .MenuButton:hover {
-  color: #d7d7d7;
+  color: var(--hd-hv-color);
 }
 .Logo {
   font-size: 1.25rem;
@@ -54,7 +60,7 @@
   padding-right: 2.8rem;
 }
 .Logo:hover {
-  color: #d7d7d7;
+  color: var(--hd-hv-color);
 }
 
 
@@ -69,73 +75,70 @@
 }
 .NavbarMiddle li a {
   text-decoration: none;
-  font-size: 1rem;
-  color: inherit;
+  color: var(--gray-font-color);
+  font-size: inherit;
+  font-weight: inherit;
 }
 .NavbarMiddle li a:hover {
-  color: #d7d7d7;
+  color: var(--gray-font-hv-color);
 }
 
 
 .NavbarEnd {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: .5rem;
   padding: 0;
   padding-left: 20rem;
 }
 .NavbarEnd li a {
   text-decoration: none;
-  font-size: 1rem;
+  font-size: inherit;
   color: inherit;
 }
 .NavbarEnd li a:hover {
-  color: #d7d7d7;
+  color: var(--hd-hv-color);
 }
-
 
 .NavbarUser {
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
   list-style: none;
-  gap: 2rem;
+  gap: .5rem;
   padding: 0;
   padding-left: 20rem;
-}
-.NavbarUser button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
   font-size: inherit;
-  color: inherit;
-  gap: 0.5rem;
-}
-.NavbarUser button:hover {
-  color: #d7d7d7;
+  font-weight: inherit;
 }
 .NavbarUser ul {
+  --bd-color: #e6e6e6;
   display: flex;
   flex-direction: column;
   list-style: none;
-  margin: 0;
-  padding: 0;
   position: absolute;
   top: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #ffffff;
-  border: #e6e6e6 solid 1px;
-  border-top: none;
-  border-radius: 0 0 .3rem .3rem;
+  border-radius: .35rem;
 }
 .NavbarUser li {
-  border-top: 1px solid #e6e6e6;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  border-radius: .35rem;
   font-size: 0.8rem;
+  font-weight: 400;
+}
+.NavbarUser ul > li:not(:last-child) {
+  border-bottom: 1px solid var(--bd-color);
 }
 .NavbarUser a {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
   text-decoration: none;
   color: #141414;
 }
 .NavbarUser li:hover {
-  background-color: #e1e1e1;
+  background-color: var(--hd-hv-color);
 }

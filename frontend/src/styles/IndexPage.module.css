@@ -1,0 +1,95 @@
+.IndexContentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 0;
+    border: 1px solid var(--bg-border-color);
+    border-top: none;
+    min-width: 600px;
+    max-width: 800px;
+}
+
+.IndexContentContainer h1 {
+    margin: 0;
+    font-weight: 600;
+}
+.IndexContentContainer p {
+    color: var(--gray-font-color);
+    font-weight: 500;
+}
+
+.IndexContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-top: 1px solid var(--bg-border-color);
+}
+.UseCaseContent {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem;
+}
+.UseCaseContent span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--red-btn-color);
+    font-weight: 700;
+    font-size: 1rem;
+    gap: .5rem;
+}
+.UseCaseContent p {
+ text-align: center;
+ color: var(--gray-font-color);
+ width: 70%;
+}
+.ButtonContainer {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 5rem;
+}
+
+.ServiceIntroContainer {
+    display: flex;
+    flex-direction: column;
+}
+.ServiceIntroContainer h1 {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+}
+.ServiceIntroContainer p {
+    font-size: 1rem;
+    margin-top: .5rem;
+    font-weight: 400;
+    line-height: 1.35rem;
+}
+
+.ServiceIntroTable {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.ServiceIntroTable li {
+    flex: 1;
+    z-index: 1;
+    padding: 1.5rem;
+}
+.ServiceIntroTable > li:not(:last-child) {
+  border-right: 1px solid var(--bg-border-color);
+}
+.ServiceIntroTable h1 {
+    font-size: 1.1rem;
+}
+.ServiceIntroTable p {
+    color: var(--gray-font-color);
+}

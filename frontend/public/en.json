@@ -1,0 +1,37 @@
+[
+  {
+    "start": 1.459,
+    "text": "Imagine you happen across a short movie script that describes a scene between a person and their AI assistant.",
+    "end": 7.359
+  },
+  {
+    "start": 7.359,
+    "text": " The script has what the person asks the AI, but the AI's response has been torn off.",
+    "end": 13.119
+  },
+  {
+    "start": 13.119,
+    "text": " Suppose you also have this powerful magical machine that can take any text and provide a sensible prediction of what word comes next.",
+    "end": 21.079
+  },
+  {
+    "start": 21.079,
+    "text": " You could then finish the script by feeding in what you have to the machine, seeing what it would predict to start the AI's answer, and then repeating this over and over with a growing script completing the dialogue.",
+    "end": 33.059
+  },
+  {
+    "start": 33.059,
+    "text": " When you interact with a chatbot, this is exactly what's happening.",
+    "end": 36.699
+  },
+  {
+    "start": 36.699,
+    "text": " A large language model is a sophisticated mathematical function that predicts what word comes next for any piece of text.",
+    "end": 44.079
+  },
+  {
+    "start": 44.079,
+    "text": " Instead of predicting one word with certainty, though, what it does is assign a probability to all possible next words.",
+    "end": 50.979
+  }
+]

@@ -8,7 +8,8 @@ const userSignup = async (payload: UserSignup) => {
 
 
 const userSignin = async (payload: UserSignin) => {
-    return await axiosAuthInstance.post("/signin", payload);
+    const res = await axiosAuthInstance.post("/signin", payload);
+    return res
 };
 
 
