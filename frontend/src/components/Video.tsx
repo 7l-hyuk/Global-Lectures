@@ -40,7 +40,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, langList, id}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const LangCodeMap: Record<LanguageType, LangCode> = {
+  const langCodeMapping: Record<LanguageType, LangCode> = {
       Korean: "ko",
       English: "en",
       Japanese: "ja",
@@ -52,7 +52,7 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, langList, id}) => {
       <div className={styles.LangButtonContainer}>
         {langList.map((lang, _) => (
           <CountryButton
-            country={LangCodeMap[lang]}
+            country={langCodeMapping[lang]}
             label={lang}
             buttonType={selectedLang == lang ? "ActivatedLangBotton" : "LangBotton"}
             color="transparent"
@@ -163,11 +163,11 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, langList, id}) => {
 
   useEffect(() => {
     if (!id) {
-      setAudioPath(`/${LangCodeMap[selectedLang]}.wav`)
-      setScriptSource(`/${LangCodeMap[selectedLang]}.json`)
+      setAudioPath(`/${langCodeMapping[selectedLang]}.wav`)
+      setScriptSource(`/${langCodeMapping[selectedLang]}.json`)
     } else {
       const _getVideoBundle = async () => {
-          const res = await getUserVideoBundle(id, LangCodeMap[selectedLang]);
+          const res = await getUserVideoBundle(id, langCodeMapping[selectedLang]);
 
           if (res) {
               setAudioPath(res.data.audio);
