@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@testing-library/dom": "^10.4.0",
@@ -16,6 +17,7 @@
     "axios": "^1.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-modal": "^3.16.3",
     "react-player": "^3.3.1",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",

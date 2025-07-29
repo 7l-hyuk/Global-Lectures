@@ -27,15 +27,19 @@ export interface SignupFormGroupProps {
 export interface ButtonProps {
   icon: IconDefinition;
   label: string;
-  buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
+  buttonType?: string;
   color?: 'red' | 'green' | 'gray' | 'transparent';
   width?: 'wide' | 'common';
   onClick: () => Promise<void> | void;
 }
 
 
+export type LangCode = 'ko' | 'en' | 'ja' | 'zh';
+export type LanguageType = 'Korean' | 'English' | 'Japanese' | 'Chinese';
+
+
 export interface CountryButtonProps {
-  country: 'KR' | 'US' | "JP" | "CN";
+  country: LangCode;
   label: string;
   buttonType?: 'Button' | 'UserButton' | 'IndexPageBotton' | 'MenuBotton' | 'LangBotton' | 'ActivatedLangBotton'
   color?: 'red' | 'green' | 'gray' | 'transparent';
@@ -53,11 +57,43 @@ export interface BasicButtonProps {
 
 export interface VideoProps {
   videoPath: string;
-  audioPath: string;
+  id?: string | null;
+  langList: LanguageType[];
 }
 
 
 export interface ServiceIntroProps {
+  icon: IconDefinition;
+  iconColor: string;
   title: string;
   description: string;
+}
+
+
+export interface SubtitleEntry {
+  start: number;
+  end: number;
+  text: string;
+}
+
+
+export interface ScriptContentRowProps {
+  script: SubtitleEntry;
+}
+
+
+export interface ControlButtonProps {
+  onClick: () => void;
+  icon: IconDefinition;
+  style: string;
+}
+
+export type Language = 'Korean' | 'English' | 'Japanese' | 'Chinese';
+
+export interface SettingDropdownProps {
+  label: string;
+  isDropdownOpen: boolean;
+  items: Language[];
+  onClick: () => void;
+  setItem: (item: Language) => void;
 }

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faAngleDown, faSignOut, faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import {faGithub, faYoutube} from '@fortawesome/free-brands-svg-icons'
 import { useNavigate } from "react-router-dom";
 
 import { NavbarProps } from "../../types/components";
-import { BasicButton, ButtonIcon } from "../Button";
+import { BasicButton, ButtonIcon, IconButton } from "../Button";
 import { useAuth } from "../../viewmodels/AuthContext";
 import styles from "../../styles/Navbar.module.css";
 
@@ -19,8 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
       const handleClickOutside = (event: MouseEvent) => {
         if (
           dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
+          !dropdownRef.current.contains(event.target as Node)) {
           setIsDropdownOpen(false);
         }
       };
@@ -36,23 +36,45 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         if (user) {
           return (
             <div className={styles.NavbarUser} ref={dropdownRef}>
+              <IconButton 
+                label="GitHub"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faGithub}
+                onClick={() => {window.open('https://github.com/Global-Lectures', '_blank')}}
+              />
+              <IconButton 
+                label="Youtube"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faYoutube}
+                onClick={() => {window.open('https://www.youtube.com/@global-lectures-korea', '_blank')}}
+              />
               <ButtonIcon 
                 label={user.username}
-                color="gray"
+                color="transparent"
                 buttonType="UserButton"
                 icon={faAngleDown}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               />
               {isDropdownOpen && (
                 <ul>
-                  <li><a href="/">mypage</a></li>
                   <li>
-                    <a href="/" onClick={async (event) => {
-                      event.preventDefault();
-                      await userSignout();
-                      setIsDropdownOpen(false);
+                    <a href="/videos">
+                      Your videos
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="/"
+                      style={{color: "var(--red-btn-color)"}}
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await userSignout();
+                        setIsDropdownOpen(false);
                     }}>
-                      signout
+                      <FontAwesomeIcon icon={faSignOut} />
+                      Sign out
                     </a>
                   </li>
                 </ul>
@@ -62,6 +84,20 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
         } else {
           return (
             <ul className={styles.NavbarEnd}>
+              <IconButton 
+                label="GitHub"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faGithub}
+                onClick={() => {window.open('https://github.com/Global-Lectures', '_blank')}}
+              />
+              <IconButton 
+                label="Youtube"
+                color="transparent"
+                buttonType="LinkButton"
+                icon={faYoutube}
+                onClick={() => {window.open('https://www.youtube.com/@global-lectures-korea', '_blank')}}
+              />
               <li><BasicButton label="Sign In" onClick={()=>{navigate("/signin")}}/></li>
               <li><BasicButton label="Sign Up" color="red" onClick={()=>{navigate("/signup")}}/></li>
             </ul>
@@ -85,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({toggleSidebar}) => {
           </div>
   
           <ul className={styles.NavbarMiddle}>
-            <li><a href="/">Service</a></li>
+            <li><a href="/service">Service</a></li>
             <li><a href="/">Pricing</a></li>
             <li><a href="/">Contact</a></li>
           </ul>

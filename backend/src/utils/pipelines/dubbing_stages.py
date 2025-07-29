@@ -13,7 +13,7 @@ from src.path_manager import UserPathContext, UserFile, UserDir
 def _sub2json(subtitle: list[dict], json_path: Path):
     subtitle = [
         {
-            "time": segment["start"],
+            "start": segment["start"],
             "text": segment["text"],
             "end": segment["end"]
         }

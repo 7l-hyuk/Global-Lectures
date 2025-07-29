@@ -1,20 +1,112 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { faPlay, faPause, faClosedCaptioning, faVolumeXmark, faVolumeLow, faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faClosedCaptioning, faVolumeXmark, faVolumeLow, faVolumeHigh, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { VideoProps } from '../types/components';
+import { VideoProps, ScriptContentRowProps, ControlButtonProps ,SubtitleEntry } from '../types/components';
+import { CountryButton } from './Button';
+import { LangCode, LanguageType } from '../types/components';
+import { getUserVideoBundle } from '../viewmodels/video';
 import styles from '../styles/Video.module.css';
 
 
-const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath}) => {
+const formatTime = (seconds: number): string => {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
+};
+
+
+const ControlButton: React.FC<ControlButtonProps> = ({onClick, icon, style}) => {
+  return (
+    <button onClick={onClick} className={styles[style]}>
+      <FontAwesomeIcon icon={icon} />
+    </button>
+  );
+};
+
+
+const LecturePlayer: React.FC<VideoProps> = ({videoPath, langList, id}) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showScript, setShowScript] = useState(false);
+  const [scripts, setScripts] = useState<SubtitleEntry[]>([])
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
+  const [selectedLang, setSelectedLang] = useState<LanguageType>(langList[0]);
+  const [audioPath, setAudioPath] = useState<string | null>(null);
+  const [scriptSource, setScriptSource] = useState<string | SubtitleEntry[] | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const LangCodeMap: Record<LanguageType, LangCode> = {
+      Korean: "ko",
+      English: "en",
+      Japanese: "ja",
+      Chinese: "zh"
+    };
+
+  const LangSelectButtons: React.FC<{langList: LanguageType[]}> = ({ langList }) => {
+    return (
+      <div className={styles.LangButtonContainer}>
+        {langList.map((lang, _) => (
+          <CountryButton
+            country={LangCodeMap[lang]}
+            label={lang}
+            buttonType={selectedLang == lang ? "ActivatedLangBotton" : "LangBotton"}
+            color="transparent"
+            onClick={() => { setSelectedLang(lang) }}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  const ScriptRow: React.FC<ScriptContentRowProps> = ({ script }) => {
+    const video = videoRef.current;
+    const audio = audioRef.current;
+  
+    return (
+      <li 
+        style={script.start <= currentTime && currentTime <= script.end ? {backgroundColor: "#505050"} : {}}
+        onClick={() => {
+          if (video && audio) {
+            video.currentTime = script.start + 0.01;
+            audio.currentTime = script.start + 0.01;
+          }
+        }}
+      >
+        <div>
+          <span className={styles.ScriptTimeStamp}>{formatTime(script.start)}</span>
+        </div>
+        <div className={styles.ScriptText}>
+          <span>{script.text}</span>
+        </div>
+      </li>
+    );
+  };
+
+  const Script: React.FC = () => {
+    return (
+      <div className={styles.ScriptContainer}>
+        <div className={styles.ScriptContent}>
+          <div className={styles.ScriptHeader}>
+            <h1>Script</h1>
+            <button onClick={() => {setShowScript(false)}}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+          <ul>
+            {scripts.map((script, _) => (
+              <ScriptRow script={script}/>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  };
+
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -58,8 +150,8 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath}) => {
     }
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
+  const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(event.target.value);
     const video = videoRef.current;
     const audio = audioRef.current;
   
@@ -68,6 +160,23 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath}) => {
       audio.currentTime = value;
     }
   };
+
+  useEffect(() => {
+    if (!id) {
+      setAudioPath(`/${LangCodeMap[selectedLang]}.wav`)
+      setScriptSource(`/${LangCodeMap[selectedLang]}.json`)
+    } else {
+      const _getVideoBundle = async () => {
+          const res = await getUserVideoBundle(id, LangCodeMap[selectedLang]);
+
+          if (res) {
+              setAudioPath(res.data.audio);
+              setScriptSource(res.data.subtitle);
+          }
+      }
+      _getVideoBundle();
+    }
+  }, [id, selectedLang])
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -97,58 +206,78 @@ const LecturePlayer: React.FC<VideoProps> = ({videoPath, audioPath}) => {
     return () => video.removeEventListener('timeupdate', sync);
   }, []);
 
+  useEffect(() => {
+    if (!id && typeof scriptSource == "string") {
+      fetch(scriptSource)
+      .then(res => res.json())
+      .then(setScripts)
+      .catch(err => console.error(err));
+    } else {
+      setScripts(scriptSource as SubtitleEntry[]);
+    }
+  }, [scriptSource]);
+
   const progressPercent = (currentTime / duration) * 100;
 
   return (
-    <div className={styles.container}>
-      <video
-        ref={videoRef}
-        src={videoPath}
-        className={styles.video}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-      />
-      <audio ref={audioRef} src={audioPath} />
-
-      <div className={styles.controls}>
-        <input
-          type="range"
-          min={0}
-          max={duration}
-          step={0.01}
-          value={currentTime}
-          onChange={handleSeek}
-          className={styles.progress}
-          style={{
-            background: `linear-gradient(to right, #7d2020ff ${progressPercent}%, #333 ${progressPercent}%)`,
-          }}
+    <div className={styles.LecturePlayerContainer}>
+      <div className={styles.LecturePlayer}>
+        <LangSelectButtons langList={langList}  />
+        <video
+          ref={videoRef}
+          src={videoPath}
+          className={styles.Video}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
         />
-        <div className={styles.controlButtonContainer}>
-          <button onClick={togglePlay} className={styles.playButton}>
-            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-          </button>
-          <div className={styles.videoSettingControl}>
-            <button onClick={() => {setShowVolumeControl(!showVolumeControl)}} className={styles.subtitleButton}>
-              <FontAwesomeIcon icon={(volume == 0) ? faVolumeXmark : (volume < 0.5) ? faVolumeLow : faVolumeHigh} />
-            </button>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              onChange={handleVolumeChange}
-              className={`${styles.volumeSlider} ${showVolumeControl ? styles.show : styles.hide}`}
-              style={{
-                background: `linear-gradient(to right, #ffffff ${volume * 100}%, #333 ${volume * 100}%)`,
-              }}
+        <audio ref={audioRef} src={audioPath as string} />
+        <div className={styles.VideoControlContainer}>
+          <input
+            type="range"
+            min={0}
+            max={duration}
+            step={0.01}
+            value={currentTime}
+            onChange={handleSeek}
+            className={styles.ProgressBar}
+            style={{
+              background: `linear-gradient(to right, #7d2020ff ${progressPercent}%, #333 ${progressPercent}%)`,
+            }}
+          />
+          <div className={styles.VideoControlButtonContainer}>
+            <ControlButton
+              onClick={togglePlay}
+              icon={isPlaying ? faPause : faPlay}
+              style='PlayButton'
             />
-            <button onClick={() => {}} className={styles.subtitleButton}>
-              <FontAwesomeIcon icon={faClosedCaptioning} />
-            </button>
+            <div className={styles.VideoToolContainer}>
+              <ControlButton
+                onClick={() => {setShowVolumeControl(!showVolumeControl)}}
+                icon={(volume == 0) ? faVolumeXmark : (volume < 0.5) ? faVolumeLow : faVolumeHigh}
+                style='VideoToolButton'
+              />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={handleVolumeChange}
+                className={`${styles.VolumeSlider} ${showVolumeControl ? styles.volumeSliderShow : styles.volumeSliderHide}`}
+                style={{
+                  background: `linear-gradient(to right, #ffffff ${volume * 100}%, #333 ${volume * 100}%)`,
+                }}
+              />
+              <ControlButton
+                onClick={() => {setShowScript(!showScript)}}
+                icon={faClosedCaptioning}
+                style='VideoToolButton'
+              />
+            </div>
           </div>
         </div>
       </div>
+      {showScript && <Script />}
     </div>
   );
 };

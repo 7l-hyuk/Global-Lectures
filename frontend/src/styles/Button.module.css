@@ -1,12 +1,13 @@
 .Button {
   display: flex;
+  justify-content: space-between;
   gap: .5rem;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: .25rem;
   padding: .55rem .9rem;
   font-size: 1rem;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 .IndexPageBotton {
@@ -19,7 +20,7 @@
   padding: .55rem .9rem;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--basic-font-color);
 }
 
 .UserButton {
@@ -30,15 +31,28 @@
   border: 1px solid transparent;
   cursor: pointer;
   height: 1.7rem;
-  width: 5rem;
   border-radius: .5rem;
   color: inherit;
   font-size: .8rem;
   font-weight: 600;
+  padding: 0 1rem;
 }
 
+.LinkButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  height: 1.7rem;
+  border-radius: .5rem;
+  color: var(--gray-font-color);
+  font-size: .8rem;
+  font-weight: 600;
+}
 
-.MenuBotton {
+.BasicBotton {
   border: 1px solid transparent;
   cursor: pointer;
   height: 1.7rem;
@@ -65,6 +79,10 @@
   font-size: .8rem;
   margin: .5rem .5em;
 }
+.LangBotton:hover {
+  color: var(--basic-font-color);
+}
+
 .ActivatedLangBotton {
   display: flex;
   align-items: center;
@@ -76,37 +94,65 @@
   height: 1.7rem;
   width: 100%;
   border-radius: .2rem;
-  color: #ffffff;
+  color: var(--basic-font-color);
   font-weight: 600;
   font-size: .8rem;
   margin: .5rem .5em;
 }
 
+.FileSelectButton {
+  display: flex;
+  gap: .8rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  padding: .7rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--basic-font-color);
+}
+
+
+.ServiceSettingDropdown {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  padding: 1rem .9rem;
+  font-size: 1rem;
+  color: var(--basic-font-color);
+}
 
 .red {
-  background-color: #b53836;
+  background-color: var(--red-btn-color);
 }
 .red:hover {
-  background-color: #982e2c;
+  background-color: var(--red-btn-hv-color);
 }
 
 .gray {
-  background-color: #494949;
-  color: #a8a8a8
+  background-color: var(--gray-btn-color);
+  color: var(--gray-font-color);
 }
 .gray:hover {
-  background-color: #373737;
+  background-color: var(--gray-btn-hv-color);
 }
 
 .green {
-  background-color: #28a745;
+  background-color: var(--green-btn-color);
 }
 .green:hover {
-  background-color: #23913d;
+  background-color: var(--green-btn-hv-color);
 }
 
+.transparent {
+  background-color: transparent;
+  border-color: #545454;
+}
 .transparent:hover {
   color: #717171;
+  background-color: #303030;
 }
 
 .wide {
