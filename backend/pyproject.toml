@@ -16,6 +16,7 @@ dependencies = [
     "pydantic[email]>=2.11.7",
     "python-jose>=3.5.0",
     "python-multipart>=0.0.20",
+    "redis>=6.2.0",
     "soundfile>=0.13.1",
     "sqlalchemy>=2.0.41",
     "uvicorn>=0.34.3",

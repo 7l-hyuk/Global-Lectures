@@ -1,6 +1,7 @@
 import os
 import subprocess
 import shutil
+from typing import Callable
 
 from fastapi import UploadFile
 
@@ -12,9 +13,9 @@ import src.utils.cmd.demucs as demucs
 
 class DownloadVideo(PipelineStage):
     def process(
-            self,
-            user_path_ctx: UserPathContext,
-            video: UploadFile
+        self,
+        user_path_ctx: UserPathContext,
+        video: UploadFile
     ) -> UserPathContext:
         with open(user_path_ctx.get_path(UserFile.VIDEO.BASE), "wb") as f:
             shutil.copyfileobj(video.file, f)
@@ -22,7 +23,19 @@ class DownloadVideo(PipelineStage):
 
 
 class ExtractAudio(PipelineStage):
-    def process(self, user_path_ctx: UserPathContext) -> UserPathContext:
+    def process(
+        self,
+        user_path_ctx: UserPathContext,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
+    ) -> UserPathContext:
+        update_state(
+            "Extract audio",
+            total_step,
+            current_step / sub_step
+        )
         base_video = user_path_ctx.get_path(UserFile.VIDEO.BASE)
         base_audio = user_path_ctx.get_path(UserFile.AUDIO.BASE)
 
@@ -40,21 +53,57 @@ class ExtractAudio(PipelineStage):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
-        return user_path_ctx,
+        return (
+            user_path_ctx,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class SeperateBGMFromAudio(PipelineStage):
-    def process(self, user_path_ctx: UserPathContext) -> UserPathContext:
+    def process(
+        self,
+        user_path_ctx: UserPathContext,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
+    ) -> UserPathContext:
+        update_state(
+            "Seperate BGM",
+            total_step,
+            current_step / sub_step
+        )
         cmd = demucs.seperate_bgm(
             output=user_path_ctx.user_dir,
             wav_path=user_path_ctx.get_path(UserFile.AUDIO.BASE)
         )
         subprocess.run(cmd)
-        return user_path_ctx,
+        return (
+            user_path_ctx,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class RemoveVocalsFromVideo(PipelineStage):
-    def process(self, user_path_ctx: UserPathContext) -> UserPathContext:
+    def process(
+        self,
+        user_path_ctx: UserPathContext,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
+    ) -> UserPathContext:
+        update_state(
+            "Remove vocals",
+            total_step,
+            current_step / sub_step
+        )
         remove_audio_command = ffmpeg.remove_audio_from_video(
             mp4_path=user_path_ctx.get_path(UserFile.VIDEO.BASE),
             output=user_path_ctx.get_path(UserFile.VIDEO.NO_SOUND)
@@ -69,11 +118,29 @@ class RemoveVocalsFromVideo(PipelineStage):
             check=True,
         )
         subprocess.run(merge_video_bgm_command)
-        return user_path_ctx,
+        return (
+            user_path_ctx,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class ExtractReferenceSpeaker(PipelineStage):
-    def process(self, user_path_ctx: UserPathContext) -> UserPathContext:
+    def process(
+        self,
+        user_path_ctx: UserPathContext,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
+    ) -> UserPathContext:
+        update_state(
+            "Remove vocals",
+            total_step,
+            current_step / sub_step
+        )
         cmd = ffmpeg.extract_reference_speaker(
             wav_path=user_path_ctx.get_path(UserFile.AUDIO.VOCALS),
             output=user_path_ctx.get_path(UserFile.AUDIO.REFERENCE_SPEAKER)

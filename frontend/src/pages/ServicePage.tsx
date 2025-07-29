@@ -2,18 +2,26 @@ import React, { useRef, useState, useEffect } from "react";
 import { faFolderPlus, faChevronDown, faChevronRight, faSyncAlt, faArrowRightArrowLeft, faFile, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { dubbingVideo } from "../viewmodels/dubbing";
-import { SettingDropdownProps, Language } from "../types/components";
+import { SettingDropdownProps, Language, LangCode } from "../types/components";
 import { IconButton, ButtonIcon } from "../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LanguageType } from "../types/components";
 import styles from "../styles/ServicePage.module.css";
 
 
-const tarLangList:  { [key in Language]: Language[] } = {
+const tarLangList:  { [key in LanguageType]: LanguageType[] } = {
   Korean: ["English", "Japanese", "Chinese"],
   English: ["Korean", "Japanese", "Chinese"],
   Japanese: ["Korean", "English", "Chinese"],
   Chinese: ["Korean", "English", "Japanese"],
 }
+
+const langCodeMapping: { [key in LanguageType]: LangCode } = {
+  Korean: "ko",
+  English: "en",
+  Japanese: "ja",
+  Chinese: "zh"
+};
 
 
 const SerivcePage: React.FC = () => {
@@ -21,8 +29,8 @@ const SerivcePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
   const [isTargetDropdownOpen, setIsTargetDropdownOpen] = useState(false);
-  const [sourceLang, setSourceLang] = useState<Language>("Korean")
-  const [targetLang, setTargetLang] = useState<Language>(tarLangList[sourceLang][0])
+  const [sourceLang, setSourceLang] = useState<LanguageType>("Korean")
+  const [targetLang, setTargetLang] = useState<LanguageType>(tarLangList[sourceLang][0])
 
   
 
@@ -121,7 +129,7 @@ const SerivcePage: React.FC = () => {
           isDropdownOpen={isSourceDropdownOpen}
           items={["Korean", "English", "Japanese", "Chinese"]}
           onClick={() => {setIsSourceDropdownOpen(!isSourceDropdownOpen)}}
-          setItem={(item: Language) => {
+          setItem={(item: LanguageType) => {
             setSourceLang(item);
             if (item == targetLang) {
               setTargetLang(tarLangList[item][0]);
@@ -130,8 +138,8 @@ const SerivcePage: React.FC = () => {
           }}
         />
         <button className={styles.LangChangeButton} onClick={() => {
-          const src: Language = sourceLang;
-          const tar: Language = targetLang;
+          const src: LanguageType = sourceLang;
+          const tar: LanguageType = targetLang;
           setSourceLang(tar);
           setTargetLang(src);
         }}>
@@ -161,8 +169,8 @@ const SerivcePage: React.FC = () => {
             if (file) {
               const dubbingRequest = {
                 video: file as File,
-                source_lang: sourceLang,
-                target_lang: targetLang,
+                source_lang: langCodeMapping[sourceLang],
+                target_lang: langCodeMapping[targetLang],
                 stt_model: "whisperX",
                 translation_model: "NLLB-200",
                 tts_model: "coqui-xtts-v2"

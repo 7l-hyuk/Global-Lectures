@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Callable
 import subprocess
 import httpx
 from pydantic import BaseModel, ConfigDict
@@ -44,8 +45,17 @@ class STT(PipelineStage):
     def process(
         self,
         audio_path: Path,
-        config: DubbingPipelineConfig
+        config: DubbingPipelineConfig,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None],
     ):
+        update_state(
+            "STT",
+            total_step,
+            current_step / sub_step
+        )
         payload = {
             "audio_path": str(audio_path),
             "language": config.source_lang,
@@ -64,15 +74,31 @@ class STT(PipelineStage):
             {"start": sub["start"], "end": sub["end"]}
             for sub in subtitle
         ]
-        return subtitle, config
+        return (
+            subtitle,
+            config,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class TranslateSubtitle(PipelineStage):
     def process(
         self,
         subtitle: list[dict],
-        config: DubbingPipelineConfig
+        config: DubbingPipelineConfig,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
     ):
+        update_state(
+            "Translation",
+            total_step,
+            current_step / sub_step
+        )
         payload = {
             "source_lang": config.source_lang,
             "target_lang": config.target_lang,
@@ -88,15 +114,31 @@ class TranslateSubtitle(PipelineStage):
             translated_subtitle,
             config.user_path_ctx.get_path(UserFile.SUBTITLE.TARGET)
         )
-        return [sub["text"] for sub in translated_subtitle], config
+        return (
+            [sub["text"] for sub in translated_subtitle],
+            config,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class TTS(PipelineStage):
     def process(
         self,
         texts: list[str],
-        config: DubbingPipelineConfig
+        config: DubbingPipelineConfig,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
     ):
+        update_state(
+            "TTS",
+            total_step,
+            current_step / sub_step
+        )
         tts_client = TtsClient()
         tts_client.run(
             texts=texts,
@@ -108,14 +150,29 @@ class TTS(PipelineStage):
             output=config.user_path_ctx.get_path(UserDir.DUBBING),
             timeout=config.tts_request_timeout
         )
-        return [config]
+        return (
+            config,
+            total_step,
+            current_step,
+            sub_step - 1,
+            update_state
+        )
 
 
 class RenderingVideo(PipelineStage):
     def process(
         self,
-        config: DubbingPipelineConfig
+        config: DubbingPipelineConfig,
+        total_step: int,
+        current_step: int,
+        sub_step: int,
+        update_state: Callable[[str, int, int], None]
     ):
+        update_state(
+            "Remove vocals",
+            total_step,
+            current_step / sub_step
+        )
         command = ["sox", "-m"]
 
         for i, sgmt in enumerate(config.audio_segments):

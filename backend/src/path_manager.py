@@ -35,14 +35,14 @@ class UserPathContext:
     def __init__(self, user_id: uuid.UUID, base_dir: Path = Path("/tmp")):
         self.user_dir = base_dir / str(user_id)
 
-        self._ensure_dirs([
+        self._make_dirs([
             self.user_dir,
             self.user_dir / UserDir.DUBBING.value,
             self.user_dir / UserDir.SYNC_DUBBING.value,
             self.user_dir / UserDir.HTDEMUCS.value
         ])
 
-    def _ensure_dirs(self, dirs):
+    def _make_dirs(self, dirs):
         for d in dirs:
             os.makedirs(d, exist_ok=True)
 
@@ -57,4 +57,4 @@ class UserPathContext:
 def get_user_path():
     user_path_ctx = UserPathContext(user_id=uuid.uuid4())
     yield user_path_ctx
-    # user_path_ctx.clear()
+    user_path_ctx.clear()

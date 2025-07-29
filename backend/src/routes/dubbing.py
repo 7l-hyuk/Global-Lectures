@@ -1,29 +1,16 @@
-import time
 from pathlib import Path
+import shutil
+import uuid
 
 from fastapi import APIRouter, UploadFile, Depends, File, Form,  status
+from celery.result import AsyncResult
 
 from src.auth.authentication import authenticate, AuthenticatedPayload
-from src.path_manager import get_user_path, UserFile
-from src.utils.audio import AudioSegment
-from src.utils.pipelines.dubbing_stages import (
-    DubbingPipelineConfig,
-    STT,
-    TranslateSubtitle,
-    TTS,
-    RenderingVideo
+from src.worker.dubbing import (
+    dubbing_worker,
+    make_dubbing_video,
+    DubbingWorkerConfig
 )
-from src.utils.pipelines.setup_stages import (
-    DownloadVideo,
-    ExtractAudio,
-    SeperateBGMFromAudio,
-    RemoveVocalsFromVideo,
-    ExtractReferenceSpeaker
-)
-from src.models.unit_of_work import UnitOfWork, get_uow
-from src.models.tables import Video, VideoLanguage
-from src.models.s3_handler import s3, S3UploadFileConfig
-from src.utils.pipelines.pipeline import Pipeline
 
 dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
 
@@ -50,90 +37,57 @@ def get_dubbing_video(
     translation_model: str = Form(...),
     tts_model: str = Form(...),
     user: AuthenticatedPayload = Depends(authenticate),
-    uow: UnitOfWork = Depends(get_uow)
 ):
-    start = time.time()
-    dubbing_resource_pipeline = Pipeline(
-        [
-            DownloadVideo(),
-            ExtractAudio(),
-            SeperateBGMFromAudio(),
-            RemoveVocalsFromVideo(),
-            ExtractReferenceSpeaker()
-        ]
-    )
-    dubbing_pipeline = Pipeline(
-        [
-            STT(),
-            TranslateSubtitle(),
-            TTS(),
-            RenderingVideo()
-        ]
-    )
-    with get_user_path() as user_path_ctx:
-        dubbing_resource_pipeline.run(
-            user_path_ctx,
-            video
-        )
-        voice_id = dubbing_pipeline.run(
-            user_path_ctx.get_path(UserFile.AUDIO.VOCALS),
-            DubbingPipelineConfig(
-                source_lang=source_lang,
-                target_lang=target_lang,
-                stt_model=stt_model,
-                translation_model=translation_model,
-                tts_model=tts_model,
-                stt_requset_timeout=600,
-                translation_requset_timeout=600,
-                tts_request_timeout=600,
-                user_path_ctx=user_path_ctx
-            )
-        )
-        audio_time = round(
-            AudioSegment(str(user_path_ctx.get_path(UserFile.AUDIO.DUBBING)))
-            .time
-        )
-        video = Video(
-            title=Path(video.filename).stem,
-            length=f"{audio_time // 3600:02}:{(audio_time % 3600) // 60:02}:{audio_time % 60:02}",
-            key=None,
+    tmp_id = str(uuid.uuid4())
+    with open(f"/tmp/{tmp_id}", "wb") as f:
+        shutil.copyfileobj(video.file, f)
+
+    task = make_dubbing_video.apply_async(
+        kwargs=DubbingWorkerConfig(
+            tmp_id=tmp_id,
             creator_id=user.id,
-            voice_id=voice_id
-        )
-        try:
-            with uow as u:
-                u.video.add(video)
+            title=Path(video.filename).stem,
+            source_lang=source_lang,
+            target_lang=target_lang,
+            stt_model=stt_model,
+            translation_model=translation_model,
+            tts_model=tts_model
+        ).model_dump()
+    )
+    print(task.id)
+    return {"taskId": task.id}
 
-                try:
-                    upload_config = S3UploadFileConfig(
-                        video_id=video.id,
-                        target_lang=target_lang,
-                        source_lang=source_lang
-                    )
-                    s3.upload_files(
-                        user_path_ctx=user_path_ctx,
-                        upload_config=upload_config
-                    )
-                # TODO: Processing s3-upload-fail
-                except Exception as e:
-                    print(e)
 
-                video.key = upload_config.video_key
-                languages = [
-                    VideoLanguage(
-                        lang_code=source_lang,
-                        audio_key=upload_config.source_audio_key,
-                        subtitle_key=upload_config.source_subtitle_key
-                    ),
-                    VideoLanguage(
-                        lang_code=target_lang,
-                        audio_key=upload_config.target_audio_key,
-                        subtitle_key=upload_config.target_subtitle_key
-                    )
-                ]
-                video.languages = languages
-        # TODO: Processing db-transaction-fail
-        except Exception as e:
-            print(e)
-    print(f"Service Processed In: {time.time() - start} s")
-    return {"msg": "Video processing success"}
+@dubbing_router.get(
+    "/progress/{task_id}",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Celery worker progress.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "task": "STT",
+                        "percent": 33,
+                    }
+                }
+            }
+        },
+    }
+)
+def get_task_progress(task_id: str):
+    result = AsyncResult(task_id, app=dubbing_worker)
+    if result.state == "PROGRESS":
+        return {
+            "task": result.info.get("task", "waiting"),
+            "percent": result.info.get("percent", 0),
+        }
+    if result.successful():
+        return {
+            "task": "Success",
+            "percent": 100
+        }
+    return {
+        "task": "Fail",
+        "percent": 0
+    }
