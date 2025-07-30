@@ -12,7 +12,117 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:
-      - ./envs/.env.psql
+      - .env
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: "uv run uvicorn src.main:app --host 0.0.0.0 --port 8000"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    volumes:
+      - tmp-volume:/tmp
+    ports:
+    - "8000:8000"
+    env_file:
+    - .env
+    depends_on:
+      - db
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: "uv run celery -A src.worker.dubbing.dubbing_worker worker --loglevel=info"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    volumes:
+      - tmp-volume:/tmp
+    env_file:
+      - .env
+    depends_on:
+      - redis
+  stt-server:
+    build:
+      context: .
+      dockerfile: stt-server/Dockerfile
+    command: "uv run uvicorn src.main:app --host 0.0.0.0 --port 8001"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    volumes:
+      - tmp-volume:/tmp
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+  translation-server:
+    build:
+      context: .
+      dockerfile: translation-server/Dockerfile
+    command: "uv run uvicorn src.main:app --host 0.0.0.0 --port 8002"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    volumes:
+      - tmp-volume:/tmp
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+  tts-server:
+    build:
+      context: .
+      dockerfile: tts-server/Dockerfile
+    environment:
+      - COQUI_TOS_AGREED=1
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: "uv run uvicorn src.main:app --host 0.0.0.0 --port 8003"
+    runtime: nvidia      
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    volumes:
+      - tmp-volume:/tmp
+    ports:
+      - "8003:8003"
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   db_data:
+  tmp-volume:

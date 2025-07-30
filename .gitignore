@@ -44,3 +44,4 @@ wheels/
 
 # Secret
 envs/
+.env

@@ -9,7 +9,9 @@ from src.routes.video import video_router
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost",
+    "http://localhost:80"
 ]
 routes = [
     auth_router,

@@ -8,7 +8,7 @@ from src.models.tanslator import translation_service
 app = FastAPI()
 app.add_middleware(
    CORSMiddleware,
-    allow_origins=["http://localhost:8000"],
+    allow_origins=["http://backend:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

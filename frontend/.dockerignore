@@ -8,8 +8,8 @@ Dockerfile
 
 # PYTHON
 *.md
-__pycache__/
-**/__pycache__/
+node_modules/
+**/node_modules/
 
-# VENV
-.venv/
+# ENV
+.env
