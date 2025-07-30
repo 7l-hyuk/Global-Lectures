@@ -1,11 +1,18 @@
-import { dubbingVideo as dubbingAPI } from "../models/dubbing";
+import { dubbingVideo as dubbingAPI, getProgress as getProgressAPI } from "../models/dubbing";
 import { DubbingRequest } from "../types/dubbing";
-import { LanguageType, LangCode } from "../types/components";
 
-export const dubbingVideo = async (dubbingRequest: DubbingRequest) => {
+
+export const getDubbingTaskId = async (dubbingRequest: DubbingRequest) => {
     try {
-        await dubbingAPI(dubbingRequest)
+        const res = await dubbingAPI(dubbingRequest);
+        return res.data.taskId
     } catch (err) {
         console.error(err)
     }
+};
+
+
+export const getProgress = async (taskId: string) => {
+    const res = await getProgressAPI(taskId);
+    return res.data;
 };
