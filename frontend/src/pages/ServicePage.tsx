@@ -1,7 +1,16 @@
-import React, { useRef, useState, useEffect } from "react";
-import { faFolderPlus, faChevronDown, faChevronRight, faSyncAlt, faArrowRightArrowLeft, faFile, faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  faFolderPlus,
+  faChevronDown,
+  faChevronRight,
+  faSyncAlt,
+  faArrowRightArrowLeft,
+  faFile,
+  faTimes,
+  faSpinner
+} from "@fortawesome/free-solid-svg-icons";
 
-import { dubbingVideo } from "../viewmodels/dubbing";
+import { getDubbingTaskId, getProgress } from "../viewmodels/dubbing";
 import { SettingDropdownProps, Language, LangCode } from "../types/components";
 import { IconButton, ButtonIcon } from "../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,9 +40,40 @@ const SerivcePage: React.FC = () => {
   const [isTargetDropdownOpen, setIsTargetDropdownOpen] = useState(false);
   const [sourceLang, setSourceLang] = useState<LanguageType>("Korean")
   const [targetLang, setTargetLang] = useState<LanguageType>(tarLangList[sourceLang][0])
+  const [isProgress, setIsProgress] = useState(false);
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [percent, setPercent] = useState(0);
+  const [taskName, setTaskName] =useState<string | null>(null);
 
-  
+  const clearTask = () => {
+    setFile(null);
+    setTaskId(null);
+    setIsProgress(false);
+    setPercent(0);
+  };
 
+  useEffect(() => {
+    if (!taskId) return;
+
+    const setProgress = setInterval(async () => {
+      try {
+        const { task, percent } = await getProgress(taskId);
+        setPercent(percent);
+        setTaskName(task);
+        console.log("task", percent, task);
+
+        if (taskName === "Success") {
+          clearInterval(setProgress);
+        }
+
+      } catch (err) {
+        console.error("Polling error:", err);
+        clearInterval(setProgress);
+        clearTask();
+      }
+    }, 5000);
+    return () => clearInterval(setProgress);
+  }, [taskId]);
   
   const handleButtonClick = () => {
     if (fileInputRef.current) {
@@ -98,6 +138,27 @@ const SerivcePage: React.FC = () => {
     );
   };
 
+  const ProgressBar: React.FC<{taskName: string, percent: number}> = ({ taskName, percent }) => {
+    return (
+      <div className={styles.ProgressBarContainer}>
+        {taskName === "Success" ? (
+          <span style={{backgroundColor: "#28a745"}}>
+            {taskName}!
+          </span>
+        ) : (
+          <>
+            <span>
+              <FontAwesomeIcon icon={faSpinner} spin />
+              {taskName}
+            </span>
+            <div className={styles.ProgressBar}>
+              <div style={{width: `${percent}%`, backgroundColor: "#28a745", height: "1rem", transition: "width 10s", borderRadius: ".2rem"}} />
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
 
   const UploadedFileInfo: React.FC = () => {
     return file ? (
@@ -113,74 +174,85 @@ const SerivcePage: React.FC = () => {
           <span>to</span>
           <span className={styles.LangTextBox}>{targetLang}</span>
         </div>
-        <button onClick={() => {setFile(null)}}>
+        {isProgress && taskName && (
+          <ProgressBar taskName={taskName} percent={percent} />
+        )}
+        <button onClick={() => {
+          clearTask();
+          // TODO: 취소 요청 API
+        }}>
           <FontAwesomeIcon icon={faTimes} />
         </button>
       </div>
     ) : (
       <></>
     )
-  }
-  const ServiceSettingForm: React.FC = () => {
-    return (
-      <div className={styles.ServiceSettingForm}>
-        <SettingDropdown
-          label={sourceLang}
-          isDropdownOpen={isSourceDropdownOpen}
-          items={["Korean", "English", "Japanese", "Chinese"]}
-          onClick={() => {setIsSourceDropdownOpen(!isSourceDropdownOpen)}}
-          setItem={(item: LanguageType) => {
-            setSourceLang(item);
-            if (item == targetLang) {
-              setTargetLang(tarLangList[item][0]);
-            }
-            setIsSourceDropdownOpen(false);
-          }}
-        />
-        <button className={styles.LangChangeButton} onClick={() => {
-          const src: LanguageType = sourceLang;
-          const tar: LanguageType = targetLang;
-          setSourceLang(tar);
-          setTargetLang(src);
-        }}>
-          <FontAwesomeIcon icon={faArrowRightArrowLeft} />
-        </button>
-        <SettingDropdown
-          label={targetLang}
-          isDropdownOpen={isTargetDropdownOpen}
-          items={tarLangList[sourceLang]}
-          onClick={() => {setIsTargetDropdownOpen(!isTargetDropdownOpen)}}
-          setItem={(item: Language) => {
-            setTargetLang(item);
-            setIsTargetDropdownOpen(false);
-          }}
-        />
-      </div>
-    );
   };
 
   const ConvertButton: React.FC = () => {
     return (
-      <div className={styles.ConvertContainer}>
-        <IconButton 
-          icon={faSyncAlt}
-          label="Convert"
-          onClick={async () => {
-            if (file) {
-              const dubbingRequest = {
-                video: file as File,
-                source_lang: langCodeMapping[sourceLang],
-                target_lang: langCodeMapping[targetLang],
-                stt_model: "whisperX",
-                translation_model: "NLLB-200",
-                tts_model: "coqui-xtts-v2"
-              };
-              await dubbingVideo(dubbingRequest);
-            } else {
-              alert("upload file");
-            }
-          }}
-        />
+      <IconButton 
+        icon={faSyncAlt}
+        label="Convert"
+        onClick={async () => {
+          if (file) {
+            const dubbingRequest = {
+              video: file as File,
+              source_lang: langCodeMapping[sourceLang],
+              target_lang: langCodeMapping[targetLang],
+              stt_model: "whisperX",
+              translation_model: "NLLB-200",
+              tts_model: "coqui-xtts-v2"
+            };
+            const taskId_ = await getDubbingTaskId(dubbingRequest);
+            setTaskId(taskId_);
+            setPercent(0);
+            setIsProgress(true);
+          } else {
+            alert("upload file");
+          }
+        }}
+      />
+    );
+  };
+
+  const ServiceSettingForm: React.FC = () => {
+    return (
+      <div className={styles.ServiceSettingForm}>
+        <div className={styles.LangSettingContainer}>
+          <SettingDropdown
+            label={sourceLang}
+            isDropdownOpen={isSourceDropdownOpen}
+            items={["Korean", "English", "Japanese", "Chinese"]}
+            onClick={() => {setIsSourceDropdownOpen(!isSourceDropdownOpen)}}
+            setItem={(item: LanguageType) => {
+              setSourceLang(item);
+              if (item == targetLang) {
+                setTargetLang(tarLangList[item][0]);
+              }
+              setIsSourceDropdownOpen(false);
+            }}
+          />
+          <button className={styles.LangChangeButton} onClick={() => {
+            const src: LanguageType = sourceLang;
+            const tar: LanguageType = targetLang;
+            setSourceLang(tar);
+            setTargetLang(src);
+          }}>
+            <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+          </button>
+          <SettingDropdown
+            label={targetLang}
+            isDropdownOpen={isTargetDropdownOpen}
+            items={tarLangList[sourceLang]}
+            onClick={() => {setIsTargetDropdownOpen(!isTargetDropdownOpen)}}
+            setItem={(item: Language) => {
+              setTargetLang(item);
+              setIsTargetDropdownOpen(false);
+            }}
+          />
+        </div>
+        <ConvertButton />
       </div>
     );
   };
@@ -189,7 +261,6 @@ const SerivcePage: React.FC = () => {
     <div className={styles.ServiceFormContainer}>
       {file ? <UploadedFileInfo /> : <FileUploadForm />}
       <ServiceSettingForm />
-      <ConvertButton />
     </div>
   );
 };

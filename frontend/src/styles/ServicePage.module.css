@@ -1,5 +1,5 @@
 .ServiceFormContainer {
-  --width: 600px;
+  --width: 1000px;
   --bg-color: #2c2c2c;
   width: var(--width);
 }
@@ -32,6 +32,7 @@
   margin: var(--content-margin);
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   color: var(--basic-font-color);
   border-radius: .3rem;
 }
@@ -40,9 +41,8 @@
   --margin: 2rem;
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 3rem;
   margin: var(--content-margin);
-  justify-content: space-between;
   color: var(--basic-font-color);
   background-color: var(--bg-color);
   border-radius: .2rem;
@@ -128,12 +128,6 @@
   background-color: #353535;
 }
 
-.ConvertContainer {
-  display: flex;
-  justify-content: flex-end;
-  margin: 2rem;
-}
-
 .LangChangeButton {
   background-color: transparent;
   border: none;
@@ -143,4 +137,34 @@
 
 .LangChangeButton:hover {
   color: var(--basic-hv-color);
+}
+
+.ProgressBarContainer {
+  display: flex;
+  width: 30%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.ProgressBarContainer span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  background-color: #f74f0d;
+  border-radius: .3rem;
+  padding: .2rem .5rem;
+  font-weight: 500;
+  font-size: .8rem;
+}
+.ProgressBar {
+  width: 50%;
+  height: 1rem;
+  background-color: white;
+  border-radius: .2rem;
+}
+
+.LangSettingContainer {
+  display: flex;
+  gap: 1rem;
 }

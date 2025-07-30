@@ -18,3 +18,8 @@ export const dubbingVideo = async (dubbingRequest: DubbingRequest) => {
         }
     );
 };
+
+
+export const getProgress = async (taskId: string) => {
+    return await axiosDubbingInstance.get(`/progress/${taskId}`);
+};

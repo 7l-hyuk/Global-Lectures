@@ -17,13 +17,13 @@ dubbing_router = APIRouter(prefix="/api/v1/dubbing", tags=["Dubbing Service"])
 
 @dubbing_router.post(
     "/",
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_200_OK,
     responses={
-        201: {
-            "description": "Video processing success.",
+        200: {
+            "description": "Return uuid task id",
             "content": {
                 "application/json": {
-                    "example": {"msg": "Video processing success."}
+                    "example": {"taskId": "123e4567-e89b-12d3-a456-426614174000"}
                 }
             }
         },
