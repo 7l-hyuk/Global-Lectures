@@ -1,7 +1,13 @@
-FROM python:3.11-slim-bookworm
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+# python installaition
+ENV DEBIAN_FRONTEND=noninteractive
+
+# python installaition
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates mecab libmecab-dev mecab-ipadic-utf8 sox libsox-fmt-all ffmpeg git
 
 # uv setting
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 ADD https://astral.sh/uv/install.sh /uv-installer.sh
 RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
